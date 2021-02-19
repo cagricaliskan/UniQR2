@@ -1,8 +1,12 @@
 ﻿@model UniQR2.Models.User
 @{
     ViewData["Title"] = "Login";
+    Layout = null;
 }
 
+<head>
+    <partial name="AdminLTE/_LoginSignup" />
+</head>
 <div class="row login-page">
     <div class="col-md-3 form">
         <form method="post" class="login-form" asp-action="Login">
