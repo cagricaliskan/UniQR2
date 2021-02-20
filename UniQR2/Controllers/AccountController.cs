@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
+using NETCore.MailKit.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,10 +14,13 @@ namespace UniQR2.Controllers
     public class AccountController : Controller
     {
         private readonly ModelContext db;
+        private readonly IEmailService emailSender;
 
-        public AccountController(ModelContext db)
+        public AccountController(ModelContext db, IEmailService emailSender)
         {
             this.db = db;
+            this.emailSender = emailSender;
+
         }
 
 
@@ -27,11 +31,14 @@ namespace UniQR2.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(User userLoginModel)
+        public async Task<IActionResult> Login(User userLoginModel, string email)
         {
             User u = db.Users.FirstOrDefault(x => x.Email == userLoginModel.Email && x.Password == userLoginModel.Password);
             if (u != null)
             {
+
+                string body = "You have logged in";
+                await emailSender.Send(userLoginModel.Email,"Giriş İşlemi",body);
                 return RedirectToAction("privacy", "Home");
             }
             return RedirectToAction("register", "account");

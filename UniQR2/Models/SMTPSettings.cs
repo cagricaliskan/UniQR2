@@ -19,3 +19,4 @@ namespace UniQR2.Models
 
 
     }
+}
