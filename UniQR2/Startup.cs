@@ -5,10 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using NETCore.MailKit.Core;
 using UniQR2.Models;
 
 namespace UniQR2
@@ -26,6 +23,8 @@ namespace UniQR2
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            services.Configure<SMTPSettings>(Configuration.GetSection("SMTPSettings"));
+            services.AddScoped<IEmailService, EmailService>();
             services.AddDbContext<ModelContext>(options =>
             {
                 options.UseMySQL(Configuration["ConnectionStrings:MySQLConnection"].ToString());
