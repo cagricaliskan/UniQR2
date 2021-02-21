@@ -38,7 +38,7 @@ namespace UniQR2.Controllers
             {
 
                 string body = "You have logged in";
-                await emailSender.Send(userLoginModel.Email,"Giriş İşlemi",body);
+                await emailSender.Send(userLoginModel.Email,"Giriş İşlemi",body, "kamren2@ethereal.email");
                 return RedirectToAction("privacy", "Home");
             }
             return RedirectToAction("register", "account");
