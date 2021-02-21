@@ -1,10 +1,11 @@
 ﻿using UniQR2.Models;
-using MailKit.Net.Smtp;
-using MailKit.Security;
 using Microsoft.Extensions.Options;
 using MimeKit;
 using MimeKit.Text;
 using System.Threading.Tasks;
+using MailKit.Net.Smtp;
+using MailKit.Security;
+
 namespace UniQR2.Services
 {
     public class EmailService : IEmailService
