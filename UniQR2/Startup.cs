@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using UniQR2.Models;
 using UniQR2.Services;
 
@@ -23,6 +24,7 @@ namespace UniQR2
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            services.AddSingleton<IConfiguration>(Configuration);
             services.Configure<SMTPSettings>(Configuration.GetSection("SMTPSettings"));
             services.AddScoped<IEmailService, EmailService>();
             services.AddDbContext<ModelContext>(options =>

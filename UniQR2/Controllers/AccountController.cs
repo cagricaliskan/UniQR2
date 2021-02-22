@@ -22,8 +22,6 @@ namespace UniQR2.Controllers
             this.emailSender = emailSender;
 
         }
-
-
         public IActionResult Login()
         {
             return View();
@@ -31,14 +29,14 @@ namespace UniQR2.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(User userLoginModel, string email)
+        public async Task<IActionResult> Login(User userLoginModel)
         {
             User u = db.Users.FirstOrDefault(x => x.Email == userLoginModel.Email && x.Password == userLoginModel.Password);
             if (u != null)
             {
 
                 string body = "You have logged in";
-                await emailSender.Send(userLoginModel.Email,"Giriş İşlemi",body, "kamren2@ethereal.email");
+                await emailSender.Send(userLoginModel.Email,"Giriş İşlemi",body);
                 return RedirectToAction("privacy", "Home");
             }
             return RedirectToAction("register", "account");

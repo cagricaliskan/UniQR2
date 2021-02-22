@@ -4,6 +4,6 @@ namespace UniQR2.Services
 {
     public interface IEmailService
     {
-        Task Send(string to, string subject, string html, string from);
+        Task Send(string to, string subject, string html);
     }
 }

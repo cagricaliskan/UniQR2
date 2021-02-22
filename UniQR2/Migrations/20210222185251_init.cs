@@ -4,63 +4,10 @@ using MySql.Data.EntityFrameworkCore.Metadata;
 
 namespace UniQR2.Migrations
 {
-    public partial class secondmig : Migration
+    public partial class init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropColumn(
-                name: "Name",
-                table: "Users");
-
-            migrationBuilder.AlterColumn<string>(
-                name: "Password",
-                table: "Users",
-                nullable: false,
-                oldClrType: typeof(string),
-                oldType: "text",
-                oldNullable: true);
-
-            migrationBuilder.AlterColumn<string>(
-                name: "Email",
-                table: "Users",
-                nullable: false,
-                oldClrType: typeof(string),
-                oldType: "text",
-                oldNullable: true);
-
-            migrationBuilder.AddColumn<string>(
-                name: "FullName",
-                table: "Users",
-                nullable: false);
-
-            migrationBuilder.AddColumn<string>(
-                name: "ResetCode",
-                table: "Users",
-                nullable: true);
-
-            migrationBuilder.AddColumn<DateTime>(
-                name: "ResetCodeExpire",
-                table: "Users",
-                nullable: false,
-                defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
-
-            migrationBuilder.AddColumn<int>(
-                name: "UserRole",
-                table: "Users",
-                nullable: false,
-                defaultValue: 0);
-
-            migrationBuilder.AddColumn<string>(
-                name: "activationCode",
-                table: "Users",
-                nullable: true);
-
-            migrationBuilder.AddColumn<bool>(
-                name: "isActive",
-                table: "Users",
-                nullable: false,
-                defaultValue: false);
-
             migrationBuilder.CreateTable(
                 name: "Classroom",
                 columns: table => new
@@ -101,6 +48,21 @@ namespace UniQR2.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Student", x => x.StudentID);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Users",
+                columns: table => new
+                {
+                    UserID = table.Column<int>(nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    FullName = table.Column<string>(nullable: false),
+                    Email = table.Column<string>(nullable: false),
+                    Password = table.Column<string>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Users", x => x.UserID);
                 });
 
             migrationBuilder.CreateTable(
@@ -275,49 +237,8 @@ namespace UniQR2.Migrations
             migrationBuilder.DropTable(
                 name: "Course");
 
-            migrationBuilder.DropColumn(
-                name: "FullName",
-                table: "Users");
-
-            migrationBuilder.DropColumn(
-                name: "ResetCode",
-                table: "Users");
-
-            migrationBuilder.DropColumn(
-                name: "ResetCodeExpire",
-                table: "Users");
-
-            migrationBuilder.DropColumn(
-                name: "UserRole",
-                table: "Users");
-
-            migrationBuilder.DropColumn(
-                name: "activationCode",
-                table: "Users");
-
-            migrationBuilder.DropColumn(
-                name: "isActive",
-                table: "Users");
-
-            migrationBuilder.AlterColumn<string>(
-                name: "Password",
-                table: "Users",
-                type: "text",
-                nullable: true,
-                oldClrType: typeof(string));
-
-            migrationBuilder.AlterColumn<string>(
-                name: "Email",
-                table: "Users",
-                type: "text",
-                nullable: true,
-                oldClrType: typeof(string));
-
-            migrationBuilder.AddColumn<string>(
-                name: "Name",
-                table: "Users",
-                type: "text",
-                nullable: true);
+            migrationBuilder.DropTable(
+                name: "Users");
         }
     }
 }
