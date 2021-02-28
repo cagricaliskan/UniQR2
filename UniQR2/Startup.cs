@@ -31,6 +31,7 @@ namespace UniQR2
             {
                 options.UseMySQL(Configuration["ConnectionStrings:MySQLConnection"].ToString());
             });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

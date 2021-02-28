@@ -42,9 +42,38 @@ namespace UniQR2.Controllers
             return RedirectToAction("register", "account");
         }
 
-        public IActionResult Register()
+        public IActionResult Register(string? email)
         {
             return View();
+        }
+
+        [HttpPost]
+        public IActionResult Register(User userRegisterModel)
+        {
+            if (ModelState.IsValid)
+            {
+               db.Users.Add(userRegisterModel);
+                db.SaveChanges();
+            }
+            return RedirectToAction("index", "home");
+        }
+
+        public IActionResult AddUser()
+        {
+            return View();
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> AddUser(string email)
+        {
+            if(email != null)
+            {
+                string body = "You have been invited to UniQR system. To register, please follow the" + "<a href=\"" + "https://localhost:44305" + "/Account/Register?email=" + email + " \">Tıkla </a>";
+                await emailSender.Send(email, "UniQR Invite", body);
+                
+            }
+            return RedirectToAction("index", "home");
         }
     }
 }
