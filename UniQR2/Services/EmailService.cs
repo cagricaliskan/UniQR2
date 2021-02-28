@@ -1,29 +1,20 @@
 ﻿using UniQR2.Models;
-using Microsoft.Extensions.Options;
 using MimeKit;
 using MimeKit.Text;
 using System.Threading.Tasks;
 using MailKit.Net.Smtp;
 using MailKit.Security;
-using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 
 namespace UniQR2.Services
 {
     public class EmailService : IEmailService
     {
         private readonly SMTPSettings _settings;
-        private readonly IConfiguration configuration;
 
-        public EmailService(IConfiguration configuration)
+        public EmailService(IOptions<SMTPSettings> settings)
         {
-            _settings = new SMTPSettings();
-
-            this.configuration = configuration;
-            this._settings.EmailFrom = configuration["SMTPSettings:EmailFrom"];
-            this._settings.SmtpHost = configuration["SMTPSettings:SmtpHost"];
-            this._settings.SmtpPort = int.Parse(configuration["SMTPSettings:SmtpPort"]);
-            this._settings.SmtpUser = configuration["SMTPSettings:SmtpUser"];
-            this._settings.SmtpPass = configuration["SMTPSettings:SmtpPass"];
+            this._settings = settings.Value;
         }
 
         public async Task Send(string to, string subject, string html)
