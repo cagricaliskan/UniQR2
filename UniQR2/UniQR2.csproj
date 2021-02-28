@@ -20,4 +20,9 @@
     <PackageReference Include="System.Runtime.Extensions" Version="4.3.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Profiles\" />
+    <Folder Include="wwwroot\plugins\" />
+  </ItemGroup>
+
 </Project>

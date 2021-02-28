@@ -1,5 +1,5 @@
 ﻿
-namespace UniQR2.Models
+namespace UniQR2.Models.Configurations
 {
     public class SMTPSettings
     {

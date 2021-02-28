@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -6,7 +8,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
+using System;
 using UniQR2.Models;
+using UniQR2.Models.Configurations;
 using UniQR2.Services;
 
 namespace UniQR2
@@ -27,6 +31,38 @@ namespace UniQR2
             services.AddSingleton<IConfiguration>(Configuration);
             services.Configure<SMTPSettings>(Configuration.GetSection("SMTPSettings"));
             services.AddScoped<IEmailService, EmailService>();
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+            services.AddMvc().AddRazorRuntimeCompilation();
+
+
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options =>
+            {
+                options.LoginPath = "/Account/Login/";
+                options.AccessDeniedPath = "/Account/Forbidden/";
+                options.ExpireTimeSpan = TimeSpan.FromHours(1);
+            });
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("Administrator", policy => // kurum yöneticisi
+                {
+                    policy.AuthenticationSchemes.Add(CookieAuthenticationDefaults.AuthenticationScheme);
+                    policy.RequireAuthenticatedUser();
+                    policy.RequireRole("Administrator");
+                });
+                options.AddPolicy("Instructor", policy => // hoca
+                {
+                    policy.AuthenticationSchemes.Add(CookieAuthenticationDefaults.AuthenticationScheme);
+                    policy.RequireAuthenticatedUser();
+                    policy.RequireRole("Instructor");
+                });
+                options.DefaultPolicy = new AuthorizationPolicyBuilder()
+                .AddAuthenticationSchemes(CookieAuthenticationDefaults.AuthenticationScheme)
+                .RequireAuthenticatedUser()
+                .Build();
+            });
+
             services.AddDbContext<ModelContext>(options =>
             {
                 options.UseMySQL(Configuration["ConnectionStrings:MySQLConnection"].ToString());
@@ -43,7 +79,6 @@ namespace UniQR2
             }
             else
             {
-                app.UseExceptionHandler("/Home/Error");
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
@@ -52,6 +87,7 @@ namespace UniQR2
 
             app.UseRouting();
 
+            app.UseCookiePolicy();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

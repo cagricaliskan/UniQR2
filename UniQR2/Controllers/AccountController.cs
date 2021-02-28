@@ -8,6 +8,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using UniQR2.Models;
 using UniQR2.Services;
+using UniQR2.ViewModels;
 
 namespace UniQR2.Controllers
 {
@@ -22,27 +23,38 @@ namespace UniQR2.Controllers
             this.emailSender = emailSender;
 
         }
-        public IActionResult Login()
+        public IActionResult Login(int error = 0)
         {
+            if(error == 1)
+            {
+                ViewBag.error = "Giriş başarısız";
+            }
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(User userLoginModel)
+        public async Task<IActionResult> Login(UserLoginModel userLoginModel)
         {
             User u = db.Users.FirstOrDefault(x => x.Email == userLoginModel.Email && x.Password == userLoginModel.Password);
             if (u != null)
             {
+                string role = u.UserRole == UserRole.Administrator ? "Administrator" : "Instructor";
+                ClaimsIdentity identity = new ClaimsIdentity(new[]
+                {
+                    new Claim(ClaimTypes.Email, u.Email),
+                    new Claim(ClaimTypes.Role, role)
+                }, CookieAuthenticationDefaults.AuthenticationScheme);
 
-                string body = "You have logged in";
-                await emailSender.Send(userLoginModel.Email,"Giriş İşlemi",body);
-                return RedirectToAction("privacy", "Home");
+                var principal = new ClaimsPrincipal(identity);
+
+                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+                return RedirectToAction("Index", "Home");
             }
-            return RedirectToAction("register", "account");
+            return RedirectToAction("Login", "Account", new { error = 1});
         }
 
-        public IActionResult Register(string? email)
+        public IActionResult Register(string email)
         {
             return View();
         }
@@ -52,7 +64,7 @@ namespace UniQR2.Controllers
         {
             if (ModelState.IsValid)
             {
-               db.Users.Add(userRegisterModel);
+                db.Users.Add(userRegisterModel);
                 db.SaveChanges();
             }
             return RedirectToAction("index", "home");
@@ -67,11 +79,11 @@ namespace UniQR2.Controllers
         [HttpPost]
         public async Task<IActionResult> AddUser(string email)
         {
-            if(email != null)
+            if (email != null)
             {
                 string body = "You have been invited to UniQR system. To register, please follow the" + "<a href=\"" + "https://localhost:44305" + "/Account/Register?email=" + email + " \">Tıkla </a>";
                 await emailSender.Send(email, "UniQR Invite", body);
-                
+
             }
             return RedirectToAction("index", "home");
         }

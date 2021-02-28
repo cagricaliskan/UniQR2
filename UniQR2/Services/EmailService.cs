@@ -1,10 +1,10 @@
-﻿using UniQR2.Models;
-using MimeKit;
+﻿using MimeKit;
 using MimeKit.Text;
 using System.Threading.Tasks;
 using MailKit.Net.Smtp;
 using MailKit.Security;
 using Microsoft.Extensions.Options;
+using UniQR2.Models.Configurations;
 
 namespace UniQR2.Services
 {
