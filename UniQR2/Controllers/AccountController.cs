@@ -25,7 +25,7 @@ namespace UniQR2.Controllers
         }
         public IActionResult Login(int error = 0)
         {
-            if(error == 1)
+            if (error == 1)
             {
                 ViewBag.error = "Giriş başarısız";
             }
@@ -51,7 +51,12 @@ namespace UniQR2.Controllers
                 await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
                 return RedirectToAction("Index", "Home");
             }
-            return RedirectToAction("Login", "Account", new { error = 1});
+            return RedirectToAction("Login", "Account", new { error = 1 });
+        }
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            return RedirectToAction("Login");
         }
 
         public IActionResult Register(string email)
