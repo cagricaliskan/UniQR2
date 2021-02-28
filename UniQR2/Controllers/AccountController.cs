@@ -41,5 +41,10 @@ namespace UniQR2.Controllers
             }
             return RedirectToAction("register", "account");
         }
+
+        public IActionResult Register()
+        {
+            return View();
+        }
     }
 }

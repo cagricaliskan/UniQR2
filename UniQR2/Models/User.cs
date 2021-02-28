@@ -15,22 +15,42 @@ namespace UniQR2.Models
     {
 
         public int UserID { get; set; }
+
+
         [Required]
         public string FullName { get; set; }
+
+
         [Required, EmailAddress]
         public string Email { get; set; }
+        [Compare("Email", ErrorMessage = "Emails are not matching")]
+        public string ConfirmEmail { get; set; }
+
+
         [Required]
         public string Password { get; set; }
+        [Compare("Password", ErrorMessage = "Passwords are not matching")]
+        public string ConfirmPassword { get; set; }
+
+
 
         public string ResetCode { get; set; }
+
+
 
 
         public bool isActive { get; set; }
 
 
+
+
         public string activationCode { get; set; }
 
+
+
         public UserRole UserRole { get; set; }
+
+
 
 
 

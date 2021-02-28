@@ -1,0 +1,59 @@
+﻿@model UniQR2.Models.User
+@{
+    ViewData["Title"] = "Register";
+    Layout = null;
+}
+
+<head>
+    <partial name="AdminLTE/_LoginSignup" />
+</head>
+
+<div class="row login-page">
+    <div class="col-md-3 form">
+        <form method="post" class=" login-form" asp-action="Register">
+            @Html.AntiForgeryToken()
+            <h1>Register</h1>
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+
+            <div class="form-group">
+                <input asp-for="FullName" class="form-control" placeholder="Name" />
+                <span asp-validation-for="FullName" class="text-danger"> </span>
+            </div>
+
+
+            <div class="form-group">
+                <input asp-for="Email" class="form-control" placeholder="Email" />
+                <span asp-validation-for="Email" class="form-control"></span>
+            </div>
+            
+            
+            <div class="form-group">
+                <input asp-for="ConfirmEmail" class="form-control" placeholder="Confirm Email" />
+                <span asp-validation-for="ConfirmEmail" class="form-control"></span>
+            </div>
+
+            
+            <div class="form-group">
+                <input asp-for="Password" class="form-control" placeholder="Password" />
+                <span asp-validation-for="Password" class="form-control"></span>
+            </div>
+            
+            
+            <div class="form-group">
+                <input asp-for="ConfirmPassword" class="form-control" placeholder="Confirm Password" />
+                <span asp-validation-for="ConfirmPassword" class="form-control"></span>
+            </div>
+
+
+            <div class="form-group">
+                <input type="submit" value="Save User Details" class="btn btn-primary" />
+            </div>
+            @Html.ActionLink("Back to main page", "index", "home")
+            <b>@ViewBag.message</b>
+        </form>
+
+    </div>
+
+</div>
+
