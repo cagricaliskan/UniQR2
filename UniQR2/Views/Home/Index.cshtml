@@ -1,9 +1,31 @@
-﻿@{
+﻿@model IEnumerable<UniQR2.Models.User>
+@{
     ViewData["Title"] = "Home Page";
     Layout = "~/Views/Shared/AdminLTE/_Layout.cshtml";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+
+
+<table class="table">
+
+    <a onclick="popUp('@Url.Action("adduser", "account",Context.Request.Scheme)', 'Invite a User' )" class="btn btn-success" style="color:aliceblue">Add</a>
+
+    <thead>
+    <th>İsim</th>
+    <th>Mail</th>
+    <th>Şifre</th>
+    <th>Role</th>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.FullName</td>
+                <td>@item.Email</td>
+                <td>@item.Password</td>
+                <td>@item.UserRole</td>
+            </tr>
+        }
+    </tbody>
+</table>
