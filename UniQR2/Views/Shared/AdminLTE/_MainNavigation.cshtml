@@ -1,4 +1,9 @@
-﻿ <!-- Main Sidebar Container -->
+﻿@{
+    string userRole = User.Claims.Where(n => n.Type == System.Security.Claims.ClaimTypes.Role).FirstOrDefault().Value;
+}
+
+
+<!-- Main Sidebar Container -->
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
     <a href="index3.html" class="brand-link">
@@ -24,54 +29,31 @@
             <li class="nav-item">
 
                 <ul class="nav nav-item col-md-12">
-                    <li class="nav-item">
+                    <li class="nav-item col-md-12">
                         <a href="~/home/index" class="nav-link active">
                             <i class="far fa-circle nav-icon"></i>
                             <p>Home</p>
                         </a>
                     </li>
 
-                    <li class="nav nav-item col-md-12">
-                        <a href="~/home/privacy" class="nav-link active">
-                            <i class="far fa-circle nav-icon"> </i>
-                            <p>Privacy</p>
 
-                        </a>
-                    </li>
+                    @if (userRole == "Administrator")
+                    {
+                        <li class="nav-item col-md-12">
+                            <a href="~/InstructorManagement/Index" class="nav-link">
+                                <i class="far fa-circle nav-icon"> </i>
+                                <p>Instructors</p>
+                            </a>
+                        </li>
+                    }
 
-
-                    <li class="nav-item">
-                        <a href="~/account/adduser" class="nav-link active">
-                            <i class="far fa-circle nav-icon"></i>
-                            <p>Add User</p>
-                        </a>
-                    </li>
-
-
-                    <li class="nav-item">
-                        <a href="~/account/logout" class="nav-link active">
+                    <li class="nav-item col-md-12">
+                        <a href="~/account/logout" class="nav-link">
                             <i class="far fa-circle nav-icon"></i>
                             <p>Logout</p>
                         </a>
                     </li>
-                    @*<li class="nav-item">
-            <a href="~/account/ChangePasswordRequest" class="nav-link active">
-                <i class="far fa-circle nav-icon"></i>
-                <p>ChangePassword</p>
-            </a>
-        </li>*@
-                    @*<li class="nav-item">
-            <a href="~/course/index" class="nav-link active">
-                <i class="far fa-circle nav-icon"></i>
-                <p>Courses</p>
-            </a>
-        </li>*@
-                    @*<li class="nav-item">
-            <a href="~/classroom/index" class="nav-link active">
-                <i class="far fa-circle nav-icon"></i>
-                <p>Classrooms</p>
-            </a>
-        </li>*@
+
                 </ul>
             </li>
 

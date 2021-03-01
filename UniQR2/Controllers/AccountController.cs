@@ -31,7 +31,7 @@ namespace UniQR2.Controllers
         {
             this.db = db;
             this.emailSender = emailSender;
-            this.protector = provider.CreateProtector(GetType().FullName);
+            this.protector = provider.CreateProtector("UniQR system....!!!");
             this.mapper = mapper;
 
         }
@@ -48,7 +48,7 @@ namespace UniQR2.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(UserLoginModel userLoginModel)
         {
-            User u = db.Users.FirstOrDefault(x => x.Email == userLoginModel.Email && x.Password == userLoginModel.Password);
+            User u = db.Users.FirstOrDefault(x => x.Email == userLoginModel.Email && x.Password == userLoginModel.Password && x.isActive == true);
             if (u != null)
             {
                 string role = u.UserRole == UserRole.Administrator ? "Administrator" : "Instructor";
@@ -88,7 +88,7 @@ namespace UniQR2.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Register(UserRegisterModel userRegisterModel)
+        public async Task<IActionResult> Register(UserRegisterModel userRegisterModel)
         {
             if (ModelState.IsValid)
             {
@@ -96,7 +96,7 @@ namespace UniQR2.Controllers
                 u.FullName = userRegisterModel.FullName;
                 u.Password = userRegisterModel.Password;
                 u.UserRole = UserRole.Instructor;
-                u.activationCode = "activation code"; // activasyon kodu oluşturulacak (protector)
+                u.activationCode = protector.Protect(u.Email + u.FullName); // activasyon kodu oluşturulacak (protector)
                 u.isActive = false;
                 db.Entry(u).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
                 db.Users.Update(u);
@@ -104,31 +104,32 @@ namespace UniQR2.Controllers
                 if(db.SaveChanges() > 0)
                 {
                     // activation code kullanıcıya mail ile gönderilecek
+                    string body = $"Hi {u.FullName}, <a href='{MyHttpContext.AppBaseUrl}/Account/Activate?code={u.activationCode}'>Click here</a> to complate your registration.";
+                    await emailSender.Send(u.Email, "UniQR Account Activation", body);
                     // tıkladığında yeni bir action ile hesabıa active olacak
                 }
             }
             return RedirectToAction("index", "home");
         }
 
-
-        [HttpPost]
-        public async Task<IActionResult> AddUser(string email)
+        public async Task<IActionResult> Activate(string code)
         {
-            if (email != null)
+            var user = db.Users.FirstOrDefault(n => n.activationCode == code);
+            if(user != null)
             {
-                string body = "You have been invited to UniQR system. To register, please follow the" + "<a target=\"_blank\" href=\"" + MyHttpContext.AppBaseUrl + "/Account/Register?email=" + protector.Protect(email) + " \">Tıkla </a>";
-                User u = new User
+                user.activationCode = "";
+                user.isActive = true;
+                db.Entry(user).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+                if(await db.SaveChangesAsync() > 0)
                 {
-                    Email = email,
-                    isActive = false,
-                    ResetCodeExpire = DateTime.Now
-                };
-                db.Users.Add(u);
-                await db.SaveChangesAsync();
-                await emailSender.Send(email, "UniQR Invite", body);
+                    // active edildi maili gönder, sistemi kullanmaya başlayabilirsiniz şeklinde
+                }
+                return View(); // mesaj gösterildikten 3 saniye sonra login e atıyor
             }
-            return RedirectToAction("index", "home");
+            return RedirectToAction("Login"); // activation kod hatalı
         }
+
+
 
 
         public IActionResult Forbidden()

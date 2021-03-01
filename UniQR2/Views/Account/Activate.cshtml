@@ -1,0 +1,25 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Activation Successed</title>
+</head>
+<body>
+    <h3>Activation successed, you will redirect to login page in 3 seconds...</h3>
+    <script type="text/javascript">
+        setTimeout(function () {
+            location.href = document.getElementById("loginPage").getAttribute("href");
+        }, 3000);
+        
+    </script>
+
+    <a href="~/Account/Login" id="loginPage">Login</a>
+
+</body>
+</html>
