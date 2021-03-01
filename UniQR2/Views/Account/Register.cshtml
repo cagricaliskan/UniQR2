@@ -11,7 +11,7 @@
 
 <div class="row login-page">
     <div class="col-md-3 form">
-        <form method="post" class=" login-form" asp-action="Register">
+        <form method="post" class="login-form" asp-action="Register">
             @Html.AntiForgeryToken()
             <h1>Register</h1>
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -24,7 +24,7 @@
 
 
             <div class="form-group">
-                <input asp-for="Email" class="form-control" placeholder="Email" value="@ViewBag.email" disabled/>
+                <input asp-for="Email" class="form-control disabled" placeholder="Email"/>
                 <span asp-validation-for="Email" class="form-control"></span>
             </div>
             
@@ -53,3 +53,6 @@
 
 </div>
 
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>

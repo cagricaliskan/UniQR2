@@ -12,7 +12,7 @@ namespace UniQR2.Profiles
     {
         public UserRegisterProfile()
         {
-            CreateMap<UserRegisterModel, User>();
+            CreateMap<UserRegisterModel, User>().ReverseMap();
         }
     }
 }

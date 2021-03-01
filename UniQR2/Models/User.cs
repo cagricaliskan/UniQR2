@@ -16,8 +16,6 @@ namespace UniQR2.Models
 
         public int UserID { get; set; }
 
-
-        [Required]
         public string FullName { get; set; }
 
 
@@ -25,7 +23,6 @@ namespace UniQR2.Models
         public string Email { get; set; }
 
 
-        [Required]
         public string Password { get; set; }
 
 

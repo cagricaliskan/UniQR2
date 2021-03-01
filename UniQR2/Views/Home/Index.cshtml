@@ -19,21 +19,27 @@
 <table class="table table-hover table-bordered">
     <thead>
         <tr>
+            <th>#.</th>
             <th>İsim</th>
             <th>Mail</th>
-            <th>Şifre</th>
             <th>Role</th>
+            <th>İşlem</th>
         </tr>
     </thead>
 
     <tbody>
+        @{ 
+            int counter = 0;
+        }
         @foreach (var item in Model)
         {
+            counter++;
             <tr>
+                <td style="width:6%">@counter.</td>
                 <td>@item.FullName</td>
                 <td>@item.Email</td>
-                <td>@item.Password</td>
                 <td>@item.UserRole</td>
+                <td>Butonlar</td>
             </tr>
         }
     </tbody>

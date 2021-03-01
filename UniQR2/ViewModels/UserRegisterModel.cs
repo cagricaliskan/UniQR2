@@ -15,9 +15,6 @@ namespace UniQR2.ViewModels
         [Required, EmailAddress]
         public string Email { get; set; }
 
-        [Compare("Email", ErrorMessage = "Emails are not matching")]
-        public string ConfirmEmail { get; set; }
-
 
         [Required]
         public string Password { get; set; }
