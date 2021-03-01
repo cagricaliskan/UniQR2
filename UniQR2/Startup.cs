@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -67,6 +68,9 @@ namespace UniQR2
             {
                 options.UseMySQL(Configuration["ConnectionStrings:MySQLConnection"].ToString());
             });
+
+            services.AddDataProtection();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
         }
 

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -9,6 +10,7 @@ using System.Threading.Tasks;
 using UniQR2.Models;
 using UniQR2.Services;
 using UniQR2.ViewModels;
+using UniQR2.Extensions;
 
 namespace UniQR2.Controllers
 {
@@ -16,11 +18,13 @@ namespace UniQR2.Controllers
     {
         private readonly ModelContext db;
         private readonly IEmailService emailSender;
+        private readonly IDataProtector protector;
 
-        public AccountController(ModelContext db, IEmailService emailSender)
+        public AccountController(ModelContext db, IEmailService emailSender, IDataProtector protector)
         {
             this.db = db;
             this.emailSender = emailSender;
+            this.protector = protector;
 
         }
         public IActionResult Login(int error = 0)
@@ -81,7 +85,7 @@ namespace UniQR2.Controllers
         {
             if (email != null)
             {
-                string body = "You have been invited to UniQR system. To register, please follow the" + "<a href=\"" + "https://localhost:44305" + "/Account/Register?email=" + email + " \">Tıkla </a>";
+                string body = "You have been invited to UniQR system. To register, please follow the" + "<a href=\"" + MyHttpContext.AppBaseUrl + "/Account/Register?email=" + email + " \">Tıkla </a>";
                 await emailSender.Send(email, "UniQR Invite", body);
 
             }
