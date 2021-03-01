@@ -18,9 +18,9 @@ namespace UniQR2.Controllers
     {
         private readonly ModelContext db;
         private readonly IEmailService emailSender;
-        private readonly IDataProtector protector;
+        private readonly IDataProtectionProvider protector;
 
-        public AccountController(ModelContext db, IEmailService emailSender, IDataProtector protector)
+        public AccountController(ModelContext db, IEmailService emailSender, IDataProtectionProvider protector)
         {
             this.db = db;
             this.emailSender = emailSender;
@@ -92,7 +92,6 @@ namespace UniQR2.Controllers
             {
                 string body = "You have been invited to UniQR system. To register, please follow the" + "<a href=\"" + MyHttpContext.AppBaseUrl + "/Account/Register?email=" + email + " \">Tıkla </a>";
                 await emailSender.Send(email, "UniQR Invite", body);
-
             }
             return RedirectToAction("index", "home");
         }

@@ -13,16 +13,17 @@ namespace UniQR2.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
+        private readonly ModelContext db;
+        public HomeController(ILogger<HomeController> logger, ModelContext db)
         {
             _logger = logger;
+            this.db = db;
         }
 
         [Authorize()]
         public IActionResult Index()
         {
-            return View();
+            return View(db.Users.Where(n=> n.UserRole == UserRole.Instructor).ToList());
         }
 
         [Authorize("admin")]
