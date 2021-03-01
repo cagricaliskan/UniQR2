@@ -11,6 +11,7 @@ using UniQR2.Models;
 using UniQR2.Services;
 using UniQR2.ViewModels;
 using UniQR2.Extensions;
+using AutoMapper;
 
 namespace UniQR2.Controllers
 {
@@ -18,13 +19,20 @@ namespace UniQR2.Controllers
     {
         private readonly ModelContext db;
         private readonly IEmailService emailSender;
-        private readonly IDataProtectionProvider protector;
+        private readonly IDataProtector protector;
+        private readonly IMapper mapper;
 
-        public AccountController(ModelContext db, IEmailService emailSender, IDataProtectionProvider protector)
+        public AccountController(
+            ModelContext db,
+            IEmailService emailSender,
+            IDataProtectionProvider provider,
+            IMapper mapper
+            )
         {
             this.db = db;
             this.emailSender = emailSender;
-            this.protector = protector;
+            this.protector = provider.CreateProtector(GetType().FullName);
+            this.mapper = mapper;
 
         }
         public IActionResult Login(int error = 0)
@@ -65,23 +73,28 @@ namespace UniQR2.Controllers
 
         public IActionResult Register(string email)
         {
+            ViewBag.email = protector.Unprotect(email);
             return View();
         }
 
         [HttpPost]
-        public IActionResult Register(User userRegisterModel)
+        public IActionResult Register(UserRegisterModel userRegisterModel)
         {
             if (ModelState.IsValid)
             {
-                db.Users.Add(userRegisterModel);
-                db.SaveChanges();
+                User u = mapper.Map<UserRegisterModel, User>(userRegisterModel);
+                u.UserRole = UserRole.Instructor;
+                u.activationCode = "asdf"; // activasyon kodu oluşturulacak (protector)
+                u.isActive = false;
+                db.Users.Add(u);
+
+                if(db.SaveChanges() > 0)
+                {
+                    // activation code kullanıcıya mail ile gönderilecek
+                    // tıkladığında yeni bir action ile hesabıa active olacak
+                }
             }
             return RedirectToAction("index", "home");
-        }
-
-        public IActionResult AddUser()
-        {
-            return View();
         }
 
 
@@ -90,10 +103,16 @@ namespace UniQR2.Controllers
         {
             if (email != null)
             {
-                string body = "You have been invited to UniQR system. To register, please follow the" + "<a href=\"" + "https://localhost:44305/" + "/Account/Register?email=" + email + " \">Tıkla </a>";
+                string body = "You have been invited to UniQR system. To register, please follow the" + "<a target=\"_blank\" href=\"" + MyHttpContext.AppBaseUrl + "/Account/Register?email=" + protector.Protect(email) + " \">Tıkla </a>";
                 await emailSender.Send(email, "UniQR Invite", body);
             }
             return RedirectToAction("index", "home");
+        }
+
+
+        public IActionResult Forbidden()
+        {
+            return Content("sayfaya erişiminiz kısıtlı");
         }
     }
 }

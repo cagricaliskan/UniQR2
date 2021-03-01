@@ -5,16 +5,25 @@
 }
 
 
+<button type="button" class="btn btn-success" data-toggle="modal" data-target="#addUserModal">
+    Add new instructor
+</button>
 
-<table class="table">
+<form class="form-inline float-right" method="get">
+    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="search">
+    <button class="btn btn-primary" type="submit">Search</button>
+</form>
 
-    <a onclick="popUp('@Url.Action("adduser", "account",Context.Request.Scheme)', 'Invite a User' )" class="btn btn-success" style="color:aliceblue">Add</a>
-
+<br clear="all" />
+<br />
+<table class="table table-hover table-bordered">
     <thead>
-    <th>İsim</th>
-    <th>Mail</th>
-    <th>Şifre</th>
-    <th>Role</th>
+        <tr>
+            <th>İsim</th>
+            <th>Mail</th>
+            <th>Şifre</th>
+            <th>Role</th>
+        </tr>
     </thead>
 
     <tbody>
@@ -29,3 +38,7 @@
         }
     </tbody>
 </table>
+
+@* rendering add user popup content *@
+
+@await Component.InvokeAsync("AddUser")

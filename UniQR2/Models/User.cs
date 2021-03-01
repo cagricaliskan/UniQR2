@@ -23,14 +23,10 @@ namespace UniQR2.Models
 
         [Required, EmailAddress]
         public string Email { get; set; }
-        [Compare("Email", ErrorMessage = "Emails are not matching")]
-        public string ConfirmEmail { get; set; }
 
 
         [Required]
         public string Password { get; set; }
-        [Compare("Password", ErrorMessage = "Passwords are not matching")]
-        public string ConfirmPassword { get; set; }
 
 
 

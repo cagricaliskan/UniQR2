@@ -26,7 +26,7 @@ namespace UniQR2.Controllers
             return View(db.Users.Where(n=> n.UserRole == UserRole.Instructor).ToList());
         }
 
-        [Authorize("admin")]
+        [Authorize("Administrator")]
         public IActionResult Privacy()
         {
             return View();
