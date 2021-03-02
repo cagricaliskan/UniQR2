@@ -56,5 +56,6 @@ namespace UniQR2.Models
 
         public virtual ICollection<CourseClassroom> CourseClassrooms { get; set; }
 
+
     }
 }

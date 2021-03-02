@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using UniQR2.Extensions;
 using UniQR2.Models;
 using UniQR2.Services;
+using X.PagedList;
 
 namespace UniQR2.Controllers
 {
@@ -29,9 +30,10 @@ namespace UniQR2.Controllers
             this.protector = provider.CreateProtector("UniQR system....!!!");
         }
 
-        public IActionResult Index()
+        public IActionResult Index(int page = 1)
         {
-            return View(db.Users.Where(n => n.UserRole == UserRole.Instructor).ToList());
+            ViewBag.page = page;
+            return View(db.Users.Where(n => n.UserRole == UserRole.Instructor).ToPagedList(page, 10));
         }
 
 

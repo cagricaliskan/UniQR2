@@ -1,4 +1,4 @@
-﻿@model IEnumerable<UniQR2.Models.User>
+﻿@model IPagedList<UniQR2.Models.User>
 @{
     ViewData["Title"] = "Instructor List";
     Layout = "~/Views/Shared/AdminLTE/_Layout.cshtml";
@@ -16,35 +16,62 @@
 
 <br clear="all" />
 <br />
-<table class="table table-hover table-bordered">
-    <thead>
-        <tr>
-            <th>#.</th>
-            <th>İsim</th>
-            <th>Mail</th>
-            <th>Role</th>
-            <th>İşlem</th>
-        </tr>
-    </thead>
+<div class="card card-primary">
 
-    <tbody>
-        @{
-            int counter = 0;
-        }
-        @foreach (var item in Model)
-        {
-            counter++;
+    <div class="card-header">
+        <b>Instructor List</b>
+    </div>
+
+    <table class="table table-hover table-bordered table-striped">
+        <thead>
             <tr>
-                <td style="width:6%">@counter.</td>
-                <td>@item.FullName</td>
-                <td>@item.Email</td>
-                <td>@item.UserRole</td>
-                <td>Butonlar</td>
+                <th style="width:6%">#.</th>
+                <th>İsim</th>
+                <th>Mail</th>
+                <th>Role</th>
+                <th class="text-right" style="width:10%">İşlem</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
 
-@* rendering add user popup content *@
+        <tbody>
+            @{
+                int page = ((int)ViewBag.page);
+                int counter = (page - 1) * 10;
+            }
 
-@await Component.InvokeAsync("AddUser")
+            @foreach (var item in Model)
+            {
+                counter++;
+                <tr>
+                    <td>@counter.</td>
+                    <td>@item.FullName</td>
+                    <td>@item.Email</td>
+                    <td>@item.UserRole</td>
+                    <td class="text-right">
+                        <a class="btn btn-sm btn-warning" href="#">Düzenle</a> 
+                        <a class="btn btn-sm btn-danger" href="#">Sil</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+
+    <div class="col-md-12">
+        <div class="float-right">
+            @Html.PagedListPager(Model, page => Url.Action("Index", new { page }), new PagedListRenderOptionsBase
+       {
+           LiElementClasses = new string[] { "page-item" },
+           PageClasses = new string[] { "page-link", "text-bold" },
+           DisplayLinkToFirstPage = PagedListDisplayMode.Always,
+           DisplayLinkToLastPage = PagedListDisplayMode.Always,
+           DisplayLinkToNextPage = PagedListDisplayMode.Always,
+           DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
+           DisplayLinkToIndividualPages = true
+       })
+        </div>
+    </div>
+
+</div>
+
+@await Component.InvokeAsync("AddUserModal")

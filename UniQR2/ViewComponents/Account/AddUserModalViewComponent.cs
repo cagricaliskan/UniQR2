@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace UniQR2.ViewComponents.Account
 {
-    public class AddUserViewComponent : ViewComponent
+    public class AddUserModalViewComponent : ViewComponent
     {
         public IViewComponentResult Invoke()
         {
-            return View("~/Views/Shared/Components/Account/AddUser.cshtml");
+            return View("~/Views/Shared/Components/Account/AddUserModal.cshtml");
         }
     }
 }
