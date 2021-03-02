@@ -10,7 +10,7 @@
 </button>
 
 <form class="form-inline float-right" method="get">
-    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="search">
+    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="search" value="@ViewBag.search">
     <button class="btn btn-primary" type="submit">Search</button>
 </form>
 
@@ -59,7 +59,7 @@
 
     <div class="col-md-12">
         <div class="float-right">
-            @Html.PagedListPager(Model, page => Url.Action("Index", new { page }), new PagedListRenderOptionsBase
+            @Html.PagedListPager(Model, page => Url.Action("Index", new { page, search = ViewBag.search }), new PagedListRenderOptionsBase
        {
            LiElementClasses = new string[] { "page-item" },
            PageClasses = new string[] { "page-link", "text-bold" },

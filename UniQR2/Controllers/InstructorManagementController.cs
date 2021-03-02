@@ -30,10 +30,18 @@ namespace UniQR2.Controllers
             this.protector = provider.CreateProtector("UniQR system....!!!");
         }
 
-        public IActionResult Index(int page = 1)
+        public IActionResult Index(int page = 1, string search = "")
         {
+            var instructors = db.Users.Where(n => n.UserRole == UserRole.Instructor);
+            if(search != "")
+            {
+                instructors = instructors.Where(n => n.Email.Contains(search) || n.FullName.Contains(search));
+            }
+
+
             ViewBag.page = page;
-            return View(db.Users.Where(n => n.UserRole == UserRole.Instructor).ToPagedList(page, 10));
+            ViewBag.search = search;
+            return View(instructors.ToPagedList(page, 10));
         }
 
 
