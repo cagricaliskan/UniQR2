@@ -36,11 +36,6 @@ namespace UniQR2.Models
 
 
 
-
-        public string activationCode { get; set; }
-
-
-
         public UserRole UserRole { get; set; }
 
 

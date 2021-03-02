@@ -97,40 +97,18 @@ namespace UniQR2.Controllers
                 u.FullName = userRegisterModel.FullName;
                 u.Password = userRegisterModel.Password;
                 u.UserRole = UserRole.Instructor;
-                u.activationCode = protector.Protect(u.Email + u.FullName); // activasyon kodu oluşturulacak (protector)
-                u.isActive = false;
+                u.isActive = true;
                 db.Entry(u).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
                 db.Users.Update(u);
 
-                if(db.SaveChanges() > 0)
+                if(await db.SaveChangesAsync() > 0)
                 {
-                    // activation code kullanıcıya mail ile gönderilecek
-                    string body = $"Hi {u.FullName}, <a href='{MyHttpContext.AppBaseUrl}/Account/Activate?code={u.activationCode}'>Click here</a> to complate your registration.";
-                    await emailSender.Send(u.Email, "UniQR Account Activation", body);
-                    // tıkladığında yeni bir action ile hesabıa active olacak
+                    string body = $"Hi {u.FullName}, your account is created.";
+                    await emailSender.Send(u.Email, "UniQR Account", body);
                 }
             }
             return RedirectToAction("index", "home");
         }
-
-        public async Task<IActionResult> Activate(string code)
-        {
-            var user = db.Users.FirstOrDefault(n => n.activationCode == code);
-            if(user != null)
-            {
-                user.activationCode = "";
-                user.isActive = true;
-                db.Entry(user).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
-                if(await db.SaveChangesAsync() > 0)
-                {
-                    // active edildi maili gönder, sistemi kullanmaya başlayabilirsiniz şeklinde
-                }
-                return View(); // mesaj gösterildikten 3 saniye sonra login e atıyor
-            }
-            return RedirectToAction("Login"); // activation kod hatalı
-        }
-
-
 
 
         public IActionResult Forbidden()
