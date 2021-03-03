@@ -90,7 +90,7 @@ namespace UniQR2.Controllers
         {
             if (email != null)
             {
-                string body = "You have been invited to UniQR system. To register, please follow the" + "<a href=\"" + "https://localhost:44305/" + "/Account/Register?email=" + email + " \">Tıkla </a>";
+                string body = "You have been invited to UniQR system. To register, please follow the" + "<a href=\"" + "https://localhost:44305" + "/Account/Register?email=" + email + " \">Tıkla </a>";
                 await emailSender.Send(email, "UniQR Invite", body);
             }
             return RedirectToAction("index", "home");
