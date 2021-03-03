@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using UniQR2.Models;
 
 namespace UniQR2.Migrations
 {
     [DbContext(typeof(ModelContext))]
-    partial class ModelContextModelSnapshot : ModelSnapshot
+    [Migration("20210301202847_User")]
+    partial class User
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -87,7 +89,7 @@ namespace UniQR2.Migrations
                     b.Property<int>("CourseID")
                         .HasColumnType("int");
 
-                    b.Property<int>("InstructorID")
+                    b.Property<int?>("UserID")
                         .HasColumnType("int");
 
                     b.HasKey("CourseClassroomID");
@@ -96,7 +98,7 @@ namespace UniQR2.Migrations
 
                     b.HasIndex("CourseID");
 
-                    b.HasIndex("InstructorID");
+                    b.HasIndex("UserID");
 
                     b.ToTable("CourseClassroom");
                 });
@@ -177,9 +179,11 @@ namespace UniQR2.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("FullName")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Password")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("ResetCode")
@@ -190,6 +194,9 @@ namespace UniQR2.Migrations
 
                     b.Property<int>("UserRole")
                         .HasColumnType("int");
+
+                    b.Property<string>("activationCode")
+                        .HasColumnType("text");
 
                     b.Property<bool>("isActive")
                         .HasColumnType("tinyint(1)");
@@ -222,11 +229,9 @@ namespace UniQR2.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("UniQR2.Models.User", "Instructor")
+                    b.HasOne("UniQR2.Models.User", null)
                         .WithMany("CourseClassrooms")
-                        .HasForeignKey("InstructorID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserID");
                 });
 
             modelBuilder.Entity("UniQR2.Models.CourseStudentRel", b =>

@@ -16,21 +16,14 @@ namespace UniQR2.Models
 
         public int UserID { get; set; }
 
-
-        [Required]
         public string FullName { get; set; }
 
 
         [Required, EmailAddress]
         public string Email { get; set; }
-        [Compare("Email", ErrorMessage = "Emails are not matching")]
-        public string ConfirmEmail { get; set; }
 
 
-        [Required]
         public string Password { get; set; }
-        [Compare("Password", ErrorMessage = "Passwords are not matching")]
-        public string ConfirmPassword { get; set; }
 
 
 
@@ -40,11 +33,6 @@ namespace UniQR2.Models
 
 
         public bool isActive { get; set; }
-
-
-
-
-        public string activationCode { get; set; }
 
 
 
@@ -62,6 +50,7 @@ namespace UniQR2.Models
 
 
         public virtual ICollection<CourseClassroom> CourseClassrooms { get; set; }
+
 
     }
 }
