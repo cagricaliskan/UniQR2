@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using UniQR2.Extensions;
 using UniQR2.Models;
 using UniQR2.Services;
+using UniQR2.ViewModels;
 using X.PagedList;
 
 namespace UniQR2.Controllers
@@ -64,34 +65,33 @@ namespace UniQR2.Controllers
             return RedirectToAction("index", "instructormanagement");
         }
 
-        public async Task<IActionResult> EditUser(int? userid)
+        public JsonResult GetUser(int id)
         {
-            User u = null;
-            if(userid != null)
-            {
-                u = db.Users.Where(x => x.UserID == userid).FirstOrDefault();
-            }
-            return View(u);
+            GetUserViewModel u = db.Users.Select(n => new GetUserViewModel { Email = n.Email, FullName = n.FullName, UserID = n.UserID }).FirstOrDefault(x => x.UserID == id);
+
+            return Json(u);
         }
 
 
         [HttpPost]
-        public async Task<IActionResult> EditUser(int? userid, User users)
+        public async Task<IActionResult> EditUser(GetUserViewModel getUserViewModel)
         {
-            User u = db.Users.Where(x => x.UserID == userid).FirstOrDefault();
-            if(userid != null)
+            User u = db.Users.FirstOrDefault(x => x.UserID == getUserViewModel.UserID);
+            if(u != null)
             {
-                u.FullName = users.FullName;
-                u.Email = users.Email;
-                u.UserRole = users.UserRole;
+                u.FullName = getUserViewModel.FullName;
+                u.Email = getUserViewModel.Email;
 
                 if (ModelState.IsValid)
                 {
                    await db.SaveChangesAsync();
                 }
             }
-            return RedirectToAction("index", "instructormanagement");
+            return RedirectToAction("Index", "InstructorManagement");
         }
+
+
+
 
     }
 }
