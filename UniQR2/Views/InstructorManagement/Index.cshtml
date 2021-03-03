@@ -48,7 +48,9 @@
                     <td>@item.Email</td>
                     <td>@item.UserRole</td>
                     <td class="text-right">
-                        <a class="btn btn-sm btn-warning" href="#">Düzenle</a> 
+                        <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#editUserModal" data-id="@item.UserID">
+                            Edit
+                        </button>
                         <a class="btn btn-sm btn-danger" href="#">Sil</a>
                     </td>
                 </tr>
@@ -75,3 +77,4 @@
 </div>
 
 @await Component.InvokeAsync("AddUserModal")
+@await Component.InvokeAsync("EditUserModal")

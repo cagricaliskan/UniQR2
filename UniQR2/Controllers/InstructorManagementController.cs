@@ -61,7 +61,36 @@ namespace UniQR2.Controllers
                 await db.SaveChangesAsync();
                 await emailSender.Send(email, "UniQR Invite", body);
             }
-            return RedirectToAction("index", "home");
+            return RedirectToAction("index", "instructormanagement");
+        }
+
+        public async Task<IActionResult> EditUser(int? userid)
+        {
+            User u = null;
+            if(userid != null)
+            {
+                u = db.Users.Where(x => x.UserID == userid).FirstOrDefault();
+            }
+            return View(u);
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> EditUser(int? userid, User users)
+        {
+            User u = db.Users.Where(x => x.UserID == userid).FirstOrDefault();
+            if(userid != null)
+            {
+                u.FullName = users.FullName;
+                u.Email = users.Email;
+                u.UserRole = users.UserRole;
+
+                if (ModelState.IsValid)
+                {
+                   await db.SaveChangesAsync();
+                }
+            }
+            return RedirectToAction("index", "instructormanagement");
         }
 
     }
