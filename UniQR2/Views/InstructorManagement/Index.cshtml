@@ -9,6 +9,30 @@
     Add new instructor
 </button>
 
+
+@if (TempData["message"] != null)
+{
+    NotificationViewModel message = NotificationViewModel.GetNotificationFromJson(TempData["message"].ToString());
+
+    <div class="mt-4 card margin-top bg-gradient-@message.NotificationType.ToString()">
+        <div class="card-header">
+            <h3 class="card-title">@message.Title</h3>
+
+            <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="remove">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <!-- /.card-tools -->
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body">
+            @message.Content
+        </div>
+        <!-- /.card-body -->
+    </div>
+}
+
 <form class="form-inline float-right" method="get">
     <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="search" value="@ViewBag.search">
     <button class="btn btn-primary" type="submit">Search</button>
@@ -48,10 +72,10 @@
                     <td>@item.Email</td>
                     <td>@item.UserRole</td>
                     <td class="text-right">
-                        <button type="button" class="btn btn-warning editBtn" data-toggle="modal" data-target="#editUserModal" data-id="@item.UserID">
+                        <button type="button" class="btn btn-sm btn-warning editBtn" data-toggle="modal" data-target="#editUserModal" data-id="@item.UserID">
                             Edit
                         </button>
-                        <a class="btn btn-sm btn-danger" href="#">Sil</a>
+                        <a class="btn btn-sm btn-danger" href="#">Delete</a>
                     </td>
                 </tr>
             }
@@ -90,7 +114,7 @@
                 <form asp-controller="InstructorManagement" asp-action="AddUser" method="post">
                     <div class="form-group">
                         <label for="Email">Email address: </label>
-                        <input type="email" id="Email" name="email" placeholder="Enter instructors' email address" class="form-control" />
+                        <input type="email" id="Email" name="email" placeholder="Enter instructors' email address" class="form-control" required/>
                     </div>
 
                     <div class="form-group">

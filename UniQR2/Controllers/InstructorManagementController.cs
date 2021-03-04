@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,7 +35,7 @@ namespace UniQR2.Controllers
         public IActionResult Index(int page = 1, string search = "")
         {
             var instructors = db.Users.Where(n => n.UserRole == UserRole.Instructor);
-            if(search != "")
+            if (search != "")
             {
                 instructors = instructors.Where(n => n.Email.Contains(search) || n.FullName.Contains(search));
             }
@@ -49,7 +50,18 @@ namespace UniQR2.Controllers
         [HttpPost]
         public async Task<IActionResult> AddUser(string email)
         {
-            if (email != null && !db.Users.Any(n => n.Email == email))
+            if (db.Users.Any(n => n.Email == email))
+            {
+                TempData["message"] = new NotificationViewModel
+                {
+                    Title = "Error!",
+                    Content = "Email address has already been taken",
+                    NotificationType = NotificationType.danger
+                }.SerializeNotification();
+                 
+                return RedirectToAction("index", "instructormanagement");
+            }
+            if (email != null)
             {
                 string body = "You have been invited to UniQR system. To register, please follow the" + "<a target=\"_blank\" href=\"" + MyHttpContext.AppBaseUrl + "/Account/Register?email=" + protector.Protect(email) + " \">Tıkla </a>";
                 User u = new User
@@ -77,14 +89,14 @@ namespace UniQR2.Controllers
         public async Task<IActionResult> EditUser(GetUserViewModel getUserViewModel)
         {
             User u = db.Users.FirstOrDefault(x => x.UserID == getUserViewModel.UserID);
-            if(u != null)
+            if (u != null)
             {
                 u.FullName = getUserViewModel.FullName;
                 u.Email = getUserViewModel.Email;
 
                 if (ModelState.IsValid)
                 {
-                   await db.SaveChangesAsync();
+                    await db.SaveChangesAsync();
                 }
             }
             return RedirectToAction("Index", "InstructorManagement");
