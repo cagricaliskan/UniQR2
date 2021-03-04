@@ -8,7 +8,7 @@ namespace UniQR2.Models
     public class Floor
     {
         public int FloorID { get; set; }
-        public int FloorNum { get; set; }
+        public string FloorNum { get; set; }
 
     }
 }

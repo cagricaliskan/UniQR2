@@ -20,6 +20,7 @@
             </div>
             <div class="info">
                 <a href="#" class="d-block">@User.Claims.Where(n => n.Type == System.Security.Claims.ClaimTypes.Name).FirstOrDefault().Value</a>
+                <a href="#" class="d-block" style="font-size: smaller;color: #838f9b">@User.Claims.Where(n => n.Type == System.Security.Claims.ClaimTypes.Role).FirstOrDefault().Value</a>
             </div>
         </div>
 
