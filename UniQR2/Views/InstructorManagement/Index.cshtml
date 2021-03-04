@@ -4,11 +4,14 @@
     Layout = "~/Views/Shared/AdminLTE/_Layout.cshtml";
 }
 
-
 <button type="button" class="btn btn-success" data-toggle="modal" data-target="#addUserModal">
     Add new instructor
 </button>
 
+<form class="form-inline float-right" method="get">
+    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="search" value="@ViewBag.search">
+    <button class="btn btn-primary" type="submit">Search</button>
+</form>
 
 @if (TempData["message"] != null)
 {
@@ -33,14 +36,30 @@
     </div>
 }
 
-<form class="form-inline float-right" method="get">
-    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="search" value="@ViewBag.search">
-    <button class="btn btn-primary" type="submit">Search</button>
-</form>
+@if (ViewBag.search != null)
+{
+    <div class="mt-4 card margin-top bg-gradient-info">
+        <div class="card-header">
+            <h3 class="card-title">Search Results</h3>
 
-<br clear="all" />
-<br />
-<div class="card card-primary">
+            <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="remove">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <!-- /.card-tools -->
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body">
+            @ViewBag.searchCount results have been found from the search for "@ViewBag.search" in <span class="badge badge-light">Full Name</span> and <span class="badge badge-light">Email</span><br />
+            @Html.ActionLink("Clear Search", "Index", "InstructorManagement", null, new { @class = "btn btn-sm btn-default mt-2" })
+        </div>
+        <!-- /.card-body -->
+    </div>
+}
+
+
+<div class="card card-primary mt-4">
 
     <div class="card-header">
         <b>Instructor List</b>
@@ -50,8 +69,8 @@
         <thead>
             <tr>
                 <th style="width:6%">#.</th>
-                <th>İsim</th>
-                <th>Mail</th>
+                <th>Full Name</th>
+                <th>EMail</th>
                 <th>Role</th>
                 <th class="text-right" style="width:10%">İşlem</th>
             </tr>
@@ -114,7 +133,7 @@
                 <form asp-controller="InstructorManagement" asp-action="AddUser" method="post">
                     <div class="form-group">
                         <label for="Email">Email address: </label>
-                        <input type="email" id="Email" name="email" placeholder="Enter instructors' email address" class="form-control" required/>
+                        <input type="email" id="Email" name="email" placeholder="Enter instructors' email address" class="form-control" required />
                     </div>
 
                     <div class="form-group">

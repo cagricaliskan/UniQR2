@@ -38,11 +38,13 @@ namespace UniQR2.Controllers
             if (search != "")
             {
                 instructors = instructors.Where(n => n.Email.Contains(search) || n.FullName.Contains(search));
+
+                ViewBag.search = search;
+                ViewBag.searchCount = instructors.Count();
             }
 
 
             ViewBag.page = page;
-            ViewBag.search = search;
             return View(instructors.ToPagedList(page, 10));
         }
 
