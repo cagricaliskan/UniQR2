@@ -94,7 +94,9 @@
                         <button type="button" class="btn btn-sm btn-warning editBtn" data-toggle="modal" data-target="#editUserModal" data-id="@item.UserID">
                             Edit
                         </button>
-                        <a class="btn btn-sm btn-danger" href="#">Delete</a>
+                        <button type="button" class="btn btn-sm btn-danger editBtn" data-toggle="modal" data-target="#deleteUserModal" data-id="@item.UserID">
+                            Delete
+                        </button>
                     </td>
                 </tr>
             }
@@ -119,7 +121,7 @@
 
 </div>
 
-
+@*add*@
 <div class="modal fade" tabindex="-1" role="dialog" id="addUserModal">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -150,7 +152,7 @@
     </div>
 </div>
 
-
+@*edit*@
 <div class="modal fade" tabindex="-1" role="dialog" id="editUserModal">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -162,6 +164,43 @@
             </div>
             <div class="modal-body">
                 <form asp-controller="InstructorManagement" asp-action="EditUser" method="post">
+                    <input id="UserID" name="UserID" type="hidden" />
+                    <div class="form-group">
+                        <label for="FullName">Full Name </label>
+                        <input type="text" id="FullName" name="FullName" placeholder="Enter instructor's full name" class="form-control" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Email">Email address: </label>
+                        <input type="email" id="Email" name="Email" placeholder="Enter instructors' email address" class="form-control" />
+                    </div>
+
+                    <div class="form-group">
+                        <input type="submit" class="btn btn-success" />
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <i>
+                    Açıklama yazılacak
+                </i>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*delete*@
+<div class="modal fade" tabindex="-1" role="dialog" id="deleteUserModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit instructor</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form asp-controller="InstructorManagement" asp-action="DeleteUser" method="post">
                     <input id="UserID" name="UserID" type="hidden" />
                     <div class="form-group">
                         <label for="FullName">Full Name </label>

@@ -104,6 +104,17 @@ namespace UniQR2.Controllers
             return RedirectToAction("Index", "InstructorManagement");
         }
 
+        [HttpPost]
+        public async Task<IActionResult> DeleteUser(GetUserViewModel getUserViewModel)
+        {
+            User u = db.Users.FirstOrDefault(x => x.UserID == getUserViewModel.UserID);
+            if (u != null)
+            {
+                db.Users.Remove(u);
+                db.SaveChanges();
+            }
+            return RedirectToAction("Index", "InstructorManagement");
+        }
 
 
 
