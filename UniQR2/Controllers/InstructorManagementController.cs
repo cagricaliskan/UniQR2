@@ -105,9 +105,9 @@ namespace UniQR2.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> DeleteUser(GetUserViewModel getUserViewModel)
+        public async Task<IActionResult> DeleteUser(int UserID)
         {
-            User u = db.Users.FirstOrDefault(x => x.UserID == getUserViewModel.UserID);
+            User u = db.Users.FirstOrDefault(x => x.UserID == UserID);
             if (u != null)
             {
                 db.Users.Remove(u);

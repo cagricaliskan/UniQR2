@@ -110,6 +110,27 @@ namespace UniQR2.Controllers
             return RedirectToAction("index", "home");
         }
 
+        public IActionResult ResetPassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ResetPasswordMail(string email)
+        {
+            User u = db.Users.FirstOrDefault(x => x.Email == email);
+            if (u != null)
+            {
+                u.ResetCode = protector.Protect(email);
+                db.SaveChanges();
+                string body = "You have sumbitted a request for resetting your password. If you have, click" + "<a href=\"" + MyHttpContext.AppBaseUrl + "/Account/reset?reset=" + u.ResetCode + " \" > here: </a>";
+                await emailSender.Send(u.Email, "Password Reset Request", body);
+                
+            }
+            return RedirectToAction("login", "account");
+        }
+
+
 
         public IActionResult Forbidden()
         {
