@@ -19,17 +19,18 @@ namespace UniQR2.Controllers
             this.db = db;
         }
 
-        public IActionResult Index(int CourseID, int page = 1, string search = "" )
+        public IActionResult Index(int page = 1, string search = "" )
         {
-            var course = db.Course.Where(x => x.CourseID == CourseID);
-            if(search != null)
+            var course = db.Course.AsQueryable();
+            if(search != "")
             {
                 course = course.Where(x => x.Name.Contains(search) || x.Code.Contains(search));
 
                 ViewBag.search = search;
                 ViewBag.searchCount = course.Count();
             }
-            
+
+            course = course.OrderByDescending(n => n.CourseID);
             ViewBag.page = page;
             return View(course.ToPagedList(page,10)); 
         }

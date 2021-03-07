@@ -43,7 +43,7 @@ namespace UniQR2.Controllers
                 ViewBag.searchCount = instructors.Count();
             }
 
-
+            instructors = instructors.OrderByDescending(n => n.UserID);
             ViewBag.page = page;
             return View(instructors.ToPagedList(page, 10));
         }
