@@ -34,10 +34,10 @@ namespace UniQR2.Controllers
 
         public IActionResult Index(int page = 1, string search = "")
         {
-            var instructors = db.Users.Where(n => n.UserRole == UserRole.Instructor);
+            var instructors = db.Users.Where(x => x.UserRole == UserRole.Instructor);
             if (search != "")
             {
-                instructors = instructors.Where(n => n.Email.Contains(search) || n.FullName.Contains(search));
+                instructors = instructors.Where(x => x.Email.Contains(search) || x.FullName.Contains(search));
 
                 ViewBag.search = search;
                 ViewBag.searchCount = instructors.Count();
@@ -52,7 +52,7 @@ namespace UniQR2.Controllers
         [HttpPost]
         public async Task<IActionResult> AddUser(string email)
         {
-            if (db.Users.Any(n => n.Email == email))
+            if (db.Users.Any(x => x.Email == email))
             {
                 TempData["message"] = new NotificationViewModel
                 {
