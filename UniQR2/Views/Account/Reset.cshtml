@@ -1,0 +1,41 @@
+﻿@model UniQR2.ViewModels.ResetPasswordViewModel
+
+@{
+    ViewData["Title"] = "Reset";
+    Layout = null;
+}
+
+<head>
+    <partial name="AdminLTE/_LoginSignup" />
+</head>
+<div class="row login-page">
+    <div class="col-md-3 form">
+        <form method="post" class="login-form" asp-action="Reset">
+            @Html.AntiForgeryToken()
+            <h1>ResetPassword</h1>
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input id="ResetCode" name="ResetCode" type="hidden" />
+
+
+            <div class="form-group">
+                <input asp-for="Password" class="form-control" type="password" placeholder="Password" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <input asp-for="ConfirmPassword" class="form-control" type="password" placeholder="Confirm Password" />
+                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Change Password" class="btn btn-primary" />
+            </div>
+
+            @Html.ActionLink("Back to main page", "index", "home")
+            <br /> <br /> <br />
+
+
+            <b>@ViewBag.message</b>
+        </form>
+    </div>
+</div> 

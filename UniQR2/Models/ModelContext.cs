@@ -14,6 +14,7 @@ namespace UniQR2.Models
         }
 
         public DbSet<User> Users { get; set; }
+        public DbSet<Course> Course { get; set; }
 
 
 

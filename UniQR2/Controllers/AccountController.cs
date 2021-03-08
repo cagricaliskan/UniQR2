@@ -93,7 +93,7 @@ namespace UniQR2.Controllers
         {
             if (ModelState.IsValid)
             {
-                User u = db.Users.FirstOrDefault(n => n.Email == userRegisterModel.Email);
+                User u = db.Users.FirstOrDefault(x => x.Email == userRegisterModel.Email);
                 u.FullName = userRegisterModel.FullName;
                 u.Password = userRegisterModel.Password;
                 u.UserRole = UserRole.Instructor;
@@ -128,6 +128,27 @@ namespace UniQR2.Controllers
                 
             }
             return RedirectToAction("login", "account");
+        }
+        
+
+        public IActionResult Reset(string reset)
+        {
+            return View();
+        }
+
+         [HttpPost]
+        public IActionResult Reset(ResetPasswordViewModel resetPassword)
+        {
+            string email = protector.Unprotect(resetPassword.ResetCode);
+            User u = db.Users.FirstOrDefault(x => x.ResetCode == resetPassword.ResetCode);
+            if(u != null)
+            {
+                u.Password = resetPassword.Password;
+                db.Users.Update(u);
+            }
+
+            return RedirectToAction("login", "account");
+
         }
 
 
