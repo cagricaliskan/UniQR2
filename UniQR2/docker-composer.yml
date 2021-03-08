@@ -17,16 +17,13 @@ services:
       container_name: phpmyadmin
       restart: always
       ports:
-       - '8080:8081'
+       - '8080:80'
       environment:
         PMA_HOST: db
 
    uniqr.dev:
-      environment:
-         - ASPNETCORE_ENVIRONMENT=Development
-         - ASPNETCORE_URLS=http://+:1453
       build: .
       ports:
-         - 1453
+         - "1453:1453"
       depends_on:
          - db
