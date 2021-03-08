@@ -9,8 +9,8 @@ using UniQR2.Models;
 namespace UniQR2.Migrations
 {
     [DbContext(typeof(ModelContext))]
-    [Migration("20210301202847_User")]
-    partial class User
+    [Migration("20210308015055_TablesAdded")]
+    partial class TablesAdded
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -38,7 +38,7 @@ namespace UniQR2.Migrations
 
                     b.HasIndex("CourseClassroomID");
 
-                    b.ToTable("AttendanceList");
+                    b.ToTable("AttendanceLists");
                 });
 
             modelBuilder.Entity("UniQR2.Models.Classroom", b =>
@@ -47,15 +47,12 @@ namespace UniQR2.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int>("Floor")
-                        .HasColumnType("int");
-
                     b.Property<string>("Name")
                         .HasColumnType("text");
 
                     b.HasKey("ClassroomID");
 
-                    b.ToTable("Classroom");
+                    b.ToTable("Classrooms");
                 });
 
             modelBuilder.Entity("UniQR2.Models.Course", b =>
@@ -74,7 +71,7 @@ namespace UniQR2.Migrations
 
                     b.HasKey("CourseID");
 
-                    b.ToTable("Course");
+                    b.ToTable("Courses");
                 });
 
             modelBuilder.Entity("UniQR2.Models.CourseClassroom", b =>
@@ -89,7 +86,7 @@ namespace UniQR2.Migrations
                     b.Property<int>("CourseID")
                         .HasColumnType("int");
 
-                    b.Property<int?>("UserID")
+                    b.Property<int>("InstructorID")
                         .HasColumnType("int");
 
                     b.HasKey("CourseClassroomID");
@@ -98,9 +95,9 @@ namespace UniQR2.Migrations
 
                     b.HasIndex("CourseID");
 
-                    b.HasIndex("UserID");
+                    b.HasIndex("InstructorID");
 
-                    b.ToTable("CourseClassroom");
+                    b.ToTable("CourseClassrooms");
                 });
 
             modelBuilder.Entity("UniQR2.Models.CourseStudentRel", b =>
@@ -124,7 +121,26 @@ namespace UniQR2.Migrations
 
                     b.HasIndex("StudentID");
 
-                    b.ToTable("CourseStudentRel");
+                    b.ToTable("CourseStudentRels");
+                });
+
+            modelBuilder.Entity("UniQR2.Models.Floor", b =>
+                {
+                    b.Property<int>("FloorID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ClassroomID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("FloorNum")
+                        .HasColumnType("text");
+
+                    b.HasKey("FloorID");
+
+                    b.HasIndex("ClassroomID");
+
+                    b.ToTable("Floors");
                 });
 
             modelBuilder.Entity("UniQR2.Models.Participation", b =>
@@ -148,7 +164,7 @@ namespace UniQR2.Migrations
 
                     b.HasIndex("StudentID");
 
-                    b.ToTable("Participation");
+                    b.ToTable("Participations");
                 });
 
             modelBuilder.Entity("UniQR2.Models.Student", b =>
@@ -165,7 +181,7 @@ namespace UniQR2.Migrations
 
                     b.HasKey("StudentID");
 
-                    b.ToTable("Student");
+                    b.ToTable("Students");
                 });
 
             modelBuilder.Entity("UniQR2.Models.User", b =>
@@ -179,31 +195,38 @@ namespace UniQR2.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("FullName")
-                        .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("tinyint(1)");
+
                     b.Property<string>("Password")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("ResetCode")
                         .HasColumnType("text");
 
-                    b.Property<DateTime>("ResetCodeExpire")
+                    b.Property<DateTime?>("ResetCodeExpire")
                         .HasColumnType("datetime");
 
                     b.Property<int>("UserRole")
                         .HasColumnType("int");
 
-                    b.Property<string>("activationCode")
-                        .HasColumnType("text");
-
-                    b.Property<bool>("isActive")
-                        .HasColumnType("tinyint(1)");
-
                     b.HasKey("UserID");
 
                     b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            UserID = 1,
+                            Email = "kamren2@ethereal.email",
+                            FullName = "System Admin",
+                            IsActive = true,
+                            Password = "123123",
+                            ResetCodeExpire = new DateTime(2021, 3, 8, 5, 50, 55, 619, DateTimeKind.Local).AddTicks(7709),
+                            UserRole = 0
+                        });
                 });
 
             modelBuilder.Entity("UniQR2.Models.AttendanceList", b =>
@@ -229,9 +252,11 @@ namespace UniQR2.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("UniQR2.Models.User", null)
+                    b.HasOne("UniQR2.Models.User", "Instructor")
                         .WithMany("CourseClassrooms")
-                        .HasForeignKey("UserID");
+                        .HasForeignKey("InstructorID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("UniQR2.Models.CourseStudentRel", b =>
@@ -245,6 +270,13 @@ namespace UniQR2.Migrations
                         .HasForeignKey("StudentID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("UniQR2.Models.Floor", b =>
+                {
+                    b.HasOne("UniQR2.Models.Classroom", null)
+                        .WithMany("Floors")
+                        .HasForeignKey("ClassroomID");
                 });
 
             modelBuilder.Entity("UniQR2.Models.Participation", b =>

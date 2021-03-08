@@ -21,7 +21,7 @@ namespace UniQR2.Controllers
 
         public IActionResult Index(int page = 1, string search = "" )
         {
-            var course = db.Course.AsQueryable();
+            var course = db.Courses.AsQueryable();
             if(search != "")
             {
                 course = course.Where(x => x.Name.Contains(search) || x.Code.Contains(search));
@@ -40,7 +40,7 @@ namespace UniQR2.Controllers
         {
             if(course.Name != null)
             {
-                db.Course.Add(course);
+                db.Courses.Add(course);
                 db.SaveChanges();
             }
             return RedirectToAction("index");

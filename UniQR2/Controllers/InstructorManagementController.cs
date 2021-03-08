@@ -69,7 +69,7 @@ namespace UniQR2.Controllers
                 User u = new User
                 {
                     Email = email,
-                    isActive = false,
+                    IsActive = false,
                     ResetCodeExpire = DateTime.Now
                 };
                 db.Users.Add(u);
@@ -111,7 +111,7 @@ namespace UniQR2.Controllers
             if (u != null)
             {
                 db.Users.Remove(u);
-                db.SaveChanges();
+                await db.SaveChangesAsync();
             }
             return RedirectToAction("Index", "InstructorManagement");
         }

@@ -48,7 +48,7 @@ namespace UniQR2.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(UserLoginModel userLoginModel)
         {
-            User u = db.Users.FirstOrDefault(x => x.Email == userLoginModel.Email && x.Password == userLoginModel.Password && x.isActive == true);
+            User u = db.Users.FirstOrDefault(x => x.Email == userLoginModel.Email && x.Password == userLoginModel.Password && x.IsActive == true);
             if (u != null)
             {
                 string role = u.UserRole == UserRole.Administrator ? "Administrator" : "Instructor";
@@ -97,7 +97,7 @@ namespace UniQR2.Controllers
                 u.FullName = userRegisterModel.FullName;
                 u.Password = userRegisterModel.Password;
                 u.UserRole = UserRole.Instructor;
-                u.isActive = true;
+                u.IsActive = true;
                 db.Entry(u).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
                 db.Users.Update(u);
 
@@ -131,7 +131,7 @@ namespace UniQR2.Controllers
         }
         
 
-        public IActionResult Reset(string reset)
+        public IActionResult Reset()
         {
             return View();
         }

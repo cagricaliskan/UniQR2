@@ -4,26 +4,25 @@ using MySql.Data.EntityFrameworkCore.Metadata;
 
 namespace UniQR2.Migrations
 {
-    public partial class init : Migration
+    public partial class TablesAdded : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Classroom",
+                name: "Classrooms",
                 columns: table => new
                 {
                     ClassroomID = table.Column<int>(nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(nullable: true),
-                    Floor = table.Column<int>(nullable: false)
+                    Name = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Classroom", x => x.ClassroomID);
+                    table.PrimaryKey("PK_Classrooms", x => x.ClassroomID);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Course",
+                name: "Courses",
                 columns: table => new
                 {
                     CourseID = table.Column<int>(nullable: false)
@@ -33,11 +32,11 @@ namespace UniQR2.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Course", x => x.CourseID);
+                    table.PrimaryKey("PK_Courses", x => x.CourseID);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Student",
+                name: "Students",
                 columns: table => new
                 {
                     StudentID = table.Column<int>(nullable: false)
@@ -47,7 +46,7 @@ namespace UniQR2.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Student", x => x.StudentID);
+                    table.PrimaryKey("PK_Students", x => x.StudentID);
                 });
 
             migrationBuilder.CreateTable(
@@ -56,9 +55,13 @@ namespace UniQR2.Migrations
                 {
                     UserID = table.Column<int>(nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    FullName = table.Column<string>(nullable: false),
+                    FullName = table.Column<string>(nullable: true),
                     Email = table.Column<string>(nullable: false),
-                    Password = table.Column<string>(nullable: false)
+                    Password = table.Column<string>(nullable: true),
+                    ResetCode = table.Column<string>(nullable: true),
+                    IsActive = table.Column<bool>(nullable: false),
+                    UserRole = table.Column<int>(nullable: false),
+                    ResetCodeExpire = table.Column<DateTime>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -66,40 +69,60 @@ namespace UniQR2.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "CourseClassroom",
+                name: "Floors",
+                columns: table => new
+                {
+                    FloorID = table.Column<int>(nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    FloorNum = table.Column<string>(nullable: true),
+                    ClassroomID = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Floors", x => x.FloorID);
+                    table.ForeignKey(
+                        name: "FK_Floors_Classrooms_ClassroomID",
+                        column: x => x.ClassroomID,
+                        principalTable: "Classrooms",
+                        principalColumn: "ClassroomID",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CourseClassrooms",
                 columns: table => new
                 {
                     CourseClassroomID = table.Column<int>(nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
                     ClassroomID = table.Column<int>(nullable: false),
                     CourseID = table.Column<int>(nullable: false),
-                    UserID = table.Column<int>(nullable: true)
+                    InstructorID = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CourseClassroom", x => x.CourseClassroomID);
+                    table.PrimaryKey("PK_CourseClassrooms", x => x.CourseClassroomID);
                     table.ForeignKey(
-                        name: "FK_CourseClassroom_Classroom_ClassroomID",
+                        name: "FK_CourseClassrooms_Classrooms_ClassroomID",
                         column: x => x.ClassroomID,
-                        principalTable: "Classroom",
+                        principalTable: "Classrooms",
                         principalColumn: "ClassroomID",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_CourseClassroom_Course_CourseID",
+                        name: "FK_CourseClassrooms_Courses_CourseID",
                         column: x => x.CourseID,
-                        principalTable: "Course",
+                        principalTable: "Courses",
                         principalColumn: "CourseID",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_CourseClassroom_Users_UserID",
-                        column: x => x.UserID,
+                        name: "FK_CourseClassrooms_Users_InstructorID",
+                        column: x => x.InstructorID,
                         principalTable: "Users",
                         principalColumn: "UserID",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "AttendanceList",
+                name: "AttendanceLists",
                 columns: table => new
                 {
                     AttendanceListID = table.Column<int>(nullable: false)
@@ -110,17 +133,17 @@ namespace UniQR2.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AttendanceList", x => x.AttendanceListID);
+                    table.PrimaryKey("PK_AttendanceLists", x => x.AttendanceListID);
                     table.ForeignKey(
-                        name: "FK_AttendanceList_CourseClassroom_CourseClassroomID",
+                        name: "FK_AttendanceLists_CourseClassrooms_CourseClassroomID",
                         column: x => x.CourseClassroomID,
-                        principalTable: "CourseClassroom",
+                        principalTable: "CourseClassrooms",
                         principalColumn: "CourseClassroomID",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "CourseStudentRel",
+                name: "CourseStudentRels",
                 columns: table => new
                 {
                     CourseStudentRelID = table.Column<int>(nullable: false)
@@ -131,23 +154,23 @@ namespace UniQR2.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CourseStudentRel", x => x.CourseStudentRelID);
+                    table.PrimaryKey("PK_CourseStudentRels", x => x.CourseStudentRelID);
                     table.ForeignKey(
-                        name: "FK_CourseStudentRel_CourseClassroom_CourseClassroomID",
+                        name: "FK_CourseStudentRels_CourseClassrooms_CourseClassroomID",
                         column: x => x.CourseClassroomID,
-                        principalTable: "CourseClassroom",
+                        principalTable: "CourseClassrooms",
                         principalColumn: "CourseClassroomID",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_CourseStudentRel_Student_StudentID",
+                        name: "FK_CourseStudentRels_Students_StudentID",
                         column: x => x.StudentID,
-                        principalTable: "Student",
+                        principalTable: "Students",
                         principalColumn: "StudentID",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Participation",
+                name: "Participations",
                 columns: table => new
                 {
                     ParticipationID = table.Column<int>(nullable: false)
@@ -158,84 +181,97 @@ namespace UniQR2.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Participation", x => x.ParticipationID);
+                    table.PrimaryKey("PK_Participations", x => x.ParticipationID);
                     table.ForeignKey(
-                        name: "FK_Participation_AttendanceList_AttendanceListID",
+                        name: "FK_Participations_AttendanceLists_AttendanceListID",
                         column: x => x.AttendanceListID,
-                        principalTable: "AttendanceList",
+                        principalTable: "AttendanceLists",
                         principalColumn: "AttendanceListID",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Participation_Student_StudentID",
+                        name: "FK_Participations_Students_StudentID",
                         column: x => x.StudentID,
-                        principalTable: "Student",
+                        principalTable: "Students",
                         principalColumn: "StudentID",
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.InsertData(
+                table: "Users",
+                columns: new[] { "UserID", "Email", "FullName", "IsActive", "Password", "ResetCode", "ResetCodeExpire", "UserRole" },
+                values: new object[] { 1, "kamren2@ethereal.email", "System Admin", true, "123123", null, new DateTime(2021, 3, 8, 5, 50, 55, 619, DateTimeKind.Local).AddTicks(7709), 0 });
+
             migrationBuilder.CreateIndex(
-                name: "IX_AttendanceList_CourseClassroomID",
-                table: "AttendanceList",
+                name: "IX_AttendanceLists_CourseClassroomID",
+                table: "AttendanceLists",
                 column: "CourseClassroomID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CourseClassroom_ClassroomID",
-                table: "CourseClassroom",
+                name: "IX_CourseClassrooms_ClassroomID",
+                table: "CourseClassrooms",
                 column: "ClassroomID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CourseClassroom_CourseID",
-                table: "CourseClassroom",
+                name: "IX_CourseClassrooms_CourseID",
+                table: "CourseClassrooms",
                 column: "CourseID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CourseClassroom_UserID",
-                table: "CourseClassroom",
-                column: "UserID");
+                name: "IX_CourseClassrooms_InstructorID",
+                table: "CourseClassrooms",
+                column: "InstructorID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CourseStudentRel_CourseClassroomID",
-                table: "CourseStudentRel",
+                name: "IX_CourseStudentRels_CourseClassroomID",
+                table: "CourseStudentRels",
                 column: "CourseClassroomID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CourseStudentRel_StudentID",
-                table: "CourseStudentRel",
+                name: "IX_CourseStudentRels_StudentID",
+                table: "CourseStudentRels",
                 column: "StudentID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Participation_AttendanceListID",
-                table: "Participation",
+                name: "IX_Floors_ClassroomID",
+                table: "Floors",
+                column: "ClassroomID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Participations_AttendanceListID",
+                table: "Participations",
                 column: "AttendanceListID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Participation_StudentID",
-                table: "Participation",
+                name: "IX_Participations_StudentID",
+                table: "Participations",
                 column: "StudentID");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "CourseStudentRel");
+                name: "CourseStudentRels");
 
             migrationBuilder.DropTable(
-                name: "Participation");
+                name: "Floors");
 
             migrationBuilder.DropTable(
-                name: "AttendanceList");
+                name: "Participations");
 
             migrationBuilder.DropTable(
-                name: "Student");
+                name: "AttendanceLists");
 
             migrationBuilder.DropTable(
-                name: "CourseClassroom");
+                name: "Students");
 
             migrationBuilder.DropTable(
-                name: "Classroom");
+                name: "CourseClassrooms");
 
             migrationBuilder.DropTable(
-                name: "Course");
+                name: "Classrooms");
+
+            migrationBuilder.DropTable(
+                name: "Courses");
 
             migrationBuilder.DropTable(
                 name: "Users");

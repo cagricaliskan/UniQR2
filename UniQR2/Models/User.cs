@@ -32,7 +32,7 @@ namespace UniQR2.Models
 
 
 
-        public bool isActive { get; set; }
+        public bool IsActive { get; set; }
 
 
 
@@ -42,7 +42,7 @@ namespace UniQR2.Models
 
 
 
-        public DateTime ResetCodeExpire { get; set; } = DateTime.Now.AddHours(1);
+        public DateTime? ResetCodeExpire { get; set; } = DateTime.Now.AddHours(1);
 
 
 
