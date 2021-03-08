@@ -34,7 +34,6 @@ namespace UniQR2
                 try
                 {
                     var context = services.GetRequiredService<ModelContext>();
-                    context.Database.EnsureCreated();
                     context.Database.Migrate();
                 }
                 catch (Exception)
