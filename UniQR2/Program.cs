@@ -23,7 +23,8 @@ namespace UniQR2
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    webBuilder.UseStartup<Startup>().UseUrls("https://*:*");
+                    webBuilder.UseUrls("http://*:1453");
+                    webBuilder.UseStartup<Startup>();
                 });
 
         private static void CreateDbIfNotExists(IHost host)
