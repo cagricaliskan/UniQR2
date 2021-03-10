@@ -207,14 +207,15 @@
             </div>
             <div class="modal-body">
                 <form asp-controller="Course" asp-action="DeleteCourse" method="post">
+                    <input type="hidden" name="id" id="CourseID" />
                     <div class="form-group">
                         <label for="Name">Coruse Name </label>
-                        <input type="text" id="Name" name="name" placeholder="Enter course's name" class="form-control" required />
+                        <input type="text" id="Name"  placeholder="Enter course's name" class="form-control" required readonly/>
                     </div>
 
                     <div class="form-group">
                         <label for="Code">Course Code </label>
-                        <input type="code" id="Code" name="code" placeholder="Enter course's code" class="form-control" required />
+                        <input type="code" id="Code"  placeholder="Enter course's code" class="form-control" required  readonly/>
                     </div>
 
                     <div class="form-group">
@@ -237,7 +238,7 @@
         $(function () {
             $(".editBtn").on("click", function () {
                 var courseId = $(this).data("id");
-                var getUserUrl = "@Url.Action("GetCourse", "Course", null, "https")";
+                var getUserUrl = "@Url.Action("GetCourse", "Course", null, "http")";
                 var fullUrl = getUserUrl + "/" + courseId;
 
                 $.get(fullUrl, function (data, status) {
