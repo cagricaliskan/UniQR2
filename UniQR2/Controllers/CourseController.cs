@@ -45,5 +45,42 @@ namespace UniQR2.Controllers
             }
             return RedirectToAction("index");
         }
+
+        public JsonResult GetCourse(int id)
+        {
+            Course c = db.Courses.Select(x => new Course { CourseID = x.CourseID, Code = x.Code, Name = x.Name }).FirstOrDefault(n => n.CourseID == id);
+            return Json(c);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditCourse(Course course)
+        {
+            Course c = db.Courses.FirstOrDefault(x => x.CourseID == course.CourseID);
+            if(c != null)
+            {
+                c.Name = course.Name;
+                c.Code = course.Code;
+
+                if (ModelState.IsValid)
+                {
+                    await db.SaveChangesAsync();
+                }
+            }
+            return RedirectToAction("Index", "Course");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteCourse(int id)
+        {
+            Course c = db.Courses.FirstOrDefault(x => x.CourseID == id);
+            if (c != null)
+            {
+                db.Courses.Remove(c);
+                await db.SaveChangesAsync();
+            }
+
+            return RedirectToAction("Index", "Course");
+        }
+        
     }
 }
