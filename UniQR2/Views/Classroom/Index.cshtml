@@ -92,10 +92,10 @@
                     <td>@item.Name</td>
                     <td>@item.Floors</td>
                     <td class="text-right">
-                        <button class="btn btn-sm btn-warning editBtn" data-toggle="editClassroomModal" data-target="#editClassroomModal" data-id="@item.ClassroomID">
+                        <button class="btn btn-sm btn-warning editBtn" data-toggle="modal" data-target="#editClassroomModal" data-id="@item.ClassroomID">
                             Edit
                         </button>
-                        <button class=" btn btn-sm btn-danger editBtn" data-toggle="deleteClassroomModal" data-target="#deleteClassroomModal" data-id="@item.ClassroomID">
+                        <button class=" btn btn-sm btn-danger editBtn" data-toggle="modal" data-target="#deleteClassroomModal" data-id="@item.ClassroomID">
                             Delete
                         </button>
                     </td>
@@ -172,7 +172,7 @@
             </div>
             <div class="modal-body">
                 <form asp-controller="Classroom" asp-action="EditClassroom" method="post">
-                    <input id="ClassroomID" name="id" type="hidden"/>
+                    <input id="ClassroomID" name="ClassroomID" type="hidden"/>
                     <div class="form-group">
                         <label for="Name">Name: </label>
                         <input type="text" id="Name" name="Name" placeholder="Enter the classroom's name" class="form-control" required />
@@ -184,7 +184,7 @@
                     </div>
 
                     <div class="form-group">
-                        <input type="submit" class="btn btn-success" />
+                        <input type="submit" class="btn btn-success" value="Edit" />
                     </div>
                 </form>
             </div>
@@ -214,16 +214,16 @@
                     <input id="ClassroomID" name="id" type="hidden" />
                     <div class="form-group">
                         <label for="Name">Name: </label>
-                        <input type="text" id="Name"  placeholder="Enter the classroom's name" class="form-control" required />
+                        <input type="text" id="Name"  placeholder="Enter the classroom's name" class="form-control" required readonly/>
                     </div>
 
                     <div class="form-group">
                         <label for="Floor">Floor: </label>
-                        <input type="text" id="Floors"  placeholder="Enter the classroom's floor" class="form-control" required />
+                        <input type="text" id="Floors"  placeholder="Enter the classroom's floor" class="form-control" required readonly />
                     </div>
 
                     <div class="form-group">
-                        <input type="submit" class="btn btn-success" />
+                        <input type="submit" class="btn btn-danger" value="Delete" />
                     </div>
                 </form>
             </div>
