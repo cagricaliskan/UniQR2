@@ -235,7 +235,7 @@
         $(function () {
             $(".editBtn").on("click", function () {
                 var userId = $(this).data("id");
-                var getUserUrl = "@Url.Action("GetUser", "InstructorManagement", null, "https")";
+                var getUserUrl = "@Url.Action("GetUser", "InstructorManagement", null, "http")";
                 var fullUrl = getUserUrl + "/" + userId;
 
                 $.get(fullUrl, function (data, status) {

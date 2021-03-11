@@ -13,7 +13,8 @@ namespace UniQR2.Models
         public string Name { get; set; }
 
 
-        public virtual ICollection<Floor> Floors{ get; set; }
+        public string Floors{ get; set; }
+        public virtual Floor Floor{ get; set; }
 
         public virtual ICollection<CourseClassroom> CourseClassrooms { get; set; }
 
