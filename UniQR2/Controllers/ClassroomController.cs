@@ -43,6 +43,10 @@ namespace UniQR2.Controllers
             {
                 db.Classrooms.Add(classroom);
                 db.SaveChanges();
+            } else
+            {
+                ViewBag.Message = "Choose a valid floor";
+                ViewBag.Status = "danger";
             }
             return RedirectToAction("Index");
         }
@@ -57,13 +61,17 @@ namespace UniQR2.Controllers
         public async Task<IActionResult> EditClassroom(Classroom classroom)
         {
             Classroom c = db.Classrooms.FirstOrDefault(x => x.ClassroomID == classroom.ClassroomID);
-            if (c != null )
+            if (c != null && db.Floors.Any(x => x.FloorNum == c.Floors))
             {
                 c.Name = classroom.Name;
                 c.Floors = classroom.Floors;
                 if (ModelState.IsValid)
                 {
                     await db.SaveChangesAsync();
+                } else
+                {
+                    ViewBag.Message = "Choose a valid floor";
+                    ViewBag.Status = "danger";
                 }
             }
             return RedirectToAction("Index");
