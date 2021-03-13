@@ -39,7 +39,7 @@ namespace UniQR2.Controllers
         [HttpPost]
         public IActionResult AddClassroom(Classroom classroom)
         {
-            if (classroom.Floors != null)
+            if (classroom.Floors != null && db.Floors.Any(x => x.FloorNum == classroom.Floors))
             {
                 db.Classrooms.Add(classroom);
                 db.SaveChanges();
@@ -57,7 +57,7 @@ namespace UniQR2.Controllers
         public async Task<IActionResult> EditClassroom(Classroom classroom)
         {
             Classroom c = db.Classrooms.FirstOrDefault(x => x.ClassroomID == classroom.ClassroomID);
-            if (c != null)
+            if (c != null )
             {
                 c.Name = classroom.Name;
                 c.Floors = classroom.Floors;
