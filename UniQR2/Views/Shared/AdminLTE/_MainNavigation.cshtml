@@ -30,7 +30,7 @@
             <li class="nav-item">
 
                 <ul class="nav nav-item col-md-12">
-                    <li class="nav-item col-md-12">
+                    <li class="nav-item  col-md-12 @Html.ActiveClass("index", "home")">
                         <a href="~/home/index" class="nav-link active">
                             <i class="far fa-circle nav-icon"></i>
                             <p>Home</p>
@@ -40,14 +40,14 @@
 
                     @if (userRole == "Administrator")
                     {
-                        <li class="nav-item col-md-12">
+                        <li class="nav-item col-md-12 @Html.ActiveClass("Index", "InstructorManagement")">
                             <a href="~/InstructorManagement/Index" class="nav-link">
                                 <i class="far fa-circle nav-icon"> </i>
                                 <p>Instructors</p>
                             </a>
                         </li>
 
-                        <li class="nav-item col-md-12">
+                        <li class="nav-item col-md-12 @Html.ActiveClass("Index", "Course")">
                             <a href="~/Course/Index" class="nav-link">
                                 <i class="far fa-circle nav-icon"> </i>
                                 <p>Courses</p>
@@ -55,7 +55,7 @@
                         </li>
 
 
-                        <li class="nav-item col-md-12">
+                        <li class="nav-item col-md-12 @Html.ActiveClass("Index", "Classroom")">
                             <a href="~/Classroom/Index" class="nav-link">
                                 <i class="far fa-circle nav-icon"> </i>
                                 <p>Classrooms</p>
@@ -63,7 +63,7 @@
                         </li>
 
 
-                        <li class="nav-item col-md-12">
+                        <li class="nav-item col-md-12 @Html.ActiveClass("Index", "Class")">
                             <a href="~/Class/Index" class="nav-link">
                                 <i class="far fa-circle nav-icon"> </i>
                                 <p>Classes</p>
