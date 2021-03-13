@@ -27,59 +27,55 @@
         <!-- Sidebar Menu -->
 
         <ul class="nav  nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+
             <li class="nav-item">
-
-                <ul class="nav nav-item col-md-12">
-                    <li class="nav-item  col-md-12 @Html.ActiveClass("index", "home")">
-                        <a href="~/home/index" class="nav-link active">
-                            <i class="far fa-circle nav-icon"></i>
-                            <p>Home</p>
-                        </a>
-                    </li>
-
-
-                    @if (userRole == "Administrator")
-                    {
-                        <li class="nav-item col-md-12 @Html.ActiveClass("Index", "InstructorManagement")">
-                            <a href="~/InstructorManagement/Index" class="nav-link">
-                                <i class="far fa-circle nav-icon"> </i>
-                                <p>Instructors</p>
-                            </a>
-                        </li>
-
-                        <li class="nav-item col-md-12 @Html.ActiveClass("Index", "Course")">
-                            <a href="~/Course/Index" class="nav-link">
-                                <i class="far fa-circle nav-icon"> </i>
-                                <p>Courses</p>
-                            </a>
-                        </li>
-
-
-                        <li class="nav-item col-md-12 @Html.ActiveClass("Index", "Classroom")">
-                            <a href="~/Classroom/Index" class="nav-link">
-                                <i class="far fa-circle nav-icon"> </i>
-                                <p>Classrooms</p>
-                            </a>
-                        </li>
-
-
-                        <li class="nav-item col-md-12 @Html.ActiveClass("Index", "Class")">
-                            <a href="~/Class/Index" class="nav-link">
-                                <i class="far fa-circle nav-icon"> </i>
-                                <p>Classes</p>
-                            </a>
-                        </li>
-                    }
-
-                    <li class="nav-item col-md-12">
-                        <a href="~/account/logout" class="nav-link">
-                            <i class="far fa-circle nav-icon"></i>
-                            <p>Logout</p>
-                        </a>
-                    </li>
-
-                </ul>
+                <a href="~/home/index" class="nav-link @Html.ActiveClass("Home", "Index")">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Home</p>
+                </a>
             </li>
+
+
+            @if (userRole == "Administrator")
+            {
+                <li class="nav-item">
+                    <a href="~/InstructorManagement/Index" class="nav-link @Html.ActiveClass("InstructorManagement", "Index")">
+                        <i class="far fa-circle nav-icon"> </i>
+                        <p>Instructors</p>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="~/Course/Index" class="nav-link @Html.ActiveClass("Course", "Index")">
+                        <i class="far fa-circle nav-icon"> </i>
+                        <p>Courses</p>
+                    </a>
+                </li>
+
+
+                <li class="nav-item">
+                    <a href="~/Classroom/Index" class="nav-link @Html.ActiveClass("Classroom", "Index")">
+                        <i class="far fa-circle nav-icon"> </i>
+                        <p>Classrooms</p>
+                    </a>
+                </li>
+
+
+                <li class="nav-item">
+                    <a href="~/Class/Index" class="nav-link @Html.ActiveClass("Class", "Index")">
+                        <i class="far fa-circle nav-icon"> </i>
+                        <p>Classes</p>
+                    </a>
+                </li>
+            }
+
+            <li class="nav-item">
+                <a href="~/account/logout" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Logout</p>
+                </a>
+            </li>
+
 
         </ul>
         <!-- /.sidebar-menu -->
