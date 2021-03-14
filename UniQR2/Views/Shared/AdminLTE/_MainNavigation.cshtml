@@ -36,14 +36,14 @@
             </li>
 
 
-                    @if (userRole == "Administrator")
-                    {
-                        <li class="nav-item col-md-12 @Html.ActiveClass("Index", "InstructorManagement")">
-                            <a href="~/InstructorManagement/Index" class="nav-link">
-                                <i class="far fa-circle nav-icon"> </i>
-                                <p>Instructors</p>
-                            </a>
-                        </li>
+            @if (userRole == "Administrator")
+            {
+                <li class="nav-item">
+                    <a href="~/InstructorManagement/Index" class="nav-link @Html.ActiveClass("InstructorManagement", "Index")">
+                        <i class="far fa-circle nav-icon"> </i>
+                        <p>Instructors</p>
+                    </a>
+                </li>
 
                 <li class="nav-item">
                     <a href="~/Course/Index" class="nav-link @Html.ActiveClass("Course", "Index")">
@@ -65,6 +65,13 @@
                     <a href="~/Class/Index" class="nav-link @Html.ActiveClass("Class", "Index")">
                         <i class="far fa-circle nav-icon"> </i>
                         <p>Classes</p>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="~/Floor/Index" class="nav-link @Html.ActiveClass("Floor", "Index")">
+                        <i class="far fa-circle nav-icon"> </i>
+                        <p>Floor</p>
                     </a>
                 </li>
             }

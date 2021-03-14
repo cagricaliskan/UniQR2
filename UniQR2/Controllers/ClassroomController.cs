@@ -24,7 +24,7 @@ namespace UniQR2.Controllers
             var classroom = db.Classrooms.AsQueryable();
             if( search != "")
             {
-                classroom = db.Classrooms.Where(x => x.Name.Contains(search) || x.Floors.Contains(search));
+                classroom = db.Classrooms.Where(x => x.Name.Contains(search) || x.Floor.FloorNum.Contains(search));
 
                 ViewBag.search = search;
                 ViewBag.count = classroom.Count();
@@ -39,7 +39,7 @@ namespace UniQR2.Controllers
         [HttpPost]
         public IActionResult AddClassroom(Classroom classroom)
         {
-            if (classroom.Floors != null && db.Floors.Any(x => x.FloorNum == classroom.Floors))
+            if (classroom.Floor.FloorNum != null && db.Floors.Any(x => x.FloorNum == classroom.Floor.FloorNum))
             {
                 db.Classrooms.Add(classroom);
                 db.SaveChanges();
@@ -53,7 +53,7 @@ namespace UniQR2.Controllers
 
         public JsonResult GetClassroom(int id)
         {
-            Classroom c = db.Classrooms.Select(x => new Classroom { ClassroomID = x.ClassroomID, Floors = x.Floors, Name = x.Name}).FirstOrDefault(n => n.ClassroomID == id);
+            Classroom c = db.Classrooms.Select(x => new Classroom { ClassroomID = x.ClassroomID, FloorID = x.FloorID, Name = x.Name}).FirstOrDefault(n => n.ClassroomID == id);
             return Json(c);
         }
 
@@ -61,10 +61,10 @@ namespace UniQR2.Controllers
         public async Task<IActionResult> EditClassroom(Classroom classroom)
         {
             Classroom c = db.Classrooms.FirstOrDefault(x => x.ClassroomID == classroom.ClassroomID);
-            if (c != null && db.Floors.Any(x => x.FloorNum == c.Floors))
+            if (c != null && db.Floors.Any(x => x.FloorNum == c.Floor.FloorNum))
             {
                 c.Name = classroom.Name;
-                c.Floors = classroom.Floors;
+                c.FloorID = classroom.FloorID;
                 if (ModelState.IsValid)
                 {
                     await db.SaveChangesAsync();

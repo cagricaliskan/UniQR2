@@ -4,23 +4,10 @@ using MySql.Data.EntityFrameworkCore.Metadata;
 
 namespace UniQR2.Migrations
 {
-    public partial class TablesAdded : Migration
+    public partial class init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.CreateTable(
-                name: "Classrooms",
-                columns: table => new
-                {
-                    ClassroomID = table.Column<int>(nullable: false)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Classrooms", x => x.ClassroomID);
-                });
-
             migrationBuilder.CreateTable(
                 name: "Courses",
                 columns: table => new
@@ -33,6 +20,19 @@ namespace UniQR2.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Courses", x => x.CourseID);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Floors",
+                columns: table => new
+                {
+                    FloorID = table.Column<int>(nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    FloorNum = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Floors", x => x.FloorID);
                 });
 
             migrationBuilder.CreateTable(
@@ -69,23 +69,23 @@ namespace UniQR2.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Floors",
+                name: "Classrooms",
                 columns: table => new
                 {
-                    FloorID = table.Column<int>(nullable: false)
+                    ClassroomID = table.Column<int>(nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    FloorNum = table.Column<string>(nullable: true),
-                    ClassroomID = table.Column<int>(nullable: true)
+                    Name = table.Column<string>(nullable: true),
+                    FloorID = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Floors", x => x.FloorID);
+                    table.PrimaryKey("PK_Classrooms", x => x.ClassroomID);
                     table.ForeignKey(
-                        name: "FK_Floors_Classrooms_ClassroomID",
-                        column: x => x.ClassroomID,
-                        principalTable: "Classrooms",
-                        principalColumn: "ClassroomID",
-                        onDelete: ReferentialAction.Restrict);
+                        name: "FK_Classrooms_Floors_FloorID",
+                        column: x => x.FloorID,
+                        principalTable: "Floors",
+                        principalColumn: "FloorID",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -199,12 +199,17 @@ namespace UniQR2.Migrations
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "UserID", "Email", "FullName", "IsActive", "Password", "ResetCode", "ResetCodeExpire", "UserRole" },
-                values: new object[] { 1, "kamren2@ethereal.email", "System Admin", true, "123123", null, new DateTime(2021, 3, 8, 5, 50, 55, 619, DateTimeKind.Local).AddTicks(7709), 0 });
+                values: new object[] { 1, "kamren2@ethereal.email", "System Admin", true, "123123", null, new DateTime(2021, 3, 14, 18, 32, 48, 695, DateTimeKind.Local).AddTicks(1634), 0 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AttendanceLists_CourseClassroomID",
                 table: "AttendanceLists",
                 column: "CourseClassroomID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Classrooms_FloorID",
+                table: "Classrooms",
+                column: "FloorID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_CourseClassrooms_ClassroomID",
@@ -232,11 +237,6 @@ namespace UniQR2.Migrations
                 column: "StudentID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Floors_ClassroomID",
-                table: "Floors",
-                column: "ClassroomID");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Participations_AttendanceListID",
                 table: "Participations",
                 column: "AttendanceListID");
@@ -251,9 +251,6 @@ namespace UniQR2.Migrations
         {
             migrationBuilder.DropTable(
                 name: "CourseStudentRels");
-
-            migrationBuilder.DropTable(
-                name: "Floors");
 
             migrationBuilder.DropTable(
                 name: "Participations");
@@ -275,6 +272,9 @@ namespace UniQR2.Migrations
 
             migrationBuilder.DropTable(
                 name: "Users");
+
+            migrationBuilder.DropTable(
+                name: "Floors");
         }
     }
 }

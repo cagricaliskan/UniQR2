@@ -9,8 +9,8 @@ using UniQR2.Models;
 namespace UniQR2.Migrations
 {
     [DbContext(typeof(ModelContext))]
-    [Migration("20210308070258_init2")]
-    partial class init2
+    [Migration("20210314143248_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -47,10 +47,15 @@ namespace UniQR2.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    b.Property<int>("FloorID")
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
                         .HasColumnType("text");
 
                     b.HasKey("ClassroomID");
+
+                    b.HasIndex("FloorID");
 
                     b.ToTable("Classrooms");
                 });
@@ -130,15 +135,10 @@ namespace UniQR2.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int?>("ClassroomID")
-                        .HasColumnType("int");
-
                     b.Property<string>("FloorNum")
                         .HasColumnType("text");
 
                     b.HasKey("FloorID");
-
-                    b.HasIndex("ClassroomID");
 
                     b.ToTable("Floors");
                 });
@@ -224,7 +224,7 @@ namespace UniQR2.Migrations
                             FullName = "System Admin",
                             IsActive = true,
                             Password = "123123",
-                            ResetCodeExpire = new DateTime(2021, 3, 8, 11, 2, 57, 772, DateTimeKind.Local).AddTicks(6967),
+                            ResetCodeExpire = new DateTime(2021, 3, 14, 18, 32, 48, 695, DateTimeKind.Local).AddTicks(1634),
                             UserRole = 0
                         });
                 });
@@ -234,6 +234,15 @@ namespace UniQR2.Migrations
                     b.HasOne("UniQR2.Models.CourseClassroom", "CourseClassroom")
                         .WithMany("AttendanceLists")
                         .HasForeignKey("CourseClassroomID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("UniQR2.Models.Classroom", b =>
+                {
+                    b.HasOne("UniQR2.Models.Floor", "Floor")
+                        .WithMany("Classrooms")
+                        .HasForeignKey("FloorID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -270,13 +279,6 @@ namespace UniQR2.Migrations
                         .HasForeignKey("StudentID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("UniQR2.Models.Floor", b =>
-                {
-                    b.HasOne("UniQR2.Models.Classroom", null)
-                        .WithMany("Floors")
-                        .HasForeignKey("ClassroomID");
                 });
 
             modelBuilder.Entity("UniQR2.Models.Participation", b =>

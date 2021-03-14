@@ -10,5 +10,7 @@ namespace UniQR2.Models
         public int FloorID { get; set; }
         public string FloorNum { get; set; }
 
+        public virtual ICollection<Classroom> Classrooms { get; set; }
+
     }
 }

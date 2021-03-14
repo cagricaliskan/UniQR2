@@ -45,11 +45,8 @@ namespace UniQR2.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int?>("FloorID")
+                    b.Property<int>("FloorID")
                         .HasColumnType("int");
-
-                    b.Property<string>("Floors")
-                        .HasColumnType("text");
 
                     b.Property<string>("Name")
                         .HasColumnType("text");
@@ -225,7 +222,7 @@ namespace UniQR2.Migrations
                             FullName = "System Admin",
                             IsActive = true,
                             Password = "123123",
-                            ResetCodeExpire = new DateTime(2021, 3, 11, 17, 29, 6, 330, DateTimeKind.Local).AddTicks(4527),
+                            ResetCodeExpire = new DateTime(2021, 3, 14, 18, 32, 48, 695, DateTimeKind.Local).AddTicks(1634),
                             UserRole = 0
                         });
                 });
@@ -242,8 +239,10 @@ namespace UniQR2.Migrations
             modelBuilder.Entity("UniQR2.Models.Classroom", b =>
                 {
                     b.HasOne("UniQR2.Models.Floor", "Floor")
-                        .WithMany()
-                        .HasForeignKey("FloorID");
+                        .WithMany("Classrooms")
+                        .HasForeignKey("FloorID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("UniQR2.Models.CourseClassroom", b =>
