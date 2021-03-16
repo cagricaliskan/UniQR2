@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,14 +33,17 @@ namespace UniQR2.Controllers
 
             classroom = classroom.OrderByDescending(n => n.ClassroomID);
             ViewBag.page = page;
-            
+
+            var floor = new SelectList(db.Floors.Select(x => new { FloorID = x.FloorID, FloorNum = x.FloorNum }).ToList(), "FloorID", "FloorNum");
+            ViewBag.f = floor;
+
             return View(classroom.ToPagedList(page, 10));
         }
 
         [HttpPost]
         public IActionResult AddClassroom(Classroom classroom)
         {
-            if (classroom.Floor.FloorNum != null && db.Floors.Any(x => x.FloorNum == classroom.Floor.FloorNum))
+            if (classroom.Floor.FloorNum != null )
             {
                 db.Classrooms.Add(classroom);
                 db.SaveChanges();

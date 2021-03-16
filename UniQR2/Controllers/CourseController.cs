@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,6 +33,7 @@ namespace UniQR2.Controllers
 
             course = course.OrderByDescending(n => n.CourseID);
             ViewBag.page = page;
+
             return View(course.ToPagedList(page,10)); 
         }
 

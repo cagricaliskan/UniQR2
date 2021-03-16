@@ -28,6 +28,7 @@
 	<ItemGroup>
 		<Folder Include="ViewComponents\Account\" />
 		<Folder Include="Views\Shared\Components\" />
+		<Folder Include="Views\Shared\EditorTemplates\" />
 		<Folder Include="wwwroot\plugins\" />
 	</ItemGroup>
 

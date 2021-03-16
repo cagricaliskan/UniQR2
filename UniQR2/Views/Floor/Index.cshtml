@@ -181,9 +181,9 @@
     <script type="text/javascript">
         $(function () {
             $(".editBtn").on("click", function () {
-                var floorid = $(this).data("id");
+                var floorId = $(this).data("id");
                 var getFloorUrl = "@Url.Action("GetFloor","Floor", null,"http")";
-                var fullUrl = getFloorUrl + "/" + floorid;
+                var fullUrl = getFloorUrl + "/" + floorId;
 
                 $.get(fullUrl, function (data, status) {
                     $("input#FloorNum").val(data.floorNum);
