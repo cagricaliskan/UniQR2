@@ -57,7 +57,7 @@ namespace UniQR2.Controllers
                 TempData["message"] = new NotificationViewModel
                 {
                     Title = "Error!",
-                    Content = "Email address has already been taken",
+                    Content = "This email adress have been already invited",
                     NotificationType = NotificationType.danger
                 }.SerializeNotification();
                  

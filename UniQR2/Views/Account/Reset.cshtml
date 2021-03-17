@@ -14,7 +14,8 @@
             @Html.AntiForgeryToken()
             <h1>ResetPassword</h1>
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input id="ResetCode" name="ResetCode" type="hidden" />
+            <input asp-for="ResetCode" type="hidden"  />
+            <span asp-validation-for="ResetCode"></span>
 
 
             <div class="form-group">

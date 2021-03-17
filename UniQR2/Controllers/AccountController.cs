@@ -135,19 +135,28 @@ namespace UniQR2.Controllers
         }
         
 
-        public IActionResult Reset()
+        public IActionResult Reset(string email, string ResetCode)
         {
-            return View();
+
+
+            ResetCode = protector.Unprotect(email);
+            User u = db.Users.FirstOrDefault(x => x.ResetCode == ResetCode);
+            
+
+            
+
+            
+            return View(u);
         }
 
-         [HttpPost]
-        public IActionResult Reset(ResetPasswordViewModel resetPassword)
+        [HttpPost]
+        public IActionResult Reset(User user)
         {
-            string email = protector.Unprotect(resetPassword.ResetCode);
-            User u = db.Users.FirstOrDefault(x => x.ResetCode == resetPassword.ResetCode);
+            //string email = protector.Unprotect(user.ResetCode);
+            User u = db.Users.FirstOrDefault(x => x.Email == user.Email);
             if(u != null)
             {
-                u.Password = resetPassword.Password;
+                u.Password = user.Password;
                 db.Users.Update(u);
             }
 
