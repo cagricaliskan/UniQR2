@@ -164,7 +164,23 @@ namespace UniQR2.Controllers
 
         }
 
-        
+        public IActionResult Test()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Test(string email, User User)
+        {
+            User u = db.Users.FirstOrDefault(x => x.Email == email);
+            if (u != null && db.Users.Any(x => x.Email == email))
+            {
+                string body = "This is a test mail";
+                await emailSender.Send(u.Email, "Test", body);
+
+            }
+            return View();
+        }
 
 
 
