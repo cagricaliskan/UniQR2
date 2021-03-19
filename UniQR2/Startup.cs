@@ -35,6 +35,7 @@ namespace UniQR2
             services.Configure<SMTPSettings>(Configuration.GetSection("SMTPSettings"));
             services.AddScoped<IEmailService, EmailService>();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             services.AddMvc().AddRazorRuntimeCompilation();
 

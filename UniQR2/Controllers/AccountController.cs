@@ -12,6 +12,7 @@ using UniQR2.Services;
 using UniQR2.ViewModels;
 using UniQR2.Extensions;
 using AutoMapper;
+using UniQR2.ViewString;
 
 namespace UniQR2.Controllers
 {
@@ -173,10 +174,11 @@ namespace UniQR2.Controllers
         public async Task<IActionResult> Test(string email, User User)
         {
             User u = db.Users.FirstOrDefault(x => x.Email == email);
+            string str = await ViewToStringRenderer.RenderViewToStringAsync(HttpContext.RequestServices, $"~/Views/Emails/EmailTemplate.cshtml", new User { FullName = "", Email= "" });
             if (u != null && db.Users.Any(x => x.Email == email))
             {
                 string body = "This is a test mail";
-                await emailSender.Send(u.Email, "Test", body);
+                await emailSender.Send(u.Email, "Test", str);
 
             }
             return View();
