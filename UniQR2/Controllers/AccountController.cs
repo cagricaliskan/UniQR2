@@ -78,7 +78,7 @@ namespace UniQR2.Controllers
             email = protector.Unprotect(email);
             User u = db.Users.FirstOrDefault(n => n.Email == email);
             ModelState.Clear();
-            if(u == null)
+            if (u == null)
             {
                 return RedirectToAction("Index");
             }
@@ -102,7 +102,7 @@ namespace UniQR2.Controllers
                 db.Entry(u).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
                 db.Users.Update(u);
 
-                if(await db.SaveChangesAsync() > 0)
+                if (await db.SaveChangesAsync() > 0)
                 {
                     string body = $"Hi {u.FullName}, your account is created.";
                     await emailSender.Send(u.Email, "UniQR Account", body);
@@ -113,7 +113,7 @@ namespace UniQR2.Controllers
 
         public IActionResult ResetPassword()
         {
-          return View();
+            return View();
         }
 
         [HttpPost]
@@ -127,42 +127,47 @@ namespace UniQR2.Controllers
                 string body = "You have sumbitted a request for resetting your password. If you have, click" + "<a href=\"" + MyHttpContext.AppBaseUrl + "/Account/reset?reset=" + u.ResetCode + " \" > here: </a>";
                 await emailSender.Send(u.Email, "Password Reset Request", body);
                 return RedirectToAction("login", "account");
-            } else
+            }
+            else
             {
                 ViewBag.Message = "No users was found with the given e-mail";
                 return View("ResetPassword");
             }
-            
-        }
-        
 
-        public IActionResult Reset(string email, string ResetCode)
+        }
+
+
+        public IActionResult Reset(string reset)
         {
 
 
-            ResetCode = protector.Unprotect(email);
-            User u = db.Users.FirstOrDefault(x => x.ResetCode == ResetCode);
-            
+            reset = protector.Unprotect(reset);
+            User u = db.Users.FirstOrDefault(x => x.Email == reset);
 
-            
 
-            
-            return View(u);
+            ResetPasswordViewModel resetPasswordViewModel = mapper.Map<User, ResetPasswordViewModel>(u);
+
+
+            return View(resetPasswordViewModel);
         }
 
         [HttpPost]
-        public IActionResult Reset(User user)
+        public IActionResult Reset(ResetPasswordViewModel resetPasswordViewModel)
         {
-            //string email = protector.Unprotect(user.ResetCode);
-            User u = db.Users.FirstOrDefault(x => x.Email == user.Email);
-            if(u != null)
+            if (ModelState.IsValid)
             {
-                u.Password = user.Password;
-                db.Users.Update(u);
+                User u = db.Users.FirstOrDefault(x => x.ResetCode == resetPasswordViewModel.ResetCode);
+
+                if (u != null)
+                {
+                    u.Password = resetPasswordViewModel.Password;
+                    db.Users.Update(u);
+                    db.SaveChanges();
+                }
+                return RedirectToAction("login", "account");
             }
-
-            return RedirectToAction("login", "account");
-
+            
+            return View(resetPasswordViewModel);
         }
 
         public IActionResult Test()
@@ -174,7 +179,7 @@ namespace UniQR2.Controllers
         public async Task<IActionResult> Test(string email, User User)
         {
             User u = db.Users.FirstOrDefault(x => x.Email == email);
-            string str = await ViewToStringRenderer.RenderViewToStringAsync(HttpContext.RequestServices, $"~/Views/Emails/EmailTemplate.cshtml", new {});
+            string str = await ViewToStringRenderer.RenderViewToStringAsync(HttpContext.RequestServices, $"~/Views/Emails/EmailTemplate.cshtml", new { });
             if (u != null && db.Users.Any(x => x.Email == email))
             {
                 await emailSender.Send(u.Email, "Test", str);
