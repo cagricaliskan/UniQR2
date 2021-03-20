@@ -10,6 +10,7 @@ using UniQR2.Extensions;
 using UniQR2.Models;
 using UniQR2.Services;
 using UniQR2.ViewModels;
+using UniQR2.ViewString;
 using X.PagedList;
 
 namespace UniQR2.Controllers
@@ -65,16 +66,18 @@ namespace UniQR2.Controllers
             }
             if (email != null)
             {
-                string body = "You have been invited to UniQR system. To register, please follow the" + "<a target=\"_blank\" href=\"" + MyHttpContext.AppBaseUrl + "/Account/Register?email=" + protector.Protect(email) + " \">Tıkla </a>";
+                
+                string str = await ViewToStringRenderer.RenderViewToStringAsync(HttpContext.RequestServices, $"~/Views/Emails/InviteMailTemplate.cshtml", new { });
                 User u = new User
                 {
                     Email = email,
                     IsActive = false,
                     ResetCodeExpire = DateTime.Now
                 };
+                ViewData["2"] = protector.Protect(email);
                 db.Users.Add(u);
                 await db.SaveChangesAsync();
-                await emailSender.Send(email, "UniQR Invite", body);
+                await emailSender.Send(email, "UniQR Invite", str);
             }
             return RedirectToAction("index", "instructormanagement");
         }

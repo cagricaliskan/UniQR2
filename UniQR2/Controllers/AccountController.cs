@@ -174,10 +174,9 @@ namespace UniQR2.Controllers
         public async Task<IActionResult> Test(string email, User User)
         {
             User u = db.Users.FirstOrDefault(x => x.Email == email);
-            string str = await ViewToStringRenderer.RenderViewToStringAsync(HttpContext.RequestServices, $"~/Views/Emails/EmailTemplate.cshtml", new User { FullName = "", Email= "" });
+            string str = await ViewToStringRenderer.RenderViewToStringAsync(HttpContext.RequestServices, $"~/Views/Emails/EmailTemplate.cshtml", new {});
             if (u != null && db.Users.Any(x => x.Email == email))
             {
-                string body = "This is a test mail";
                 await emailSender.Send(u.Email, "Test", str);
 
             }
