@@ -124,8 +124,8 @@ namespace UniQR2.Controllers
             {
                 u.ResetCode = protector.Protect(email);
                 db.SaveChanges();
-                string body = "You have sumbitted a request for resetting your password. If you have, click" + "<a href=\"" + MyHttpContext.AppBaseUrl + "/Account/reset?reset=" + u.ResetCode + " \" > here: </a>";
-                await emailSender.Send(u.Email, "Password Reset Request", body);
+                string str = await ViewToStringRenderer.RenderViewToStringAsync(HttpContext.RequestServices, $"~/Views/Emails/EMailTemplate.cshtml", MyHttpContext.AppBaseUrl + "/Account/reset?reset=" + protector.Protect(email));
+                await emailSender.Send(u.Email, "Password Reset Request", str);
                 return RedirectToAction("login", "account");
             }
             else

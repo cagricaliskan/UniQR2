@@ -66,7 +66,7 @@ namespace UniQR2.Controllers
             }
             if (email != null)
             {
-                string str = await ViewToStringRenderer.RenderViewToStringAsync(HttpContext.RequestServices, $"~/Views/Emails/InviteMailTemplate.cshtml",  MyHttpContext.AppBaseUrl + "/Account/reset?reset=" + protector.Protect(email) );
+                string str = await ViewToStringRenderer.RenderViewToStringAsync(HttpContext.RequestServices, $"~/Views/Emails/EMailTemplate.cshtml",  MyHttpContext.AppBaseUrl + "/Account/register?email=" + protector.Protect(email) );
                 User u = new User
                 {
                     Email = email,
