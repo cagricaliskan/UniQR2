@@ -66,15 +66,14 @@ namespace UniQR2.Controllers
             }
             if (email != null)
             {
-                
-                string str = await ViewToStringRenderer.RenderViewToStringAsync(HttpContext.RequestServices, $"~/Views/Emails/InviteMailTemplate.cshtml", new { });
+                string str = await ViewToStringRenderer.RenderViewToStringAsync(HttpContext.RequestServices, $"~/Views/Emails/InviteMailTemplate.cshtml",  protector.Protect(email) );
                 User u = new User
                 {
                     Email = email,
                     IsActive = false,
                     ResetCodeExpire = DateTime.Now
                 };
-                ViewData["2"] = protector.Protect(email);
+                
                 db.Users.Add(u);
                 await db.SaveChangesAsync();
                 await emailSender.Send(email, "UniQR Invite", str);

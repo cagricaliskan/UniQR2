@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+﻿@model string
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
           "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
@@ -1797,7 +1798,7 @@
                                                         <tr>
                                                             <th>
                                                                 <br>
-                                                                <h5 class="text-center" valign="middle">You have been invited to UniQR system. To register, please follow the <a href="http://localhost:1453/Account/Register?email=@ViewData["2"]" >link</a></h5>
+                                                                <h5 class="text-center" valign="middle">You have been invited to UniQR system. To register, please follow the <a href="@MyHttpContext.AppBaseUrl/Account/Register?email=@Model" >link</a></h5>
                                                             </th>
                                                             <th class="expander"></th>
                                                         </tr>
