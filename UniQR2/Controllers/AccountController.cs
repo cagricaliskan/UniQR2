@@ -104,8 +104,8 @@ namespace UniQR2.Controllers
 
                 if (await db.SaveChangesAsync() > 0)
                 {
-                    string body = $"Hi {u.FullName}, your account is created.";
-                    await emailSender.Send(u.Email, "UniQR Account", body);
+                    string str = await ViewToStringRenderer.RenderViewToStringAsync(HttpContext.RequestServices, $"~/Views/Emails/WelcomeEMailTemplate.cshtml", u.FullName);
+                    await emailSender.Send(u.Email, "UniQR Account", str);
                 }
             }
             return RedirectToAction("index", "home");
@@ -124,7 +124,8 @@ namespace UniQR2.Controllers
             {
                 u.ResetCode = protector.Protect(email);
                 db.SaveChanges();
-                string str = await ViewToStringRenderer.RenderViewToStringAsync(HttpContext.RequestServices, $"~/Views/Emails/EMailTemplate.cshtml", MyHttpContext.AppBaseUrl + "/Account/reset?reset=" + protector.Protect(email));
+
+                string str = await ViewToStringRenderer.RenderViewToStringAsync(HttpContext.RequestServices, $"~/Views/Emails/ResetPasswordEMailTemplate.cshtml", MyHttpContext.AppBaseUrl + "/Account/reset?reset=" + protector.Protect(email));
                 await emailSender.Send(u.Email, "Password Reset Request", str);
                 return RedirectToAction("login", "account");
             }
