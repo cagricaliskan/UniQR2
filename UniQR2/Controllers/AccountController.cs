@@ -104,7 +104,7 @@ namespace UniQR2.Controllers
 
                 if (await db.SaveChangesAsync() > 0)
                 {
-                    string str = await ViewToStringRenderer.RenderViewToStringAsync(HttpContext.RequestServices, $"~/Views/Emails/WelcomeEMailTemplate.cshtml", u.FullName);
+                    string str = await ViewToStringRenderer.RenderViewToStringAsync(HttpContext.RequestServices, $"~/Views/Emails/NoLinkEMailTemplate.cshtml", $"Hi {u.FullName}, your account is created.");
                     await emailSender.Send(u.Email, "UniQR Account", str);
                 }
             }
@@ -125,7 +125,7 @@ namespace UniQR2.Controllers
                 u.ResetCode = protector.Protect(email);
                 db.SaveChanges();
 
-                string str = await ViewToStringRenderer.RenderViewToStringAsync(HttpContext.RequestServices, $"~/Views/Emails/ResetPasswordEMailTemplate.cshtml", MyHttpContext.AppBaseUrl + "/Account/reset?reset=" + protector.Protect(email));
+                string str = await ViewToStringRenderer.RenderViewToStringAsync(HttpContext.RequestServices, $"~/Views/Emails/EMailTemplate.cshtml", new EmailViewModel { Text = "You have sumbitted a request for resetting your password. If you have, click", Link = MyHttpContext.AppBaseUrl + "/Account/reset?reset=" + protector.Protect(email) } );
                 await emailSender.Send(u.Email, "Password Reset Request", str);
                 return RedirectToAction("login", "account");
             }

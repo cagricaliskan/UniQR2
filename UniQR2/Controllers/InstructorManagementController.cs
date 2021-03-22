@@ -66,7 +66,7 @@ namespace UniQR2.Controllers
             }
             if (email != null)
             {
-                string str = await ViewToStringRenderer.RenderViewToStringAsync(HttpContext.RequestServices, $"~/Views/Emails/EMailTemplate.cshtml",  MyHttpContext.AppBaseUrl + "/Account/register?email=" + protector.Protect(email) );
+                string str = await ViewToStringRenderer.RenderViewToStringAsync(HttpContext.RequestServices, $"~/Views/Emails/EMailTemplate.cshtml", new EmailViewModel { Text = "You have been invited to UniQR system. To register, please follow the", Link= MyHttpContext.AppBaseUrl + "/Account/register?email=" + protector.Protect(email) }  );
                 User u = new User
                 {
                     Email = email,
