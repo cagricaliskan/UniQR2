@@ -107,8 +107,9 @@ namespace UniQR2.Controllers
                     string str = await ViewToStringRenderer.RenderViewToStringAsync(HttpContext.RequestServices, $"~/Views/Emails/NoLinkEMailTemplate.cshtml", $"Hi {u.FullName}, your account is created.");
                     await emailSender.Send(u.Email, "UniQR Account", str);
                 }
+               
             }
-            return RedirectToAction("index", "home");
+            return RedirectToAction("login", "account");
         }
 
         public IActionResult ResetPassword()

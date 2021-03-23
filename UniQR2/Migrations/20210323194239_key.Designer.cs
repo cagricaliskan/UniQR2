@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using UniQR2.Models;
 
 namespace UniQR2.Migrations
 {
     [DbContext(typeof(ModelContext))]
-    partial class ModelContextModelSnapshot : ModelSnapshot
+    [Migration("20210323194239_key")]
+    partial class key
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -222,7 +224,7 @@ namespace UniQR2.Migrations
                             FullName = "System Admin",
                             IsActive = true,
                             Password = "123123",
-                            ResetCodeExpire = new DateTime(2021, 3, 24, 0, 29, 46, 343, DateTimeKind.Local).AddTicks(2077),
+                            ResetCodeExpire = new DateTime(2021, 3, 23, 23, 42, 39, 580, DateTimeKind.Local).AddTicks(2119),
                             UserRole = 0
                         });
                 });
@@ -238,7 +240,7 @@ namespace UniQR2.Migrations
 
             modelBuilder.Entity("UniQR2.Models.Classroom", b =>
                 {
-                    b.HasOne("UniQR2.Models.Floor", "Floors")
+                    b.HasOne("UniQR2.Models.Floor", "Floor")
                         .WithMany("Classrooms")
                         .HasForeignKey("FloorID")
                         .OnDelete(DeleteBehavior.Cascade)

@@ -25,7 +25,7 @@ namespace UniQR2.Controllers
             var classroom = db.Classrooms.AsQueryable();
             if( search != "")
             {
-                classroom = db.Classrooms.Where(x => x.Name.Contains(search) || x.Floor.FloorNum.Contains(search));
+                classroom = db.Classrooms.Where(x => x.Name.Contains(search) || x.Floors.FloorNum.Contains(search));
 
                 ViewBag.search = search;
                 ViewBag.count = classroom.Count();
@@ -43,8 +43,9 @@ namespace UniQR2.Controllers
         [HttpPost]
         public IActionResult AddClassroom(Classroom classroom)
         {
-            if (classroom.Floor.FloorNum != null )
+            if (classroom.Floors.FloorNum != null )
             {
+                
                 db.Classrooms.Add(classroom);
                 db.SaveChanges();
             } else
@@ -65,7 +66,7 @@ namespace UniQR2.Controllers
         public async Task<IActionResult> EditClassroom(Classroom classroom)
         {
             Classroom c = db.Classrooms.FirstOrDefault(x => x.ClassroomID == classroom.ClassroomID);
-            if (c != null && db.Floors.Any(x => x.FloorNum == c.Floor.FloorNum))
+            if (c != null && db.Floors.Any(x => x.FloorNum == c.Floors.FloorNum))
             {
                 c.Name = classroom.Name;
                 c.FloorID = classroom.FloorID;
