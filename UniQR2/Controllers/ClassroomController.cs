@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,10 +23,10 @@ namespace UniQR2.Controllers
 
         public IActionResult Index(int page = 1, string search ="")
         {
-            var classroom = db.Classrooms.AsQueryable();
+            var classroom = db.Classrooms.Include(n => n.Floor).AsQueryable();
             if( search != "")
             {
-                classroom = db.Classrooms.Where(x => x.Name.Contains(search) || x.Floors.FloorNum.Contains(search));
+                classroom = db.Classrooms.Where(x => x.Name.Contains(search) || x.Floor.FloorNum.Contains(search));
 
                 ViewBag.search = search;
                 ViewBag.count = classroom.Count();
@@ -34,8 +35,7 @@ namespace UniQR2.Controllers
             classroom = classroom.OrderByDescending(n => n.ClassroomID);
             ViewBag.page = page;
 
-            var floor = new SelectList(db.Floors.Select(x => new { FloorID = x.FloorID, FloorNum = x.FloorNum }).ToList(), "FloorID", "FloorNum");
-            ViewBag.f = floor;
+            ViewBag.f = db.Floors.ToList();
 
             return View(classroom.ToPagedList(page, 10));
         }
@@ -43,7 +43,7 @@ namespace UniQR2.Controllers
         [HttpPost]
         public IActionResult AddClassroom(Classroom classroom)
         {
-            if (classroom.Floors.FloorNum != null )
+            if (ModelState.IsValid)
             {
                 
                 db.Classrooms.Add(classroom);
@@ -52,6 +52,8 @@ namespace UniQR2.Controllers
             {
                 ViewBag.Message = "Choose a valid floor";
                 ViewBag.Status = "danger";
+
+                return View();
             }
             return RedirectToAction("Index");
         }
@@ -66,7 +68,7 @@ namespace UniQR2.Controllers
         public async Task<IActionResult> EditClassroom(Classroom classroom)
         {
             Classroom c = db.Classrooms.FirstOrDefault(x => x.ClassroomID == classroom.ClassroomID);
-            if (c != null && db.Floors.Any(x => x.FloorNum == c.Floors.FloorNum))
+            if (c != null && db.Floors.Any(x => x.FloorNum == c.Floor.FloorNum))
             {
                 c.Name = classroom.Name;
                 c.FloorID = classroom.FloorID;

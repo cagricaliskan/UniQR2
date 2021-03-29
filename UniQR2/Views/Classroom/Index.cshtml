@@ -90,7 +90,7 @@
                 <tr>
                     <td>@counter</td>
                     <td>@item.Name</td>
-                    <td>@item.Floors.FloorNum</td>
+                    <td>@item.Floor.FloorNum</td>
                     <td class="text-right">
                         <button class="btn btn-sm btn-warning editBtn" data-toggle="modal" data-target="#editClassroomModal" data-id="@item.ClassroomID">
                             Edit
@@ -137,12 +137,18 @@
                 <form asp-controller="Classroom" asp-action="AddClassroom" method="post">
                     <div class="form-group">
                         <label for="Name">Name: </label>
-                        <input type="text" id="Name" name="name" placeholder="Enter the classroom's name" class="form-control" required />
+                        <input type="text" id="Name" name="Name" placeholder="Enter the classroom's name" class="form-control" required />
                     </div>
 
                     <div class="form-group">
                         <label for="Floor">Floor: </label>
-                        
+                        <select class="form-control" name="FloorID">
+                            <option value="0">Please select</option>
+                            @foreach (var item in (List<Floor>) ViewBag.f)
+                            {
+                                <option value="@item.FloorID">@item.FloorNum</option>
+                            }
+                        </select>
                     </div>
 
                     <div class="form-group">

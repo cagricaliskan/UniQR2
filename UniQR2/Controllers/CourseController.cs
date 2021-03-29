@@ -34,6 +34,8 @@ namespace UniQR2.Controllers
             course = course.OrderByDescending(n => n.CourseID);
             ViewBag.page = page;
 
+            ViewBag.floors = db.Floors.ToList();
+
             return View(course.ToPagedList(page,10)); 
         }
 
