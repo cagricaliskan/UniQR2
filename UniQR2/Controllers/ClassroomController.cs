@@ -37,6 +37,8 @@ namespace UniQR2.Controllers
 
             ViewBag.f = db.Floors.ToList();
 
+            
+
             return View(classroom.ToPagedList(page, 10));
         }
 
@@ -68,7 +70,7 @@ namespace UniQR2.Controllers
         public async Task<IActionResult> EditClassroom(Classroom classroom)
         {
             Classroom c = db.Classrooms.FirstOrDefault(x => x.ClassroomID == classroom.ClassroomID);
-            if (c != null && db.Floors.Any(x => x.FloorNum == c.Floor.FloorNum))
+            if (c != null)
             {
                 c.Name = classroom.Name;
                 c.FloorID = classroom.FloorID;
