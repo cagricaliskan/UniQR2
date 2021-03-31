@@ -1,8 +1,93 @@
-﻿
+﻿@model PagedList<UniQR2.Models.CourseClassroom>
+
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/AdminLTE/_Layout.cshtml";
 }
 
-<h1>Index</h1>
+<button type="submit" class="btn btn-success" data-toggle="modal" data-target="#addClassModal">
+    Add new Class
+</button>
 
+<form class="form-inline float-right" method="get">
+    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="search" value="@ViewBag.search" />
+    <button class="btn btn-primary" type="submit">Search</button>
+</form>
+
+@if (TempData["message"] != null)
+{
+    NotificationViewModel message = NotificationViewModel.GetNotificationFromJson(TempData["message"].ToString());
+
+    <div class="mt-4 card margin-bottom-top bg-gradient-@message.NotificationType.ToString()">
+        <div class="card-header">
+            <h3 class="card-title">@message.Title</h3>
+            <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="remove">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+}
+
+<div class="card card-primary mt-4">
+
+    <div class="card-header">
+        Class List
+    </div>
+
+    <table class="table table-hover table-bordered table-striped">
+        <thead>
+            <tr>
+                <th style="width:6%">#.</th>
+                <th>Clasroom</th>
+                <th>Instructor</th>
+                <th>Course</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                int page = ((int)ViewBag.page);
+                int counter = (page - 1) * 10;
+            }
+
+            @foreach (var item in Model)
+            {
+                counter++;
+
+            <tr>
+                <td>@counter</td>
+                <td>@item.Classroom.Name</td>
+                <td>@item.Instructor.FullName</td>
+                <td>@item.Course.Code</td>
+                <td class="text-right">
+                    <button class="btn btn-sm btn-warning editBtn" data-toggle="modal" data-target="#addClassModal" data-id="@item.CourseClassroomID">
+                        Edit
+                    </button>
+
+                    <button class="btn btn-sm btn-danger editBtn" data-toggle="modal" data-target="#deleteClassModal" data-id="@item.CourseClassroomID">
+                        Delete
+                    </button>
+
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+
+    <div class="col-md-12">
+        <div class="float-right">
+            @Html.PagedListPager(Model,page => Url.Action("Index", new { page,search = ViewBag.search}),new PagedListRenderOptionsBase
+       {
+           LiElementClasses = new string[] { "page-item" },
+           PageClasses = new string[] { "page-link", "text-bold" },
+           DisplayLinkToFirstPage = PagedListDisplayMode.Always,
+           DisplayLinkToLastPage = PagedListDisplayMode.Always,
+           DisplayLinkToNextPage = PagedListDisplayMode.Always,
+           DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
+           DisplayLinkToIndividualPages = true
+       })
+        </div>
+    </div>
+
+</div>
