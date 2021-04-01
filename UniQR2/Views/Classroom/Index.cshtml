@@ -145,12 +145,14 @@
                         <label for="Floor">Floor: </label>
                         <select class="form-control" name="FloorID">
                             <option value="0"></option>
-                            @foreach (var item in (List<Floor>) ViewBag.f)
+                            @foreach (var item in (List<Floor>)ViewBag.f)
                             {
                                 <option value="@item.FloorID">@item.FloorNum</option>
                             }
                         </select>
                     </div>
+
+                   
 
                     <div class="form-group">
                         <input type="submit" class="btn btn-success" />
