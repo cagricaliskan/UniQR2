@@ -45,5 +45,23 @@ namespace UniQR2.Controllers
             return View(courseclassroom.ToPagedList(page,10));
         }
 
+
+        [HttpPost]
+        public IActionResult AddClass(CourseClassroom classController)
+        {
+            if (ModelState.IsValid)
+            {
+                db.CourseClassrooms.Add(classController);
+                db.SaveChanges();
+
+            }
+            return RedirectToAction("Index");
+        }
+
+        public JsonResult GetClass(int id)
+        {
+            CourseClassroom c = db.CourseClassrooms.Select(x => new CourseClassroom { ClassroomID = x.ClassroomID, CourseClassroomID = x.CourseClassroomID, InstructorID = x.InstructorID, CourseID = x.CourseID }).FirstOrDefault(n => n.CourseClassroomID == id);
+            return Json(c);
+        }
     }
 }

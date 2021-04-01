@@ -227,39 +227,21 @@
             </div>
             <div class="modal-body">
                 <form asp-controller="Class" asp-action="DeleteClass" method="post">
-                    <input type="hidden" id="CourseClassroomID" name="CourseClassroomID" />
+                    <input type="hidden" id="id" name="CourseClassroomID" />
 
                     <div class="form-group">
                         <label for="Classroom">Classroom:</label>
-                        <select class="form-control" name="ClassroomID">
-                            <option value="ClassroomID"></option>
-                            @foreach (var item in (List<Classroom>)ViewBag.classroom)
-                            {
-                                <option value="@item.ClassroomID">@item.Name</option>
-                            }
-                        </select>
+                        <input id="ClassroomID" type="text" class="form-control" readonly />
                     </div>
 
                     <div class="form-group">
                         <label for="Instructor">Instructor:</label>
-                        <select class="form-control" name="InstructorID">
-                            <option value="InstructorID"></option>
-                            @foreach (var item in (List<User>)ViewBag.ins)
-                            {
-                                <option value="@item.UserID">@item.FullName</option>
-                            }
-                        </select>
+                        <input id="InstructorID" type="text" class="form-control" readonly />
                     </div>
 
                     <div class="form-group">
                         <label for="Course">Course:</label>
-                        <select class="form-control" name="CourseID">
-                            <option value="CourseID"></option>
-                            @foreach (var item in (List<Course>)ViewBag.course)
-                            {
-                                <option value="@item.CourseID">@item.Code</option>
-                            }
-                        </select>
+                        <input id="CourseID" type="text" class="form-control" readonly/>
                     </div>
                     <div class="form-group">
                         <input type="submit" class="btn btn-danger" value="Delete" />
