@@ -61,7 +61,7 @@
                     <td>@item.Instructor.FullName</td>
                     <td>@item.Course.Code</td>
                     <td class="text-right">
-                        <button class="btn btn-sm btn-warning editBtn" data-toggle="modal" data-target="#addClassModal" data-id="@item.CourseClassroomID">
+                        <button class="btn btn-sm btn-warning editBtn" data-toggle="modal" data-target="#editClassModal" data-id="@item.CourseClassroomID">
                             Edit
                         </button>
 
@@ -227,7 +227,7 @@
             </div>
             <div class="modal-body">
                 <form asp-controller="Class" asp-action="DeleteClass" method="post">
-                    <input type="hidden" id="id" name="CourseClassroomID" />
+                    <input type="hidden" id="CourseClassroomID" name="id" />
 
                     <div class="form-group">
                         <label for="Classroom">Classroom:</label>

@@ -63,5 +63,34 @@ namespace UniQR2.Controllers
             CourseClassroom c = db.CourseClassrooms.Select(x => new CourseClassroom { ClassroomID = x.ClassroomID, CourseClassroomID = x.CourseClassroomID, InstructorID = x.InstructorID, CourseID = x.CourseID }).FirstOrDefault(n => n.CourseClassroomID == id);
             return Json(c);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> EditClass(CourseClassroom classController)
+        {
+            CourseClassroom c = db.CourseClassrooms.FirstOrDefault(x => x.CourseClassroomID == classController.CourseClassroomID);
+            if(c!=null)
+            {
+                c.CourseID = classController.CourseID;
+                c.InstructorID = classController.InstructorID;
+                c.ClassroomID = classController.ClassroomID;
+                if (ModelState.IsValid)
+                {
+                    await db.SaveChangesAsync();
+                }
+            }
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteClass(int id)
+        {
+            CourseClassroom c = db.CourseClassrooms.FirstOrDefault(x => x.CourseClassroomID == id);
+            if(c != null)
+            {
+                db.CourseClassrooms.Remove(c);
+                await db.SaveChangesAsync();
+            }
+            return RedirectToAction("Index");
+        }
     }
 }
