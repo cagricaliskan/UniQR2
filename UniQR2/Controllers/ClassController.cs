@@ -27,7 +27,7 @@ namespace UniQR2.Controllers
             courseclassroom = db.CourseClassrooms.Include(z => z.Course).AsQueryable();
             if(search != "")
             {
-                courseclassroom = db.CourseClassrooms.Where(x => x.Instructor.FullName.Contains(search));
+                courseclassroom = db.CourseClassrooms.Where(x => x.Instructor.FullName.Contains(search) || x.Course.Code.Contains(search) || x.Classroom.Name.Contains(search) || x.Instructor.FullName.Contains(search));
 
                 ViewBag.search = search;
                 ViewBag.count = courseclassroom.Count();

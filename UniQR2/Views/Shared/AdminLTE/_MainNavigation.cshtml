@@ -74,8 +74,19 @@
                         <p>Floor</p>
                     </a>
                 </li>
-                
+
             }
+
+            @if (userRole == "Instructor")
+            {
+                <li class="nav-item">
+                    <a href="~/MyClasses/Index" class="nav-link @Html.ActiveClass("MyClasses", "Index")">
+                        <i class="far fa-circle nav-icon"> </i>
+                        <p>My Classes</p>
+                    </a>
+                </li>
+            }
+
 
             <li class="nav-item">
                 <a href="~/account/logout" class="nav-link">
