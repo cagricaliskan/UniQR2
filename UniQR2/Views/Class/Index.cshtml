@@ -43,6 +43,7 @@
                 <th>Clasroom</th>
                 <th>Instructor</th>
                 <th>Course</th>
+                <th class="text-right" style="width:10%">İşlem</th>
             </tr>
         </thead>
         <tbody>
@@ -108,7 +109,7 @@
 
                     <div class="form-group">
                         <label for="Classroom">Classroom:</label>
-                        <select class="form-control" name="ClassroomID">
+                        <select class="form-control ClassroomID" name="ClassroomID">
                             <option value="0">Select a Classroom</option>
                             @foreach (var item in (List<Classroom>)ViewBag.classroom)
                             {
@@ -119,7 +120,7 @@
 
                     <div class="form-group">
                         <label for="Instructor">Instructor:</label>
-                        <select class="form-control" name="InstructorID">
+                        <select class="form-control InstructorID" name="InstructorID">
                             <option value="0">Select an Insturctor</option>
                             @foreach (var item in (List<User>)ViewBag.ins)
                             {
@@ -130,7 +131,7 @@
 
                     <div class="form-group">
                         <label for="Course">Course:</label>
-                        <select class="form-control" name="CourseID">
+                        <select class="form-control CourseID" name="CourseID">
                             <option value="0">Select a Course</option>
                             @foreach (var item in (List<Course>)ViewBag.course)
                             {
@@ -166,11 +167,11 @@
             </div>
             <div class="modal-body">
                 <form asp-controller="Class" asp-action="EditClass" method="post">
-                    <input type="hidden" id="CourseClassroomID" name="CourseClassroomID" />
+                    <input type="hidden" class="CourseClassroomID" id="CourseClassroomID" name="CourseClassroomID" />
 
                     <div class="form-group">
                         <label for="Classroom">Classroom:</label>
-                        <select class="form-control" name="ClassroomID">
+                        <select class="form-control ClassroomID" name="ClassroomID">
                             <option value="ClassroomID"></option>
                             @foreach (var item in (List<Classroom>)ViewBag.classroom)
                             {
@@ -181,7 +182,7 @@
 
                     <div class="form-group">
                         <label for="Instructor">Instructor:</label>
-                        <select class="form-control" name="InstructorID">
+                        <select class="form-control InstructorID" name="InstructorID">
                             <option value="0">Select an Insturctor</option>
                             @foreach (var item in (List<User>)ViewBag.ins)
                             {
@@ -192,7 +193,7 @@
 
                     <div class="form-group">
                         <label for="Course">Course:</label>
-                        <select class="form-control" name="CourseID">
+                        <select class="form-control CourseID" name="CourseID">
                             <option value="CourseID"></option>
                             @foreach (var item in (List<Course>)ViewBag.course)
                             {
@@ -227,21 +228,39 @@
             </div>
             <div class="modal-body">
                 <form asp-controller="Class" asp-action="DeleteClass" method="post">
-                    <input type="hidden" id="CourseClassroomID" name="id" />
+                    <input type="hidden" class="CourseClassroomID" id="CourseClassroomID" name="id" />
 
                     <div class="form-group">
                         <label for="Classroom">Classroom:</label>
-                        <input id="ClassroomID" type="text" class="form-control" readonly />
+                        <select class="form-control ClassroomID" name="ClassroomID" disabled>
+                            <option value="ClassroomID"></option>
+                            @foreach (var item in (List<Classroom>)ViewBag.classroom)
+                            {
+                                <option value="@item.ClassroomID">@item.Name</option>
+                            }
+                        </select>
                     </div>
 
                     <div class="form-group">
                         <label for="Instructor">Instructor:</label>
-                        <input id="InstructorID" type="text" class="form-control" readonly />
+                        <select class="form-control InstructorID" name="InstructorID" disabled>
+                            <option value="0">Select an Insturctor</option>
+                            @foreach (var item in (List<User>)ViewBag.ins)
+                            {
+                                <option value="@item.UserID">@item.FullName</option>
+                            }
+                        </select>
                     </div>
 
                     <div class="form-group">
                         <label for="Course">Course:</label>
-                        <input id="CourseID" type="text" class="form-control" readonly/>
+                        <select class="form-control CourseID" name="CourseID" disabled>
+                            <option value="CourseID"></option>
+                            @foreach (var item in (List<Course>)ViewBag.course)
+                            {
+                                <option value="@item.CourseID">@item.Code</option>
+                            }
+                        </select>
                     </div>
                     <div class="form-group">
                         <input type="submit" class="btn btn-danger" value="Delete" />
@@ -268,10 +287,10 @@
                 var fullUrl = getUserUrl + "/" + courseClassroomID;
 
                 $.get(fullUrl, function (data, status) {
-                    $("input#ClassroomID").val(data.classroomID);
-                    $("input#CourseID").val(data.courseID);
-                    $("input#InstructorID").val(data.instructorID);
-                    $("input#CourseClassroomID").val(data.courseClassroomID);
+                    $("select.ClassroomID").val(data.classroomID);
+                    $("select.CourseID").val(data.courseID);
+                    $("select.InstructorID").val(data.instructorID);
+                    $("input.CourseClassroomID").val(data.courseClassroomID);
                 });
 
             })

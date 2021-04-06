@@ -54,7 +54,7 @@
         <!-- /.card-header -->
         <div class="card-body">
             @ViewBag.searchCount results have been found from the search for "@ViewBag.search" in  <span class="badge badge-light">Floor</span><br />
-            @Html.ActionLink("Clear Search", "Index", "Floor", null, new { @class = "btn btn-sm btn-dedfault mt-2" })
+            @Html.ActionLink("Clear Search", "Index", "Floor", null, new { @class = "btn btn-sm btn-default mt-2" })
         </div>
         <!-- /.card-body -->
     </div>
@@ -70,6 +70,7 @@
             <tr>
                 <th style="width:6%">#.</th>
                 <th>Floor</th>
+                <th class="text-right" style="width:10%">İşlem</th>
             </tr>
         </thead>
         <tbody>

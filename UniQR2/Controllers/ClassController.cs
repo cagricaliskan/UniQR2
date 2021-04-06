@@ -22,9 +22,7 @@ namespace UniQR2.Controllers
 
         public IActionResult Index(int page = 1, string search = "")
         {
-            var courseclassroom = db.CourseClassrooms.Include(x => x.Instructor ).AsQueryable();
-            courseclassroom = db.CourseClassrooms.Include(n => n.Classroom).AsQueryable();
-            courseclassroom = db.CourseClassrooms.Include(z => z.Course).AsQueryable();
+            var courseclassroom = db.CourseClassrooms.AsQueryable();
             if(search != "")
             {
                 courseclassroom = db.CourseClassrooms.Where(x => x.Instructor.FullName.Contains(search) || x.Course.Code.Contains(search) || x.Classroom.Name.Contains(search) || x.Instructor.FullName.Contains(search));

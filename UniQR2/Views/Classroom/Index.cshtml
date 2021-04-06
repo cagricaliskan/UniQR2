@@ -56,7 +56,7 @@
         <!-- /.card-header -->
         <div class="card-body">
             @ViewBag.searchCount results have been found from the search for "@ViewBag.search" in <span class="badge badge-light">Class name</span> and <span class="badge badge-light">Floor</span><br />
-            @Html.ActionLink("Clear Search", "Index", "Classroom", null, new { @class = "btn btn-sm btn-dedfault mt-2" })
+            @Html.ActionLink("Clear Search", "Index", "Classroom", null, new { @class = "btn btn-sm btn-default mt-2" })
         </div>
         <!-- /.card-body -->
     </div>
@@ -75,6 +75,7 @@
                 <th style="width:6%">#.</th>
                 <th>Classroom Name</th>
                 <th>Floor</th>
+                <th class="text-right" style="width:10%">İşlem</th>
             </tr>
         </thead>
 
@@ -143,7 +144,7 @@
                     <div class="form-group">
                         <label for="Floor">Floor: </label>
                         <select class="form-control" name="FloorID">
-                            <option value="0"></option>
+                            <option value="">Select a floor...</option>
                             @foreach (var item in (List<Floor>)ViewBag.f)
                             {
                                 <option value="@item.FloorID">@item.FloorNum</option>
@@ -188,8 +189,8 @@
 
                     <div class="form-group">
                         <label for="Floor">Floor: </label>
-                        <select class="form-control" name="FloorID">
-                            <option name="FloodID" value="FloorID"></option>
+                        <select class="form-control floorSelect" name="FloorID">
+                            <option value="">Select a floor...</option>
                             @foreach (var item in (List<Floor>)ViewBag.f)
                             {
                                 <option value="@item.FloorID">@item.FloorNum</option>
@@ -233,7 +234,13 @@
 
                     <div class="form-group">
                         <label for="Floor">Floor: </label>
-                        <input type="text" id="FloorID" placeholder="Enter the classroom's floor" class="form-control" required readonly />
+                        <select class="form-control floorSelect" name="FloorID" disabled>
+                            <option value="">Select a floor...</option>
+                            @foreach (var item in (List<Floor>)ViewBag.f)
+                            {
+                                <option value="@item.FloorID">@item.FloorNum</option>
+                            }
+                        </select>
                     </div>
 
                     <div class="form-group">
@@ -263,7 +270,7 @@
 
                 $.get(fullUrl, function (data, status) {
                     $("input#Name").val(data.name);
-                    $("input#FloorID").val(data.floorID);
+                    $("select.floorSelect").val(data.floorID);
                     $("input#ClassroomID").val(data.classroomID);
                 });
 
