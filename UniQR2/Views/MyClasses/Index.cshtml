@@ -6,7 +6,6 @@
 }
 
 <button type="submit" class="btn btn-success" data-toggle="modal" data-target="#addClassroomModal">
-    
 </button>
 
 <form class="form-inline float-right" method="get">
@@ -114,8 +113,12 @@
                     <td>@item.Classroom.Name</td>
                     <td>
                     <td class="text-right">
-                        <button></button>
-                        <button></button>
+                        <button class="btn btn-sm btn-warning editBtn" data-toggle="modal" data-target="#editClassModal" data-id="@item.InstructorID">
+                            Edit
+                        </button>
+                        <button class=" btn btn-sm btn-danger editBtn" data-toggle="modal" data-target="#deleteClassModal" data-id="@item.InstructorID">
+                            Delete
+                        </button>
                     </td>
                 </tr>
             }
@@ -136,5 +139,75 @@
        })
         </div>
     </div>
-
 </div>
+
+<!--Edit-->
+<div class="modal fade" tabindex="-1" role="dialog" id="editClassModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit Class</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form asp-controller="MyClasses" asp-action="EditClass" method="post">
+                    <input type="hidden" class="InstructorID" id="InstructorID" name="InstructorID" />
+
+                    <div class="form-group">
+                        <label for="Course">Course:</label>
+                        <select class="form-control CourseID" name="CourseID">
+                            <option value="CourseID"></option>
+                            @foreach (var item in (List<Course>)ViewBag.course)
+                            {
+                                <option value="@item.CourseID">@item.Code</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Classroom">Classroom:</label>
+                        <select class="form-control ClassroomID" name="ClassroomID">
+                            <option value="ClassroomID"></option>
+                            @foreach (var item in (List<Classroom>)ViewBag.classroom)
+                            {
+                                <option value="@item.ClassroomID">@item.Name</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="submit" class="btn btn-success" value="Edit" />
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <i>
+                    Açıklama yazılacak
+                </i>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts{
+    <script type="text/javascript">
+        $(function () {
+            $(".editBtn").on("click", function () {
+                var courseClassroomID = $(this).data("id");
+                var getUserUrl = "@Url.Action("GetClass", "MyClasses", null, "http")";
+                var fullUrl = getUserUrl + "/" + courseClassroomID;
+
+                $.get(fullUrl, function (data, status) {
+                    $("select.ClassroomID").val(data.classroomID);
+                    $("select.CourseID").val(data.courseID);
+                    $("input.InstructorID").val(data.instructorID);
+                });
+
+            })
+        })
+    </script>
+}

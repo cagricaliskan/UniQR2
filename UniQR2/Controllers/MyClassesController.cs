@@ -1,11 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 using UniQR2.Models;
 using X.PagedList;
@@ -30,8 +25,7 @@ namespace UniQR2.Controllers
         public IActionResult Index(int page = 1, string search = "")
         {
 
-            var myclass = db.CourseClassrooms.Include(x => x.Course).AsQueryable();
-            myclass = db.CourseClassrooms.Include(n => n.Classroom).AsQueryable();
+            var myclass = db.CourseClassrooms.AsQueryable();
             
             if (search != "")
             {
@@ -48,6 +42,27 @@ namespace UniQR2.Controllers
             ViewBag.course = db.Courses.ToList();
 
             return View(myclass.ToPagedList(page,10));
+        }
+
+        public JsonResult GetClass(int id)
+        {
+            CourseClassroom c = db.CourseClassrooms.Select(x => new CourseClassroom { ClassroomID = x.ClassroomID, CourseClassroomID = x.CourseClassroomID, InstructorID = x.InstructorID, CourseID = x.CourseID }).FirstOrDefault(n => n.InstructorID == id);
+            return Json(c);
+        }
+
+        public async Task<IActionResult> EditClass (CourseClassroom classController)
+        {
+            CourseClassroom c = db.CourseClassrooms.FirstOrDefault(x => x.CourseClassroomID == classController.CourseClassroomID);
+            if (c != null)
+            {
+                c.CourseID = classController.CourseID;
+                c.ClassroomID = classController.ClassroomID;
+                if (ModelState.IsValid)
+                {
+                    await db.SaveChangesAsync();
+                }
+            }
+            return RedirectToAction("Index");
         }
     }
 }
