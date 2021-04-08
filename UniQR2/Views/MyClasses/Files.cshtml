@@ -1,0 +1,26 @@
+﻿
+@{
+    ViewData["Title"] = "Files";
+    Layout = "~/Views/Shared/AdminLTE/_Layout.cshtml";
+}
+
+@using (Html.BeginForm("Files", "MyClasses", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+
+    <div>
+        <input type="file" name="file" class="button" />
+        <br />
+        <br />
+
+        <input type="submit" value="Gönder" class="button" />
+    </div>
+
+    @if (TempData != null)
+    {
+        @TempData["result"]
+    }
+
+}
+
+<br />
+

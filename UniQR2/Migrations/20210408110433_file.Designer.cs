@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using UniQR2.Models;
 
 namespace UniQR2.Migrations
 {
     [DbContext(typeof(ModelContext))]
-    partial class ModelContextModelSnapshot : ModelSnapshot
+    [Migration("20210408110433_file")]
+    partial class file
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -136,9 +138,6 @@ namespace UniQR2.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<byte[]>("DataFile")
-                        .HasColumnType("varbinary(4000)");
-
                     b.Property<string>("FileName")
                         .HasColumnType("text");
 
@@ -245,7 +244,7 @@ namespace UniQR2.Migrations
                             FullName = "System Admin",
                             IsActive = true,
                             Password = "123123",
-                            ResetCodeExpire = new DateTime(2021, 4, 8, 16, 4, 28, 479, DateTimeKind.Local).AddTicks(2824),
+                            ResetCodeExpire = new DateTime(2021, 4, 8, 15, 4, 33, 454, DateTimeKind.Local).AddTicks(9171),
                             UserRole = 0
                         });
                 });

@@ -9,6 +9,7 @@ namespace UniQR2.Models
     {
 
         public int AttendanceListID { get; set; }
+        public string Name { get; set; }
 
         public DateTime StartDate { get; set; }
 

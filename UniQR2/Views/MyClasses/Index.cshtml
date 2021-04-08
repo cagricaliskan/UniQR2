@@ -117,16 +117,16 @@
                     <td>@item.Course.Code</td>
                     <td>@item.Classroom.Name</td>
                     <td class="text-right">
-                        <button class="btn btn-sm btn-warning editBtn" data-toggle="modal" data-target="#editClassModal" data-id="@item.InstructorID">
+                        <button class="btn btn-sm btn-warning editBtn" data-id="@item.InstructorID">
                             Öğrenciler
                         </button>
-                        <button class=" btn btn-sm btn-danger editBtn" data-toggle="modal" data-target="#deleteClassModal" data-id="@item.InstructorID">
-                            Dosyalar
-                        </button>
-                        <button class=" btn btn-sm btn-danger editBtn" data-toggle="modal" data-target="#deleteClassModal" data-id="@item.InstructorID">
+                        <a href="/MyClasses/Files" class="Button btn btn-sm btn-danger editBtn" data-id="@item.InstructorID">
+                        Dosyalar
+                        </a>
+                        <button class=" btn btn-sm btn-danger editBtn" data-id="@item.InstructorID">
                             Yoklamalar
                         </button>
-                        <button class=" btn btn-sm btn-success editBtn" data-toggle="modal" data-target="#deleteClassModal" data-id="@item.InstructorID">
+                        <button class=" btn btn-sm btn-success editBtn" data-id="@item.InstructorID">
                             Duyurular
                         </button>
                     </td>
@@ -138,15 +138,15 @@
     <div class="col-md-12">
         <div class="float-right">
             @Html.PagedListPager(Model, page => Url.Action("Index", new { page, search = ViewBag.search }), new PagedListRenderOptionsBase
-       {
-           LiElementClasses = new string[] { "page-item" },
-           PageClasses = new string[] { "page-link", "text-bold" },
-           DisplayLinkToFirstPage = PagedListDisplayMode.Always,
-           DisplayLinkToLastPage = PagedListDisplayMode.Always,
-           DisplayLinkToNextPage = PagedListDisplayMode.Always,
-           DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
-           DisplayLinkToIndividualPages = true
-       })
+            {
+            LiElementClasses = new string[] { "page-item" },
+            PageClasses = new string[] { "page-link", "text-bold" },
+            DisplayLinkToFirstPage = PagedListDisplayMode.Always,
+            DisplayLinkToLastPage = PagedListDisplayMode.Always,
+            DisplayLinkToNextPage = PagedListDisplayMode.Always,
+            DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
+            DisplayLinkToIndividualPages = true
+            })
         </div>
     </div>
 
