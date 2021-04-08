@@ -5,14 +5,17 @@
     Layout = "~/Views/Shared/AdminLTE/_Layout.cshtml";
 }
 
-<button type="submit" class="btn btn-success" data-toggle="modal" data-target="#addClassroomModal">
-    
-</button>
+
+@*<button type="submit" class="btn btn-success" data-toggle="modal" data-target="#addClassroomModal">
+    </button>*@
 
 <form class="form-inline float-right" method="get">
     <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="search" value="@ViewBag.search" />
     <button class="btn btn-primary" type="submit">Search</button>
 </form>
+
+
+<br clear="all" />
 
 @if (TempData["message"] != null)
 {
@@ -96,6 +99,7 @@
                 <th style="width:6%">#</th>
                 <th>Course</th>
                 <th>Class</th>
+                <th class="text-right" style="width:25%">İşlem</th>
             </tr>
         </thead>
 
@@ -112,10 +116,19 @@
                     <td>@counter</td>
                     <td>@item.Course.Code</td>
                     <td>@item.Classroom.Name</td>
-                    <td>
                     <td class="text-right">
-                        <button></button>
-                        <button></button>
+                        <button class="btn btn-sm btn-warning editBtn" data-toggle="modal" data-target="#editClassModal" data-id="@item.InstructorID">
+                            Öğrenciler
+                        </button>
+                        <button class=" btn btn-sm btn-danger editBtn" data-toggle="modal" data-target="#deleteClassModal" data-id="@item.InstructorID">
+                            Dosyalar
+                        </button>
+                        <button class=" btn btn-sm btn-danger editBtn" data-toggle="modal" data-target="#deleteClassModal" data-id="@item.InstructorID">
+                            Yoklamalar
+                        </button>
+                        <button class=" btn btn-sm btn-success editBtn" data-toggle="modal" data-target="#deleteClassModal" data-id="@item.InstructorID">
+                            Duyurular
+                        </button>
                     </td>
                 </tr>
             }
