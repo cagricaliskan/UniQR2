@@ -30,8 +30,7 @@ namespace UniQR2.Controllers
         public IActionResult Index(int page = 1, string search = "")
         {
 
-            var myclass = db.CourseClassrooms.Include(x => x.Course).AsQueryable();
-            myclass = db.CourseClassrooms.Include(n => n.Classroom).AsQueryable();
+            var myclass = db.CourseClassrooms.AsQueryable();
             
             if (search != "")
             {
