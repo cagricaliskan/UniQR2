@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace UniQR2.Models
 {
-    public class Files
+    public class File
     {
 
         [Key]
@@ -18,6 +18,6 @@ namespace UniQR2.Models
         
         public string FileType { get; set; }
 
-        public byte[] DataFile { get; set; }
+        public string DataPath { get; set; }
     }
 }

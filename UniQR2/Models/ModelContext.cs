@@ -22,7 +22,7 @@ namespace UniQR2.Models
         public DbSet<CourseStudentRel> CourseStudentRels { get; set; }
         public DbSet<Participation> Participations { get; set; }
         public DbSet<Floor> Floors { get; set; }
-        public DbSet<Files> Files { get; set; }
+        public DbSet<File> Files { get; set; }
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

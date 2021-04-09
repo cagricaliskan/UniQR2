@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -18,12 +19,13 @@ namespace UniQR2.Controllers
     public class MyClassesController : Controller
     {
         private readonly ModelContext db;
+        private readonly IWebHostEnvironment webHostEnvironment;
         
-        
-
-        public MyClassesController(ModelContext db)
+       
+        public MyClassesController(ModelContext db, IWebHostEnvironment webHostEnvironment)
         {
             this.db = db;
+            this.webHostEnvironment = webHostEnvironment;
             
         }
 
@@ -58,7 +60,10 @@ namespace UniQR2.Controllers
         [HttpPost]
         public IActionResult Files(IFormFile file)
         {
-            if(file != null || file.Length > 0)
+
+            string contentPath = webHostEnvironment.ContentRootPath;
+
+            if(file != null)
             {
                 //gettin file name
                 var fileName = Path.GetFileName(file.FileName);
@@ -69,22 +74,28 @@ namespace UniQR2.Controllers
                 // dosya ismi ile uzantı birliştirme
                 var newFileName = String.Concat(Convert.ToString(Guid.NewGuid()), fileType);
 
+                var dataPath = Path.Combine(contentPath, "UploadedFiles/", newFileName);
 
-                var objfile = new Files()
+                using (var stream = System.IO.File.Create(dataPath))
                 {
-                    FileName = newFileName,
-                    FileType = fileType
-                };
-
-                using (var target = new MemoryStream())
-                {
-                    file.CopyTo(target);
-                   
+                    file.CopyTo(stream);
                 }
 
+
+
+
+                    var objfile = new Models.File()
+                    {
+                        FileName = newFileName,
+                        FileType = fileType,
+                        DataPath = dataPath
+
+
+                    };
+               
                 db.Files.Add(objfile);
                 db.SaveChanges();
-
+                
                 TempData["result"] = "Uploaded successfully";
 
             }
