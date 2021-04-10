@@ -20,13 +20,13 @@ namespace UniQR2.Controllers
     {
         private readonly ModelContext db;
         private readonly IWebHostEnvironment webHostEnvironment;
-        
-       
+
+
         public MyClassesController(ModelContext db, IWebHostEnvironment webHostEnvironment)
         {
             this.db = db;
             this.webHostEnvironment = webHostEnvironment;
-            
+
         }
 
 
@@ -34,7 +34,7 @@ namespace UniQR2.Controllers
         {
 
             var myclass = db.CourseClassrooms.AsQueryable();
-            
+
             if (search != "")
             {
                 myclass = db.CourseClassrooms.Where(x => x.Course.Code.Contains(search) || x.Classroom.Name.Contains(search));
@@ -49,7 +49,7 @@ namespace UniQR2.Controllers
             ViewBag.classroom = db.Classrooms.ToList();
             ViewBag.course = db.Courses.ToList();
 
-            return View(myclass.ToPagedList(page,10));
+            return View(myclass.ToPagedList(page, 10));
         }
 
         public IActionResult Files()
@@ -63,7 +63,7 @@ namespace UniQR2.Controllers
 
             string contentPath = webHostEnvironment.ContentRootPath;
 
-            if(file != null)
+            if (file != null)
             {
                 //gettin file name
                 var fileName = Path.GetFileName(file.FileName);
@@ -84,23 +84,66 @@ namespace UniQR2.Controllers
 
 
 
-                    var objfile = new Models.File()
-                    {
-                        FileName = newFileName,
-                        FileType = fileType,
-                        DataPath = dataPath
+                var objfile = new Models.File()
+                {
+                    FileName = newFileName,
+                    FileType = fileType,
+                    DataPath = dataPath
 
 
-                    };
-               
+                };
+
                 db.Files.Add(objfile);
                 db.SaveChanges();
-                
+
                 TempData["result"] = "Uploaded successfully";
 
             }
             return View();
         }
-        
+
+        public IActionResult Attendance()
+        {
+
+            ViewBag.course = db.Courses.ToList();
+            return View();
+        }
+
+
+        [HttpPost]
+        public IActionResult Attendance(AttendanceList attendance)
+        {
+
+
+            if (attendance != null)
+            {
+                if (attendance.Repeat == true)
+                {
+                    for (int i = 1; i <= 14; i++)
+                    {
+                        ViewBag.name = i.ToString();
+
+                        var entry = new AttendanceList
+                        {
+                            Name = ViewBag.name + ". Hafta",
+                            StartDate = attendance.StartDate,
+                            EndDate = attendance.EndDate,
+                            CourseClassroomID = attendance.CourseClassroomID
+                        };
+
+                        db.AttendanceLists.Add(entry);
+                        db.SaveChanges();
+                    }
+                }
+                else
+                {
+                    db.AttendanceLists.Add(attendance);
+                    db.SaveChanges();
+                }
+
+            }
+            return View();
+        }
+
     }
 }

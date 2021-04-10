@@ -15,6 +15,8 @@ namespace UniQR2.Models
 
         public DateTime EndDate { get; set; }
 
+        public bool Repeat { get; set; }
+
 
         public int CourseClassroomID { get; set; }
         public virtual CourseClassroom CourseClassroom { get; set; }

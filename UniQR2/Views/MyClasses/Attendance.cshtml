@@ -1,0 +1,61 @@
+﻿@model IPagedList<UniQR2.Models.AttendanceList>
+
+@{
+    Layout = "~/Views/Shared/AdminLTE/_Layout.cshtml";
+}
+
+
+<h1>
+    Yoklamalar
+</h1>
+
+<button type="submit" class="btn btn-success" data-toggle="modal" data-target="#addFloorModal">
+    Yeni Yoklama Ekle
+</button>
+
+<!--ADD-->
+<div class="modal fade" tabindex="-1" role="dialog" id="addFloorModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Yeni Yoklama Ekle</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form asp-controller="MyClasses" asp-action="Attendance" method="post">
+
+                    <div class="form-group">
+                        <label for="StartDate">Start date </label>
+                        <input type="text" id="StartDate" name="StartDate" placeholder="Enter the start date" class="form-control hasDatepicker" textmode="Date" required />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="EndDate">End date </label>
+                        <input type="text" id="EndDate" name="EndDate" placeholder="Enter the end date" class="form-control" required />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="CourseClassroomId">Course </label>
+                        <input type="text" id="CourseClassroomId" name="CourseClassroomId" placeholder="Course" class="form-control" required />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Repeat">Repeat </label>
+                        <input type="checkbox" name="Repeat" class="form-control" value="true" />
+                    </div>
+
+                    <div class="form-group">
+                        <input type="submit" class="btn btn-success" />
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <i>
+                    Açıklama yazılacak
+                </i>
+            </div>
+        </div>
+    </div>
+</div>
