@@ -102,11 +102,23 @@ namespace UniQR2.Controllers
             return View();
         }
 
-        public IActionResult Attendance()
+        public IActionResult Attendance(int page = 1, string search = "")
         {
 
-            ViewBag.course = db.Courses.ToList();
-            return View();
+            var attendance = db.AttendanceLists.AsQueryable();
+
+            if (search != "")
+            {
+                attendance= db.AttendanceLists.Where(x => x.Name.Contains(search));
+
+                ViewBag.search = search;
+                ViewBag.count = attendance.Count();
+            }
+
+            attendance = attendance.OrderBy(n => n.AttendanceListID);
+            ViewBag.page = page;
+
+            return View(attendance.ToPagedList(page, 10));
         }
 
 
