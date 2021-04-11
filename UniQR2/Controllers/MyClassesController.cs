@@ -119,14 +119,27 @@ namespace UniQR2.Controllers
             {
                 if (attendance.Repeat == true)
                 {
-                    for (int i = 1; i <= 14; i++)
+                    var week1 = new AttendanceList
+                    {
+                        Name = "1. Hafta",
+                        StartDate = attendance.StartDate,
+                        EndDate = attendance.EndDate,
+                        CourseClassroomID = attendance.CourseClassroomID
+                    };
+
+                    db.AttendanceLists.Add(week1);
+                    db.SaveChanges();
+
+                    for (int i = 2; i <= 14; i++)
                     {
                         ViewBag.name = i.ToString();
+                        DateTime nextweek = attendance.StartDate.AddDays(7 *(i-1));
+                        
 
                         var entry = new AttendanceList
                         {
                             Name = ViewBag.name + ". Hafta",
-                            StartDate = attendance.StartDate,
+                            StartDate = nextweek,
                             EndDate = attendance.EndDate,
                             CourseClassroomID = attendance.CourseClassroomID
                         };
