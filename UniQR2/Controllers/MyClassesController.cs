@@ -118,7 +118,7 @@ namespace UniQR2.Controllers
             attendance = attendance.OrderBy(n => n.AttendanceListID);
             ViewBag.page = page;
 
-            return View(attendance.ToPagedList(page, 10));
+            return View(attendance.ToPagedList(page, 20));
         }
 
 
