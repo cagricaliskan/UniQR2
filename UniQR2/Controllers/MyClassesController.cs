@@ -52,8 +52,9 @@ namespace UniQR2.Controllers
             return View(myclass.ToPagedList(page, 10));
         }
 
-        public IActionResult Files()
+        public IActionResult Files(int courseId)
         {
+            ViewBag.courseId = courseId;
             return View();
         }
 
@@ -102,10 +103,13 @@ namespace UniQR2.Controllers
             return View();
         }
 
-        public IActionResult Attendance(int page = 1, string search = "")
+        public IActionResult Attendance(int? courseId, int page = 1, string search = "")
         {
-
-            var attendance = db.AttendanceLists.AsQueryable();
+            if(courseId == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            var attendance = db.AttendanceLists.Where(n => n.CourseClassroomID == courseId).AsQueryable();
 
             if (search != "")
             {
@@ -117,6 +121,7 @@ namespace UniQR2.Controllers
 
             attendance = attendance.OrderBy(n => n.AttendanceListID);
             ViewBag.page = page;
+            ViewBag.courseId = courseId;
 
             return View(attendance.ToPagedList(page, 20));
         }
@@ -167,7 +172,7 @@ namespace UniQR2.Controllers
                 }
 
             }
-            return View();
+            return RedirectToAction("Attendance", new { courseId = attendance.CourseClassroomID});
         }
 
     }
