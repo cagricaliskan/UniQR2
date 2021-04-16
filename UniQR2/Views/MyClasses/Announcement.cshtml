@@ -1,0 +1,42 @@
+﻿
+@{
+    ViewData["Title"] = "Announcements";
+    Layout = "~/Views/Shared/AdminLTE/_Layout.cshtml";
+}
+
+
+<button type="submit" class="btn btn-success" data-toggle="modal" data-target="#addAnnouncementModal">
+    Add a new announcement
+</button>
+
+
+<!--ADD-->
+<div class="modal fade" tabindex="-1" role="dialog" id="addAnnouncementModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add a new announcement</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form asp-controller="MyClasses" asp-action="Announcement" method="post">
+                    <input type="hidden" name="CourseClassroomId" value="@ViewBag.courseId" />
+                    <div class="form-group">
+                        <label for="Message">Enter the text: </label>
+                        <textarea class="form-control" id="Message" name="Message" rows="3" placeholder="Enter your text" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" class="btn btn-success" />
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <i>
+                    Açıklama yazılacak
+                </i>
+            </div>
+        </div>
+    </div>
+</div>

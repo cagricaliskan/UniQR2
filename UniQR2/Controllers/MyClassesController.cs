@@ -167,7 +167,15 @@ namespace UniQR2.Controllers
                 }
                 else
                 {
-                    db.AttendanceLists.Add(attendance);
+                    var week1 = new AttendanceList
+                    {
+                        Name = "1. Hafta",
+                        StartDate = attendance.StartDate,
+                        EndDate = attendance.EndDate,
+                        CourseClassroomID = attendance.CourseClassroomID
+                    };
+
+                    db.AttendanceLists.Add(week1);
                     db.SaveChanges();
                 }
 
@@ -177,8 +185,18 @@ namespace UniQR2.Controllers
 
         public IActionResult Announcement(int? courseId)
         {
-
+            if (courseId == null)
+            {
+                return RedirectToAction("Index", "MyClasses");
+            }
             ViewBag.courseId = courseId;
+            return View();
+        }
+
+
+        [HttpPost]
+        public IActionResult Announcement()
+        {
             return View();
         }
 
