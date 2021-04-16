@@ -175,5 +175,12 @@ namespace UniQR2.Controllers
             return RedirectToAction("Attendance", new { courseId = attendance.CourseClassroomID});
         }
 
+        public IActionResult Announcement(int? courseId)
+        {
+
+            ViewBag.courseId = courseId;
+            return View();
+        }
+
     }
 }
