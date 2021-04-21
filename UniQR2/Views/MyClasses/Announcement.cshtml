@@ -1,4 +1,4 @@
-﻿
+﻿@model PagedList<UniQR2.Models.Announcement>
 @{
     ViewData["Title"] = "Announcements";
     Layout = "~/Views/Shared/AdminLTE/_Layout.cshtml";
@@ -9,6 +9,109 @@
     Add a new announcement
 </button>
 
+<form class="form-inline float-right" method="get">
+    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="search" value="@ViewBag.search" />
+    <button class="btn btn-primary" type="submit">Search</button>
+</form>
+
+@if (TempData["message"] != null)
+{
+    NotificationViewModel message = NotificationViewModel.GetNotificationFromJson(TempData["message"].ToString());
+
+    <div class="mt-4 card margin-bottom-top bg-gradient-@message.NotificationType.ToString()">
+        <div class="card-header">
+            <h3 class="card-title">@message.Title</h3>
+
+            <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="remove">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <!-- /.card-tools -->
+        </div>
+
+        <!-- /.card-header -->
+        <div class="card-body">
+            @message.Content
+        </div>
+        <!-- /.card-body -->
+
+    </div>
+}
+
+@if (ViewBag.search != null)
+{
+    <div class="mt-4 card margin-top bg-gradient-info">
+        <div class="card-header">
+            <h3 class="card-title"></h3>
+
+            <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="remove">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <!-- /.card-tools -->
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body">
+            @ViewBag.searchCount results have been found from the search for "@ViewBag.search" in <span class="badge badge-light">Header</span><br />
+            @Html.ActionLink("Clear Search", "Announcement", "MyClasses", null, new { @class = "btn btn-sm btn-default mt-2" })
+        </div>
+        <!-- /.card-body -->
+    </div>
+}
+
+<div class="card card-success mt-4">
+    <div class="card-header">
+        <b>Attendance List</b>
+    </div>
+
+    <table class="table table-hover table-bordered table-striped">
+        <thead>
+        <th style="width:6%">#</th>
+        <th>Header</th>
+        <th class="text-right" style="width:20%">Action</th>
+        </thead>
+
+        <tbody>
+            @{
+                int page = ((int)ViewBag.page);
+                int counter = (page - 1) * 10;
+            }
+
+
+            @foreach (var item in Model)
+            {
+                counter++;
+                <tr>
+                    <td>@counter</td>
+                    <td>@item.Header</td>
+                    <td class="text-right">
+                        <button class="btn btn-sm btn-warning editBtn" data-toggle="modal" data-target="#editAnnouncementModal" data-id="@item.AnnouncementID">
+                            Edit
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <div class="col-md-12">
+        <div class="float-right">
+            @Html.PagedListPager(Model, page => Url.Action("Index", new { page, search = ViewBag.search }), new PagedListRenderOptionsBase
+       {
+           LiElementClasses = new string[] { "page-item" },
+           PageClasses = new string[] { "page-link", "text-bold" },
+           DisplayLinkToFirstPage = PagedListDisplayMode.Always,
+           DisplayLinkToLastPage = PagedListDisplayMode.Always,
+           DisplayLinkToNextPage = PagedListDisplayMode.Always,
+           DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
+           DisplayLinkToIndividualPages = true
+       })
+        </div>
+    </div>
+
+</div>
 
 <!--ADD-->
 <div class="modal fade" tabindex="-1" role="dialog" id="addAnnouncementModal">
@@ -24,7 +127,12 @@
                 <form asp-controller="MyClasses" asp-action="Announcement" method="post">
                     <input type="hidden" name="CourseClassroomId" value="@ViewBag.courseId" />
                     <div class="form-group">
-                        <label for="Message">Enter the text: </label>
+                        <label for="Header">Header:</label>
+                        <input type="text" class="form-control" id="Header" name="Header" rows="3" placeholder="Enter your header" required></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Message">Text </label>
                         <textarea class="form-control" id="Message" name="Message" rows="3" placeholder="Enter your text" required></textarea>
                     </div>
                     <div class="form-group">
@@ -40,3 +148,64 @@
         </div>
     </div>
 </div>
+
+<!--EDIT-->
+<div class="modal fade" tabindex="-1" role="dialog" id="editAnnouncementModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit course</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form asp-controller="MyClasses" asp-action="EditAnnouncement" method="post">
+                    <input type="hidden" name="AnnouncementID" id="AnnouncementID" />
+                    <div class="form-group">
+                        <label for="Header">Header:</label>
+                        <input type="text" class="form-control" id="Header" name="Header" rows="3" placeholder="Enter your header" required></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Message">Text </label>
+                        <textarea class="form-control" id="Message" name="Message" rows="3" placeholder="Enter your text" required></textarea>
+                    </div>
+
+                   
+                    <div class="form-group">
+                        <input type="submit" class="btn btn-success" value="Edit" />
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <i>
+                    Açıklama yazılacak
+                </i>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    @section Scripts{
+
+        <script type="text/javascript">
+        $(function () {
+            $(".editBtn").on("click", function () {
+                var annId = $(this).data("id");
+                var getUrl = "@Url.Action("GetAnnouncement", "MyClasses", null, "http")";
+                var fullUrl = getUrl + "/" + annId;
+
+                $.get(fullUrl, function (data, status) {
+                    $("input#Header").val(data.header);
+                    $("input#Message").val(data.message);
+                    $("input#AnnouncementID").val(data.announcementID);
+                });
+
+            })
+        })
+        </script>
+
+    }

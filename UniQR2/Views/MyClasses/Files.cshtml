@@ -1,11 +1,11 @@
-﻿
+﻿@model UniQR2.Models.File
+
 @{
     ViewData["Title"] = "Files";
     Layout = "~/Views/Shared/AdminLTE/_Layout.cshtml";
 }
 
-@using (Html.BeginForm("Files", "MyClasses", FormMethod.Post, new { enctype = "multipart/form-data" }))
-{
+<form asp-controller="MyClasses" asp-action="Files" method="post" enctype="multipart/form-data">
 
     <div>
         <input type="hidden" name="CourseClassroomId" value="@ViewBag.courseId" />
@@ -21,7 +21,7 @@
         @TempData["result"]
     }
 
-}
+</form>
 
 <br />
 
