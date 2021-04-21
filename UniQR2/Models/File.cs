@@ -19,5 +19,10 @@ namespace UniQR2.Models
         public string FileType { get; set; }
 
         public string DataPath { get; set; }
+
+
+        public int CourseClassroomID { get; set; }
+        public virtual CourseClassroom CourseClassroom { get; set; }
+
     }
 }

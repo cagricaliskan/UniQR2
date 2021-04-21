@@ -2,42 +2,22 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using UniQR2.Models;
 
 namespace UniQR2.Migrations
 {
     [DbContext(typeof(ModelContext))]
-    partial class ModelContextModelSnapshot : ModelSnapshot
+    [Migration("20210421123007_fileupd")]
+    partial class fileupd
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "3.1.10")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
-
-            modelBuilder.Entity("UniQR2.Models.Announcement", b =>
-                {
-                    b.Property<int>("AnnouncementID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<int>("CourseClassroomID")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Header")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Message")
-                        .HasColumnType("text");
-
-                    b.HasKey("AnnouncementID");
-
-                    b.HasIndex("CourseClassroomID");
-
-                    b.ToTable("Announcement");
-                });
 
             modelBuilder.Entity("UniQR2.Models.AttendanceList", b =>
                 {
@@ -275,18 +255,9 @@ namespace UniQR2.Migrations
                             FullName = "System Admin",
                             IsActive = true,
                             Password = "123123",
-                            ResetCodeExpire = new DateTime(2021, 4, 21, 17, 6, 33, 946, DateTimeKind.Local).AddTicks(5499),
+                            ResetCodeExpire = new DateTime(2021, 4, 21, 16, 30, 7, 156, DateTimeKind.Local).AddTicks(610),
                             UserRole = 0
                         });
-                });
-
-            modelBuilder.Entity("UniQR2.Models.Announcement", b =>
-                {
-                    b.HasOne("UniQR2.Models.CourseClassroom", "CourseClassroom")
-                        .WithMany("Announcements")
-                        .HasForeignKey("CourseClassroomID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("UniQR2.Models.AttendanceList", b =>

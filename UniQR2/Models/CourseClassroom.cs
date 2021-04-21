@@ -26,6 +26,8 @@ namespace UniQR2.Models
 
         public virtual ICollection<CourseStudentRel> CourseStudentRels { get; set; }
         public virtual ICollection<AttendanceList> AttendanceLists { get; set; }
+        public virtual ICollection<File> Files{ get; set; }
+        public virtual ICollection<Announcement> Announcements { get; set; }
 
     }
 }

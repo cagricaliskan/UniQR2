@@ -23,6 +23,7 @@ namespace UniQR2.Models
         public DbSet<Participation> Participations { get; set; }
         public DbSet<Floor> Floors { get; set; }
         public DbSet<File> Files { get; set; }
+        public DbSet<Announcement> Announcements { get; set; }
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
