@@ -52,16 +52,22 @@ namespace UniQR2.Controllers
             return View(myclass.ToPagedList(page, 10));
         }
 
-        public IActionResult Files(int courseId)
+        public JsonResult GetAnnouncement(int id)
         {
+            Announcement ann = db.Announcements.Select(x => new Announcement { AnnouncementID = x.AnnouncementID, Header = x.Header, Message = x.Message }).FirstOrDefault(n => n.AnnouncementID == id);
+            return Json(ann);
+        }
+
+        public IActionResult Files(int? courseId)
+        {
+           
             ViewBag.courseId = courseId;
             return View();
         }
 
         [HttpPost]
-        public IActionResult Files(IFormFile file)
+        public IActionResult Files(IFormFile file, Models.File f)
         {
-
             string contentPath = webHostEnvironment.ContentRootPath;
 
             if (file != null)
@@ -83,15 +89,12 @@ namespace UniQR2.Controllers
                 }
 
 
-
-
                 var objfile = new Models.File()
                 {
                     FileName = newFileName,
                     FileType = fileType,
-                    DataPath = dataPath
-
-
+                    DataPath = dataPath,
+                    CourseClassroomID = f.CourseClassroomID                               
                 };
 
                 db.Files.Add(objfile);
@@ -183,21 +186,58 @@ namespace UniQR2.Controllers
             return RedirectToAction("Attendance", new { courseId = attendance.CourseClassroomID});
         }
 
-        public IActionResult Announcement(int? courseId)
+        public IActionResult Announcement(int? courseId, int page = 1, string search = "")
         {
             if (courseId == null)
             {
                 return RedirectToAction("Index", "MyClasses");
             }
+
+            var announcement = db.Announcements.Where(n => n.CourseClassroomID == courseId).AsQueryable();
+
+            if (search != "")
+            {
+                announcement = db.Announcements.Where(x => x.Header.Contains(search) || x.Message.Contains(search));
+
+                ViewBag.search = search;
+                ViewBag.count = announcement.Count();
+            }
+            announcement = announcement.OrderByDescending(n => n.AnnouncementID);
+            ViewBag.page = page;
             ViewBag.courseId = courseId;
-            return View();
+            return View(announcement.ToPagedList(page, 20));
         }
 
 
         [HttpPost]
-        public IActionResult Announcement()
+        public IActionResult Announcement(Announcement ann)
         {
-            return View();
+
+            if(ann != null)
+            {
+                db.Announcements.Add(ann);
+                db.SaveChanges();
+            }
+            return View("Index", "MyClasses");
+        }
+
+        [HttpPost]
+        public IActionResult EditAnnouncement(Announcement announcement)
+        {
+            var ann = db.Announcements.FirstOrDefault(x => x.AnnouncementID == announcement.AnnouncementID);
+
+            if(ann != null)
+            {
+                ann.Header = announcement.Header;
+                ann.Message = announcement.Message;
+
+                if (ModelState.IsValid)
+                {
+                    db.SaveChanges();
+                }
+            }
+
+            return View("Announcement", "MyClasses");
         }
 
     }
