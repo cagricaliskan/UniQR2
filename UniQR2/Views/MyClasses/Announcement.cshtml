@@ -90,6 +90,9 @@
                         <button class="btn btn-sm btn-warning editBtn" data-toggle="modal" data-target="#editAnnouncementModal" data-id="@item.AnnouncementID">
                             Edit
                         </button>
+                        <button class="btn btn-sm btn-danger editBtn" data-toggle="modal" data-target="#deleteAnnouncementModal" data-id="@item.AnnouncementID">
+                            Delete
+                        </button>
                     </td>
                 </tr>
             }
@@ -128,12 +131,12 @@
                     <input type="hidden" name="CourseClassroomId" value="@ViewBag.courseId" />
                     <div class="form-group">
                         <label for="Header">Header:</label>
-                        <input type="text" class="form-control" id="Header" name="Header" rows="3" placeholder="Enter your header" required></input>
+                        <input type="text" class="form-control" name="Header" rows="3" placeholder="Enter your header" required></input>
                     </div>
 
                     <div class="form-group">
                         <label for="Message">Text </label>
-                        <textarea class="form-control" id="Message" name="Message" rows="3" placeholder="Enter your text" required></textarea>
+                        <textarea class="form-control" name="Message" rows="3" placeholder="Enter your text" required></textarea>
                     </div>
                     <div class="form-group">
                         <input type="submit" class="btn btn-success" />
@@ -154,7 +157,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Edit course</h5>
+                <h5 class="modal-title">Edit announcement</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -172,7 +175,7 @@
                         <textarea class="form-control" id="Message" name="Message" rows="3" placeholder="Enter your text" required></textarea>
                     </div>
 
-                   
+
                     <div class="form-group">
                         <input type="submit" class="btn btn-success" value="Edit" />
                     </div>
@@ -185,8 +188,46 @@
             </div>
         </div>
     </div>
+</div>
 
 
+<!--DELETE-->
+<div class="modal fade" tabindex="-1" role="dialog" id="deleteAnnouncementModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Delete announcement</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form asp-controller="MyClasses" asp-action="DeleteAnnouncement" method="post">
+                    <input type="hidden" name="id" id="AnnouncementID" />
+                    <div class="form-group">
+                        <label for="Header">Header:</label>
+                        <input type="text" class="form-control" id="Header" name="Header" rows="3" placeholder="Enter your header" required readonly></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Message">Text </label>
+                        <textarea class="form-control" id="Message" name="Message" rows="3" placeholder="Enter your text" required readonly></textarea>
+                    </div>
+
+
+                    <div class="form-group">
+                        <input type="submit" class="btn btn-success" value="Edit" />
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <i>
+                    Açıklama yazılacak
+                </i>
+            </div>
+        </div>
+    </div>
+</div>
 
 
     @section Scripts{
@@ -200,7 +241,7 @@
 
                 $.get(fullUrl, function (data, status) {
                     $("input#Header").val(data.header);
-                    $("input#Message").val(data.message);
+                    $("textarea#Message").val(data.message);
                     $("input#AnnouncementID").val(data.announcementID);
                 });
 

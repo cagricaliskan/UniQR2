@@ -240,5 +240,19 @@ namespace UniQR2.Controllers
             return View("Announcement", "MyClasses");
         }
 
+
+        [HttpPost]
+        public IActionResult DeleteAnnouncement(int? id)
+        {
+            var ann = db.Announcements.FirstOrDefault(x => x.AnnouncementID == id);
+
+            if(ann != null)
+            {
+                db.Remove(ann);
+                db.SaveChanges();
+            }
+            return View("Announcement", "MyClasses");
+        }
+
     }
 }
