@@ -90,7 +90,7 @@
                 <tr>
                     <td>@counter</td>
                     <td>@item.Name</td>
-                    <td>@item.StartDate</td>
+                    <td>@item.StartDate.ToShortDateString()</td>
                     <td class="text-right">
                         <button class="btn btn-sm btn-warning editBtn" data-toggle="modal" data-target="#editAttendanceModal" data-id="@item.AttendanceListID">
                             Edit
