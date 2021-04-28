@@ -65,7 +65,11 @@
 
                 <tr>
                     <td>@counter</td>
-                    <td>@item.DataPath</td>
+                    <td>
+                    <a href="~/DownloadFile/DownloadFile/?fileName=@item.DataPath">
+                        @item.FileName
+                    </a>
+                    </td>
                     <td class="text-right">
                         <button class="btn btn-danger btn-sm removeBtn" data-toggle="modal" data-target="#removeFileBtn" data-id="@item.FileID">Remove File</button>
                     </td>

@@ -93,7 +93,7 @@ namespace UniQR2.Controllers
 
                 var objfile = new Models.File()
                 {
-                    FileName = newFileName,
+                    FileName = fileName,
                     FileType = fileType,
                     DataPath = newFileName,
                     CourseClassroomID = f.CourseClassroomID
