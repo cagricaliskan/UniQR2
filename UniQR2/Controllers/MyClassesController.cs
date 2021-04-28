@@ -11,6 +11,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using UniQR2.Models;
+using UniQR2.ViewModels;
 using X.PagedList;
 
 namespace UniQR2.Controllers
@@ -60,9 +61,10 @@ namespace UniQR2.Controllers
 
         public IActionResult Files(int? courseId)
         {
-           
+            if (courseId == null)
+                return RedirectToAction("Index");
             ViewBag.courseId = courseId;
-            return View();
+            return View(db.Files.Where(n => n.CourseClassroomID == courseId).ToList());
         }
 
         [HttpPost]
@@ -93,22 +95,27 @@ namespace UniQR2.Controllers
                 {
                     FileName = newFileName,
                     FileType = fileType,
-                    DataPath = dataPath,
-                    CourseClassroomID = f.CourseClassroomID                               
+                    DataPath = newFileName,
+                    CourseClassroomID = f.CourseClassroomID
                 };
 
                 db.Files.Add(objfile);
                 db.SaveChanges();
 
-                TempData["result"] = "Uploaded successfully";
+                TempData["message"] = new NotificationViewModel
+                {
+                    Title = "Success!",
+                    Content = "File is uploaded",
+                    NotificationType = NotificationType.success
+                }.SerializeNotification();
 
             }
-            return View();
+            return RedirectToAction("Files", new { courseId = f.CourseClassroomID });
         }
 
         public IActionResult Attendance(int? courseId, int page = 1, string search = "")
         {
-            if(courseId == null)
+            if (courseId == null)
             {
                 return RedirectToAction("Index", "Home");
             }
@@ -116,7 +123,7 @@ namespace UniQR2.Controllers
 
             if (search != "")
             {
-                attendance= db.AttendanceLists.Where(x => x.Name.Contains(search));
+                attendance = db.AttendanceLists.Where(x => x.Name.Contains(search));
 
                 ViewBag.search = search;
                 ViewBag.count = attendance.Count();
@@ -153,8 +160,8 @@ namespace UniQR2.Controllers
                     for (int i = 2; i <= 14; i++)
                     {
                         ViewBag.name = i.ToString();
-                        DateTime nextweek = attendance.StartDate.AddDays(7 *(i-1));
-                        
+                        DateTime nextweek = attendance.StartDate.AddDays(7 * (i - 1));
+
 
                         var entry = new AttendanceList
                         {
@@ -183,7 +190,7 @@ namespace UniQR2.Controllers
                 }
 
             }
-            return RedirectToAction("Attendance", new { courseId = attendance.CourseClassroomID});
+            return RedirectToAction("Attendance", new { courseId = attendance.CourseClassroomID });
         }
 
         public IActionResult Announcement(int? courseId, int page = 1, string search = "")
@@ -213,7 +220,7 @@ namespace UniQR2.Controllers
         public IActionResult Announcement(Announcement ann)
         {
 
-            if(ann != null)
+            if (ann != null)
             {
                 db.Announcements.Add(ann);
                 db.SaveChanges();
@@ -226,7 +233,7 @@ namespace UniQR2.Controllers
         {
             var ann = db.Announcements.FirstOrDefault(x => x.AnnouncementID == announcement.AnnouncementID);
 
-            if(ann != null)
+            if (ann != null)
             {
                 ann.Header = announcement.Header;
                 ann.Message = announcement.Message;
@@ -246,7 +253,7 @@ namespace UniQR2.Controllers
         {
             var ann = db.Announcements.FirstOrDefault(x => x.AnnouncementID == id);
 
-            if(ann != null)
+            if (ann != null)
             {
                 db.Remove(ann);
                 db.SaveChanges();
