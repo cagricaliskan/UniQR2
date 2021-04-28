@@ -9,8 +9,8 @@ using UniQR2.Models;
 namespace UniQR2.Migrations
 {
     [DbContext(typeof(ModelContext))]
-    [Migration("20210408110433_file")]
-    partial class file
+    [Migration("20210428032428_MigrationHistoryCleared")]
+    partial class MigrationHistoryCleared
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -18,6 +18,28 @@ namespace UniQR2.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "3.1.10")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
+
+            modelBuilder.Entity("UniQR2.Models.Announcement", b =>
+                {
+                    b.Property<int>("AnnouncementID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<int>("CourseClassroomID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Header")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Message")
+                        .HasColumnType("text");
+
+                    b.HasKey("AnnouncementID");
+
+                    b.HasIndex("CourseClassroomID");
+
+                    b.ToTable("Announcements");
+                });
 
             modelBuilder.Entity("UniQR2.Models.AttendanceList", b =>
                 {
@@ -33,6 +55,9 @@ namespace UniQR2.Migrations
 
                     b.Property<string>("Name")
                         .HasColumnType("text");
+
+                    b.Property<bool>("Repeat")
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime");
@@ -132,11 +157,17 @@ namespace UniQR2.Migrations
                     b.ToTable("CourseStudentRels");
                 });
 
-            modelBuilder.Entity("UniQR2.Models.Files", b =>
+            modelBuilder.Entity("UniQR2.Models.File", b =>
                 {
                     b.Property<int>("FileID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    b.Property<int>("CourseClassroomID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("DataPath")
+                        .HasColumnType("text");
 
                     b.Property<string>("FileName")
                         .HasColumnType("text");
@@ -145,6 +176,8 @@ namespace UniQR2.Migrations
                         .HasColumnType("text");
 
                     b.HasKey("FileID");
+
+                    b.HasIndex("CourseClassroomID");
 
                     b.ToTable("Files");
                 });
@@ -193,10 +226,16 @@ namespace UniQR2.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    b.Property<string>("Email")
+                        .HasColumnType("text");
+
                     b.Property<string>("Fullname")
                         .HasColumnType("text");
 
                     b.Property<string>("Number")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Password")
                         .HasColumnType("text");
 
                     b.HasKey("StudentID");
@@ -244,9 +283,18 @@ namespace UniQR2.Migrations
                             FullName = "System Admin",
                             IsActive = true,
                             Password = "123123",
-                            ResetCodeExpire = new DateTime(2021, 4, 8, 15, 4, 33, 454, DateTimeKind.Local).AddTicks(9171),
+                            ResetCodeExpire = new DateTime(2021, 4, 28, 7, 24, 28, 100, DateTimeKind.Local).AddTicks(9300),
                             UserRole = 0
                         });
+                });
+
+            modelBuilder.Entity("UniQR2.Models.Announcement", b =>
+                {
+                    b.HasOne("UniQR2.Models.CourseClassroom", "CourseClassroom")
+                        .WithMany("Announcements")
+                        .HasForeignKey("CourseClassroomID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("UniQR2.Models.AttendanceList", b =>
@@ -297,6 +345,15 @@ namespace UniQR2.Migrations
                     b.HasOne("UniQR2.Models.Student", "Student")
                         .WithMany("CourseStudentRels")
                         .HasForeignKey("StudentID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("UniQR2.Models.File", b =>
+                {
+                    b.HasOne("UniQR2.Models.CourseClassroom", "CourseClassroom")
+                        .WithMany("Files")
+                        .HasForeignKey("CourseClassroomID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

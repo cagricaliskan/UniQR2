@@ -4,7 +4,7 @@ using MySql.Data.EntityFrameworkCore.Metadata;
 
 namespace UniQR2.Migrations
 {
-    public partial class init : Migration
+    public partial class MigrationHistoryCleared : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -42,7 +42,9 @@ namespace UniQR2.Migrations
                     StudentID = table.Column<int>(nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
                     Fullname = table.Column<string>(nullable: true),
-                    Number = table.Column<string>(nullable: true)
+                    Number = table.Column<string>(nullable: true),
+                    Email = table.Column<string>(nullable: true),
+                    Password = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -122,13 +124,36 @@ namespace UniQR2.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Announcements",
+                columns: table => new
+                {
+                    AnnouncementID = table.Column<int>(nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    Header = table.Column<string>(nullable: true),
+                    Message = table.Column<string>(nullable: true),
+                    CourseClassroomID = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Announcements", x => x.AnnouncementID);
+                    table.ForeignKey(
+                        name: "FK_Announcements_CourseClassrooms_CourseClassroomID",
+                        column: x => x.CourseClassroomID,
+                        principalTable: "CourseClassrooms",
+                        principalColumn: "CourseClassroomID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AttendanceLists",
                 columns: table => new
                 {
                     AttendanceListID = table.Column<int>(nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(nullable: true),
                     StartDate = table.Column<DateTime>(nullable: false),
                     EndDate = table.Column<DateTime>(nullable: false),
+                    Repeat = table.Column<bool>(nullable: false),
                     CourseClassroomID = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
@@ -170,6 +195,28 @@ namespace UniQR2.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Files",
+                columns: table => new
+                {
+                    FileID = table.Column<int>(nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    FileName = table.Column<string>(nullable: true),
+                    FileType = table.Column<string>(nullable: true),
+                    DataPath = table.Column<string>(nullable: true),
+                    CourseClassroomID = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Files", x => x.FileID);
+                    table.ForeignKey(
+                        name: "FK_Files_CourseClassrooms_CourseClassroomID",
+                        column: x => x.CourseClassroomID,
+                        principalTable: "CourseClassrooms",
+                        principalColumn: "CourseClassroomID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Participations",
                 columns: table => new
                 {
@@ -199,7 +246,12 @@ namespace UniQR2.Migrations
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "UserID", "Email", "FullName", "IsActive", "Password", "ResetCode", "ResetCodeExpire", "UserRole" },
-                values: new object[] { 1, "kamren2@ethereal.email", "System Admin", true, "123123", null, new DateTime(2021, 3, 14, 18, 32, 48, 695, DateTimeKind.Local).AddTicks(1634), 0 });
+                values: new object[] { 1, "kamren2@ethereal.email", "System Admin", true, "123123", null, new DateTime(2021, 4, 28, 7, 24, 28, 100, DateTimeKind.Local).AddTicks(9300), 0 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Announcements_CourseClassroomID",
+                table: "Announcements",
+                column: "CourseClassroomID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AttendanceLists_CourseClassroomID",
@@ -237,6 +289,11 @@ namespace UniQR2.Migrations
                 column: "StudentID");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Files_CourseClassroomID",
+                table: "Files",
+                column: "CourseClassroomID");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Participations_AttendanceListID",
                 table: "Participations",
                 column: "AttendanceListID");
@@ -250,7 +307,13 @@ namespace UniQR2.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "Announcements");
+
+            migrationBuilder.DropTable(
                 name: "CourseStudentRels");
+
+            migrationBuilder.DropTable(
+                name: "Files");
 
             migrationBuilder.DropTable(
                 name: "Participations");

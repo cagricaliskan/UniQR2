@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -12,6 +13,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using System;
 using UniQR2.Extensions;
+using UniQR2.Middlewares;
 using UniQR2.Models;
 using UniQR2.Models.Configurations;
 using UniQR2.Services;
@@ -33,6 +35,7 @@ namespace UniQR2
             services.AddControllersWithViews();
             services.AddSingleton<IConfiguration>(Configuration);
             services.Configure<SMTPSettings>(Configuration.GetSection("SMTPSettings"));
+            services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
             services.AddScoped<IEmailService, EmailService>();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
@@ -67,6 +70,8 @@ namespace UniQR2
                 .Build();
             });
 
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer();
+
             services.AddDbContext<ModelContext>(options =>
             {
                 options.UseMySQL(Configuration["ConnectionStrings:MySQLConnection"].ToString());
@@ -75,6 +80,9 @@ namespace UniQR2
             services.AddDataProtection();
             services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+
+            services.AddScoped<IUserService, UserService>();
 
         }
 
@@ -95,8 +103,17 @@ namespace UniQR2
 
             app.UseRouting();
 
+            app.UseCors(x => x
+                .AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+            );
+
+
             app.UseCookiePolicy();
             app.UseAuthorization();
+
+            app.UseMiddleware<JwtMiddleware>();
 
             app.UseEndpoints(endpoints =>
             {

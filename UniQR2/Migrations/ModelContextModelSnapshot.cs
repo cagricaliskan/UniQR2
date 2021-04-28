@@ -36,7 +36,7 @@ namespace UniQR2.Migrations
 
                     b.HasIndex("CourseClassroomID");
 
-                    b.ToTable("Announcement");
+                    b.ToTable("Announcements");
                 });
 
             modelBuilder.Entity("UniQR2.Models.AttendanceList", b =>
@@ -224,10 +224,16 @@ namespace UniQR2.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    b.Property<string>("Email")
+                        .HasColumnType("text");
+
                     b.Property<string>("Fullname")
                         .HasColumnType("text");
 
                     b.Property<string>("Number")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Password")
                         .HasColumnType("text");
 
                     b.HasKey("StudentID");
@@ -275,7 +281,7 @@ namespace UniQR2.Migrations
                             FullName = "System Admin",
                             IsActive = true,
                             Password = "123123",
-                            ResetCodeExpire = new DateTime(2021, 4, 21, 17, 6, 33, 946, DateTimeKind.Local).AddTicks(5499),
+                            ResetCodeExpire = new DateTime(2021, 4, 28, 7, 24, 28, 100, DateTimeKind.Local).AddTicks(9300),
                             UserRole = 0
                         });
                 });

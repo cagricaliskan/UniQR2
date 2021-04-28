@@ -23,6 +23,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
+		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.14" />
 		<PackageReference Include="Microsoft.AspNetCore.DataProtection" Version="3.1.10" />
 		<PackageReference Include="Microsoft.AspNetCore.Mvc.Razor" Version="2.2.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="3.1.10" />
@@ -42,6 +43,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<Folder Include="Migrations\" />
 		<Folder Include="UploadedFiles\" />
 		<Folder Include="wwwroot\plugins\" />
 	</ItemGroup>
