@@ -12,6 +12,8 @@ using UniQR2.ViewModels.ApiDTO;
 
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using UniQR2.Middlewares.Attributes;
+using System.Net;
+using AutoMapper;
 
 namespace UniQR2.Controllers.API
 {
@@ -21,14 +23,17 @@ namespace UniQR2.Controllers.API
     {
         private readonly IUserService UserService;
         private readonly ModelContext db;
+        private readonly IMapper mapper;
 
         public StudentAccountController(
             IUserService userService,
-            ModelContext db
+            ModelContext db,
+            IMapper mapper
             )
         {
             UserService = userService;
             this.db = db;
+            this.mapper = mapper;
         }
 
 
@@ -47,8 +52,19 @@ namespace UniQR2.Controllers.API
         [HttpPost("register")]
         public IActionResult Register(StudentRegisterModel studentRegisterModel)
         {
+            if (ModelState.IsValid)
+            {
+                if(db.Students.Any(n => n.Email == studentRegisterModel.Email || n.Number == studentRegisterModel.Number))
+                {
+                    ModelState.AddModelError("unique", "email or student number is not unique");
+                    return BadRequest(ModelState);
+                }
+                db.Students.Add(mapper.Map<Student>(studentRegisterModel));
+                db.SaveChanges();
+                return Ok(studentRegisterModel);
+            }
 
-            return Ok("username");
+            return BadRequest(ModelState);
         }
 
 
