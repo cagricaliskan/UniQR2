@@ -51,9 +51,6 @@ namespace UniQR2.Migrations
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime");
 
-                    b.Property<DateTime>("EndHour")
-                        .HasColumnType("datetime");
-
                     b.Property<string>("Name")
                         .HasColumnType("text");
 
@@ -61,9 +58,6 @@ namespace UniQR2.Migrations
                         .HasColumnType("tinyint(1)");
 
                     b.Property<DateTime>("StartDate")
-                        .HasColumnType("datetime");
-
-                    b.Property<DateTime>("StartHour")
                         .HasColumnType("datetime");
 
                     b.HasKey("AttendanceListID");
@@ -287,7 +281,7 @@ namespace UniQR2.Migrations
                             FullName = "System Admin",
                             IsActive = true,
                             Password = "123123",
-                            ResetCodeExpire = new DateTime(2021, 4, 28, 19, 20, 26, 653, DateTimeKind.Local).AddTicks(2034),
+                            ResetCodeExpire = new DateTime(2021, 4, 28, 7, 24, 28, 100, DateTimeKind.Local).AddTicks(9300),
                             UserRole = 0
                         });
                 });
