@@ -30,7 +30,7 @@
 
             <li class="nav-item">
                 <a href="~/home/index" class="nav-link @Html.ActiveClass("Home", "Index")">
-                    <i class="far fa-circle nav-icon"></i>
+                    <i class="fa fa-home nav-icon"></i>
                     <p>Home</p>
                 </a>
             </li>
@@ -39,15 +39,24 @@
             @if (userRole == "Administrator")
             {
                 <li class="nav-item">
+                    <a href="~/Floor/Index" class="nav-link @Html.ActiveClass("Floor", "Index")">
+                        <i class="far fa-building nav-icon"> </i>
+                        <p>Floor</p>
+                    </a>
+                </li>
+
+
+                <li class="nav-item">
                     <a href="~/InstructorManagement/Index" class="nav-link @Html.ActiveClass("InstructorManagement", "Index")">
-                        <i class="far fa-circle nav-icon"> </i>
+                        <i class="fas fa-user nav-icon"> </i>
                         <p>Instructors</p>
                     </a>
                 </li>
 
+
                 <li class="nav-item">
                     <a href="~/Course/Index" class="nav-link @Html.ActiveClass("Course", "Index")">
-                        <i class="far fa-circle nav-icon"> </i>
+                        <i class="fa fa-book nav-icon"> </i>
                         <p>Courses</p>
                     </a>
                 </li>
@@ -55,7 +64,7 @@
 
                 <li class="nav-item">
                     <a href="~/Classroom/Index" class="nav-link @Html.ActiveClass("Classroom", "Index")">
-                        <i class="far fa-circle nav-icon"> </i>
+                        <i class="fas fa-chalkboard nav-icon"></i>
                         <p>Classrooms</p>
                     </a>
                 </li>
@@ -63,17 +72,13 @@
 
                 <li class="nav-item">
                     <a href="~/Class/Index" class="nav-link @Html.ActiveClass("Class", "Index")">
-                        <i class="far fa-circle nav-icon"> </i>
+                        <i class="fas fa-chalkboard-teacher nav-icon"> </i>
                         <p>Classes</p>
                     </a>
                 </li>
 
-                <li class="nav-item">
-                    <a href="~/Floor/Index" class="nav-link @Html.ActiveClass("Floor", "Index")">
-                        <i class="far fa-circle nav-icon"> </i>
-                        <p>Floor</p>
-                    </a>
-                </li>
+
+
 
             }
 
@@ -81,7 +86,7 @@
             {
                 <li class="nav-item">
                     <a href="~/MyClasses/Index" class="nav-link @Html.ActiveClass("MyClasses", "Index")">
-                        <i class="far fa-circle nav-icon"> </i>
+                        <i class="fas fa-chalkboard-teacher nav-icon"> </i>
                         <p>My Classes</p>
                     </a>
                 </li>
@@ -90,7 +95,7 @@
 
             <li class="nav-item">
                 <a href="~/account/logout" class="nav-link">
-                    <i class="far fa-circle nav-icon"></i>
+                    <i class="fas fa-sign-out-alt nav-icon"></i>
                     <p>Logout</p>
                 </a>
             </li>
