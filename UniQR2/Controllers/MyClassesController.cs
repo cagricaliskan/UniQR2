@@ -151,7 +151,9 @@ namespace UniQR2.Controllers
                         Name = "1. Hafta",
                         StartDate = attendance.StartDate,
                         EndDate = attendance.EndDate,
-                        CourseClassroomID = attendance.CourseClassroomID
+                        CourseClassroomID = attendance.CourseClassroomID,
+                        StartHour = attendance.StartHour,
+                        EndHour = attendance.EndHour
                     };
 
                     db.AttendanceLists.Add(week1);
@@ -168,7 +170,10 @@ namespace UniQR2.Controllers
                             Name = ViewBag.name + ". Hafta",
                             StartDate = nextweek,
                             EndDate = attendance.EndDate,
-                            CourseClassroomID = attendance.CourseClassroomID
+                            CourseClassroomID = attendance.CourseClassroomID,
+                            StartHour = attendance.StartHour,
+                            EndHour = attendance.EndHour
+                            
                         };
 
                         db.AttendanceLists.Add(entry);
