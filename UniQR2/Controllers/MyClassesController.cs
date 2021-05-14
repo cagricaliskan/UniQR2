@@ -141,56 +141,40 @@ namespace UniQR2.Controllers
         public IActionResult Attendance(AttendanceList attendance)
         {
 
-
             if (attendance != null)
             {
-                if (attendance.Repeat == true)
+
+                var week1 = new AttendanceList
                 {
-                    var week1 = new AttendanceList
+                    Name = "1. Hafta",
+                    StartDate = attendance.StartDate,
+                    EndDate = attendance.EndDate,
+                    CourseClassroomID = attendance.CourseClassroomID,
+                    StartHour = attendance.StartHour,
+                    EndHour = attendance.EndHour
+                };
+
+                db.AttendanceLists.Add(week1);
+                db.SaveChanges();
+
+                for (int i = 2; i <= 14; i++)
+                {
+                    ViewBag.name = i.ToString();
+                    DateTime nextweek = attendance.StartDate.AddDays(7 * (i - 1));
+
+
+                    var entry = new AttendanceList
                     {
-                        Name = "1. Hafta",
-                        StartDate = attendance.StartDate,
+                        Name = ViewBag.name + ". Hafta",
+                        StartDate = nextweek,
                         EndDate = attendance.EndDate,
                         CourseClassroomID = attendance.CourseClassroomID,
                         StartHour = attendance.StartHour,
                         EndHour = attendance.EndHour
+
                     };
 
-                    db.AttendanceLists.Add(week1);
-                    db.SaveChanges();
-
-                    for (int i = 2; i <= 14; i++)
-                    {
-                        ViewBag.name = i.ToString();
-                        DateTime nextweek = attendance.StartDate.AddDays(7 * (i - 1));
-
-
-                        var entry = new AttendanceList
-                        {
-                            Name = ViewBag.name + ". Hafta",
-                            StartDate = nextweek,
-                            EndDate = attendance.EndDate,
-                            CourseClassroomID = attendance.CourseClassroomID,
-                            StartHour = attendance.StartHour,
-                            EndHour = attendance.EndHour
-                            
-                        };
-
-                        db.AttendanceLists.Add(entry);
-                        db.SaveChanges();
-                    }
-                }
-                else
-                {
-                    var week1 = new AttendanceList
-                    {
-                        Name = "1. Hafta",
-                        StartDate = attendance.StartDate,
-                        EndDate = attendance.EndDate,
-                        CourseClassroomID = attendance.CourseClassroomID
-                    };
-
-                    db.AttendanceLists.Add(week1);
+                    db.AttendanceLists.Add(entry);
                     db.SaveChanges();
                 }
 
