@@ -58,7 +58,7 @@
         <!-- /.card-header -->
         <div class="card-body">
             @ViewBag.searchCount results have been found from the search for "@ViewBag.search" in <span class="badge badge-light">Class name</span> and <span class="badge badge-light">Floor</span><br />
-            @Html.ActionLink("Clear Search", "Index", "Classroom", null, new { @class = "btn btn-sm btn-default mt-2" })
+            @Html.ActionLink("Clear Search", "Attendance", "MyClasses", null, new { @class = "btn btn-sm btn-default mt-2" })
         </div>
         <!-- /.card-body -->
     </div>
@@ -150,9 +150,9 @@
                     </div>
 
                     @*<div class="form-group">
-            <label for="CourseClassroomId">Course </label>
-            <input type="text" id="CourseClassroomId" name="CourseClassroomId" placeholder="Course" class="form-control" required />
-        </div>*@
+                            <label for="CourseClassroomId">Course </label>
+                            <input type="text" id="CourseClassroomId" name="CourseClassroomId" placeholder="Course" class="form-control" required />
+                        </div>*@
 
 
                     <div class="form-group">
@@ -169,16 +169,81 @@
     </div>
 </div>
 
-<link href="~/css/jquery-ui.min.css" rel="stylesheet"/>
 
-@section scripts{ 
+<!--EDIT-->
+<div class="modal fade" tabindex="-1" role="dialog" id="editAttendanceModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Yeni Yoklama Ekle</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form asp-controller="MyClasses" asp-action="EditAttendance" method="post">
+                    <input type="hidden" name="AttendanceListID" value="AttendanceListID" />
+                    <div class="form-group">
+                        <label for="StartDate">Start date </label>
+                        <input type="date" id="StartDate" name="StartDate" placeholder="Enter the start date" class="form-control hasDatepicker" textmode="Date" required />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="EndDate">Start hour </label>
+                        <input type="time" id="StartHour" name="StartHour" placeholder="Enter the end date" class="form-control hasDatepicker" textmode="Time" required />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="EndDate">End hour </label>
+                        <input type="time" id="EndHour" name="EndHour" placeholder="Enter the end date" class="form-control hasDatepicker" textmode="Time" required />
+                    </div>
+
+                    @*<div class="form-group">
+                            <label for="CourseClassroomId">Course </label>
+                            <input type="text" id="CourseClassroomId" name="CourseClassroomId" placeholder="Course" class="form-control" required />
+                        </div>*@
+
+
+                    <div class="form-group">
+                        <input type="submit" class="btn btn-success" />
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <i>
+                    Açıklama yazılacak
+                </i>
+            </div>
+        </div>
+    </div>
+</div>
+
+<link href="~/css/jquery-ui.min.css" rel="stylesheet" />
+
+@section scripts{
 
     <script src="~/js/jquery-ui.min.js"></script>
 
-<script>
-    $(function)(){
-        $(".hasDatepicker").datepicker();
-    });
-</script>
+    <script type="text/javascript">
+    $(function () {
+        $(".editBtn").on("click", function () {
+            var attendancecId = $(this).data("id");
+            var getAttendanceUrl = "@Url.Action("GetAttendance", "MyClasses", null, "http")";
+            var fullUrl = getAttendanceUrl + "/" + attendancecId;
+            $(".hasDatepicker").datepicker();
+
+            $.get(fullUrl, function (data, status) {
+                var startDate = new Date(data.startDate).toString();
+
+                $("input#StartDate").val(startDate);
+                $("input#StartHour").val("07:00");
+                $("input#EndHour").val("10:00");
+                console.log(data.startDate);
+            });
+        })
+    })
+
+    </script>
+
 
 }

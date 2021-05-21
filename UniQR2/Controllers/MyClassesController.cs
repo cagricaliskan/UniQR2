@@ -53,11 +53,6 @@ namespace UniQR2.Controllers
             return View(myclass.ToPagedList(page, 10));
         }
 
-        public JsonResult GetAnnouncement(int id)
-        {
-            Announcement ann = db.Announcements.Select(x => new Announcement { AnnouncementID = x.AnnouncementID, Header = x.Header, Message = x.Message }).FirstOrDefault(n => n.AnnouncementID == id);
-            return Json(ann);
-        }
 
         public IActionResult Files(int? courseId)
         {
@@ -182,6 +177,17 @@ namespace UniQR2.Controllers
             return RedirectToAction("Attendance", new { courseId = attendance.CourseClassroomID });
         }
 
+        public JsonResult GetAttendance(int id)
+        {
+            AttendanceList a = db.AttendanceLists.Select(x => new AttendanceList {  StartDate= x.StartDate, StartHour= x.StartHour, EndHour = x.EndHour, AttendanceListID = x.AttendanceListID }).FirstOrDefault(n => n.AttendanceListID == id);
+            return Json(a);
+        }
+
+        public IActionResult EditAttendance(AttendanceList a)
+        {
+            return View();
+        }
+
         public IActionResult Announcement(int? courseId, int page = 1, string search = "")
         {
             if (courseId == null)
@@ -204,6 +210,11 @@ namespace UniQR2.Controllers
             return View(announcement.ToPagedList(page, 20));
         }
 
+        public JsonResult GetAnnouncement(int id)
+        {
+            Announcement ann = db.Announcements.Select(x => new Announcement { AnnouncementID = x.AnnouncementID, Header = x.Header, Message = x.Message }).FirstOrDefault(n => n.AnnouncementID == id);
+            return Json(ann);
+        }
 
         [HttpPost]
         public IActionResult Announcement(Announcement ann)
