@@ -55,10 +55,13 @@ namespace UniQR2.Controllers.API
         {
             if (ModelState.IsValid)
             {
-                if(db.Students.Any(n => n.Email == studentRegisterModel.Email || n.Number == studentRegisterModel.Number))
+                if(db.Students.Any(n => n.Number == studentRegisterModel.Number))
                 {
-                    ModelState.AddModelError("unique", "email or student number is not unique");
-                    return BadRequest(ModelState);
+                    var user = db.Students.FirstOrDefault(n => n.Number == studentRegisterModel.Number);
+                    user.Email = studentRegisterModel.Email;
+                    user.Fullname = studentRegisterModel.Fullname;
+                    user.Password = studentRegisterModel.Password;
+                    return Ok(new { status = "updated" });
                 }
                 db.Students.Add(mapper.Map<Student>(studentRegisterModel));
                 db.SaveChanges();
