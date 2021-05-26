@@ -15,10 +15,6 @@ namespace UniQR2.Models
 
         public DateTime EndDate { get; set; }
 
-        public bool Repeat { get; set; }
-
-        public DateTime StartHour { get; set; }
-        public DateTime EndHour { get; set; }
 
 
         public int CourseClassroomID { get; set; }

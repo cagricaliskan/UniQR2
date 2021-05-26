@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using UniQR2.Models;
 
 namespace UniQR2.Migrations
 {
     [DbContext(typeof(ModelContext))]
-    partial class ModelContextModelSnapshot : ModelSnapshot
+    [Migration("20210524225515_updatee")]
+    partial class updatee
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,10 +53,16 @@ namespace UniQR2.Migrations
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime");
 
+                    b.Property<DateTime>("EndHour")
+                        .HasColumnType("datetime");
+
                     b.Property<string>("Name")
                         .HasColumnType("text");
 
                     b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime");
+
+                    b.Property<DateTime>("StartHour")
                         .HasColumnType("datetime");
 
                     b.HasKey("AttendanceListID");
@@ -278,7 +286,7 @@ namespace UniQR2.Migrations
                             FullName = "System Admin",
                             IsActive = true,
                             Password = "123123",
-                            ResetCodeExpire = new DateTime(2021, 5, 25, 2, 56, 34, 391, DateTimeKind.Local).AddTicks(7600),
+                            ResetCodeExpire = new DateTime(2021, 5, 25, 2, 55, 15, 344, DateTimeKind.Local).AddTicks(5586),
                             UserRole = 0
                         });
                 });

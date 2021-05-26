@@ -128,13 +128,20 @@ namespace UniQR2.Controllers
             ViewBag.page = page;
             ViewBag.courseId = courseId;
 
-            return View(attendance.ToPagedList(page, 20));
+            return View(attendance.ToPagedList(page, 60));
         }
 
 
         [HttpPost]
         public IActionResult Attendance(AttendanceList attendance)
         {
+
+            string SDate = attendance.StartDate.ToShortDateString();
+            string EHour = attendance.EndDate.ToShortTimeString();
+            DateTime newEnd = Convert.ToDateTime(SDate + " " + EHour);
+            var SHour = attendance.StartDate.ToShortTimeString();
+            // time ve date i birleştirildiği değişken
+            
 
             if (attendance != null)
             {
@@ -143,10 +150,10 @@ namespace UniQR2.Controllers
                 {
                     Name = "1. Hafta",
                     StartDate = attendance.StartDate,
-                    EndDate = attendance.EndDate,
+                    EndDate = newEnd,
                     CourseClassroomID = attendance.CourseClassroomID,
-                    StartHour = attendance.StartHour,
-                    EndHour = attendance.EndHour
+                    //StartHour= attendance.StartDate,
+                    //EndHour = attendance.EndHour
                 };
 
                 db.AttendanceLists.Add(week1);
@@ -156,16 +163,18 @@ namespace UniQR2.Controllers
                 {
                     ViewBag.name = i.ToString();
                     DateTime nextweek = attendance.StartDate.AddDays(7 * (i - 1));
+                    string nextSDate = nextweek.ToShortDateString();
+                    DateTime nextNewEnd = Convert.ToDateTime(nextSDate + " " + EHour);
 
 
                     var entry = new AttendanceList
                     {
                         Name = ViewBag.name + ". Hafta",
                         StartDate = nextweek,
-                        EndDate = attendance.EndDate,
-                        CourseClassroomID = attendance.CourseClassroomID,
-                        StartHour = attendance.StartHour,
-                        EndHour = attendance.EndHour
+                        EndDate = nextNewEnd,
+                        CourseClassroomID = attendance.CourseClassroomID
+                        //StartHour = attendance.StartHour,
+                        //EndHour = attendance.EndHour
 
                     };
 
@@ -179,7 +188,7 @@ namespace UniQR2.Controllers
 
         public JsonResult GetAttendance(int id)
         {
-            AttendanceList a = db.AttendanceLists.Select(x => new AttendanceList {  StartDate= x.StartDate, StartHour= x.StartHour, EndHour = x.EndHour, AttendanceListID = x.AttendanceListID }).FirstOrDefault(n => n.AttendanceListID == id);
+            AttendanceList a = db.AttendanceLists.Select(x => new AttendanceList {  StartDate= x.StartDate, /*StartHour= x.StartHour, EndHour = x.EndHour,*/ AttendanceListID = x.AttendanceListID }).FirstOrDefault(n => n.AttendanceListID == id);
             return Json(a);
         }
 
