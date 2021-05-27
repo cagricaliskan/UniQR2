@@ -133,13 +133,17 @@ namespace UniQR2.Controllers
 
 
         [HttpPost]
-        public IActionResult Attendance(AttendanceList attendance)
+        public IActionResult Attendance(AttendanceList attendance, DateTime StartTime)
         {
 
             string SDate = attendance.StartDate.ToShortDateString();
+            string SHour = StartTime.ToShortTimeString();
             string EHour = attendance.EndDate.ToShortTimeString();
+
+
+            DateTime newStart = Convert.ToDateTime(SDate + " " + SHour);
             DateTime newEnd = Convert.ToDateTime(SDate + " " + EHour);
-            var SHour = attendance.StartDate.ToShortTimeString();
+            
             // time ve date i birleştirildiği değişken
             
 
@@ -149,11 +153,9 @@ namespace UniQR2.Controllers
                 var week1 = new AttendanceList
                 {
                     Name = "1. Hafta",
-                    StartDate = attendance.StartDate,
+                    StartDate = newStart,
                     EndDate = newEnd,
-                    CourseClassroomID = attendance.CourseClassroomID,
-                    //StartHour= attendance.StartDate,
-                    //EndHour = attendance.EndHour
+                    CourseClassroomID = attendance.CourseClassroomID
                 };
 
                 db.AttendanceLists.Add(week1);
@@ -164,13 +166,15 @@ namespace UniQR2.Controllers
                     ViewBag.name = i.ToString();
                     DateTime nextweek = attendance.StartDate.AddDays(7 * (i - 1));
                     string nextSDate = nextweek.ToShortDateString();
+
+                    DateTime nextNewStart = Convert.ToDateTime(nextSDate + " " + SHour);
                     DateTime nextNewEnd = Convert.ToDateTime(nextSDate + " " + EHour);
 
 
                     var entry = new AttendanceList
                     {
                         Name = ViewBag.name + ". Hafta",
-                        StartDate = nextweek,
+                        StartDate = nextNewStart,
                         EndDate = nextNewEnd,
                         CourseClassroomID = attendance.CourseClassroomID
                         //StartHour = attendance.StartHour,
