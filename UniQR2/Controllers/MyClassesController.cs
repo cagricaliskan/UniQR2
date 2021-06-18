@@ -4,11 +4,14 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using QRCoder;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 using UniQR2.Models;
 using UniQR2.ViewModels;
@@ -21,18 +24,19 @@ namespace UniQR2.Controllers
     {
         private readonly ModelContext db;
         private readonly IWebHostEnvironment webHostEnvironment;
+        
 
 
         public MyClassesController(ModelContext db, IWebHostEnvironment webHostEnvironment)
         {
             this.db = db;
             this.webHostEnvironment = webHostEnvironment;
-
         }
 
 
         public IActionResult Index(int page = 1, string search = "")
         {
+            //ViewBag.x = User.Claims.Where(p => p.Type == System.Security.Claims.ClaimTypes.Name);
 
             var myclass = db.CourseClassrooms.AsQueryable();
 
@@ -140,28 +144,31 @@ namespace UniQR2.Controllers
             string SHour = StartTime.ToShortTimeString();
             string EHour = attendance.EndDate.ToShortTimeString();
 
-
+            // time ve date i birleştirildiği değişken
             DateTime newStart = Convert.ToDateTime(SDate + " " + SHour);
             DateTime newEnd = Convert.ToDateTime(SDate + " " + EHour);
             
-            // time ve date i birleştirildiği değişken
+            
             
 
             if (attendance != null)
             {
 
-                var week1 = new AttendanceList
-                {
-                    Name = "1. Hafta",
-                    StartDate = newStart,
-                    EndDate = newEnd,
-                    CourseClassroomID = attendance.CourseClassroomID
-                };
+                //var week1 = new AttendanceList
+                //{
+                //    Name = "1. Hafta",
+                //    StartDate = newStart,
+                //    EndDate = newEnd,
+                //    CourseClassroomID = attendance.CourseClassroomID
 
-                db.AttendanceLists.Add(week1);
-                db.SaveChanges();
+                //};
 
-                for (int i = 2; i <= 14; i++)
+
+                //db.AttendanceLists.Add(week1);
+                //db.SaveChanges();
+                //var qr1 = week1.AttendanceListID.ToString();
+
+                for (int i = 1; i <= 14; i++)
                 {
                     ViewBag.name = i.ToString();
                     DateTime nextweek = attendance.StartDate.AddDays(7 * (i - 1));
@@ -184,6 +191,24 @@ namespace UniQR2.Controllers
 
                     db.AttendanceLists.Add(entry);
                     db.SaveChanges();
+                    
+                    var qr = entry.AttendanceListID.ToString() + "-" + entry.CourseClassroomID.ToString() + "-" + entry.StartDate.ToShortDateString();
+
+                    byte[] bytes = Encoding.UTF8.GetBytes(qr);
+                    var encodedqr = Convert.ToBase64String(bytes);
+
+                    AttendanceList a = db.AttendanceLists.FirstOrDefault(x => x.AttendanceListID == entry.AttendanceListID);
+
+                    if(qr != null && a!=null)
+                    {
+                        entry.QrString = encodedqr;
+
+                        db.SaveChanges();
+                    }
+                    
+                    
+                    
+
                 }
 
             }
@@ -192,13 +217,45 @@ namespace UniQR2.Controllers
 
         public JsonResult GetAttendance(int id)
         {
-            AttendanceList a = db.AttendanceLists.Select(x => new AttendanceList {  StartDate= x.StartDate, /*StartHour= x.StartHour, EndHour = x.EndHour,*/ AttendanceListID = x.AttendanceListID }).FirstOrDefault(n => n.AttendanceListID == id);
+            AttendanceList a = db.AttendanceLists.Select(x => new AttendanceList {  StartDate= x.StartDate, EndDate = x.EndDate, /*StartHour= x.StartHour, EndHour = x.EndHour,*/ AttendanceListID = x.AttendanceListID }).FirstOrDefault(n => n.AttendanceListID == id);
             return Json(a);
         }
 
         public IActionResult EditAttendance(AttendanceList a)
         {
             return View();
+        }
+
+        [HttpGet]
+        public IActionResult GetQr(AttendanceList a)
+        {
+            AttendanceList ann = db.AttendanceLists.FirstOrDefault(x => x.AttendanceListID == a.AttendanceListID);
+
+            if(ann != null)
+            {
+                QRCodeGenerator qrCodeGenerator = new QRCodeGenerator();
+                QRCodeData qrCodeData = qrCodeGenerator.CreateQrCode(ann.QrString, QRCodeGenerator.ECCLevel.Q);
+                QRCode qrCode = new QRCode(qrCodeData);
+
+                Bitmap qrCodeImage = qrCode.GetGraphic(15);
+
+                
+                return View(BitmapToBytes(qrCodeImage));
+            }
+
+            ViewBag.x = ann.AttendanceListID;
+            
+            return RedirectToAction("Index", "MyClasses");
+        }
+
+        private static Byte[] BitmapToBytes(Bitmap img)
+        {
+            using (MemoryStream stream = new MemoryStream())
+            {
+                img.Save(stream, System.Drawing.Imaging.ImageFormat.Png);
+               
+                return stream.ToArray();
+            }
         }
 
         public IActionResult Announcement(int? courseId, int page = 1, string search = "")
@@ -229,6 +286,7 @@ namespace UniQR2.Controllers
             return Json(ann);
         }
 
+        
         [HttpPost]
         public IActionResult Announcement(Announcement ann)
         {

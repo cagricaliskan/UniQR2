@@ -54,6 +54,9 @@ namespace UniQR2.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("text");
 
+                    b.Property<string>("QrString")
+                        .HasColumnType("text");
+
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime");
 
@@ -278,7 +281,7 @@ namespace UniQR2.Migrations
                             FullName = "System Admin",
                             IsActive = true,
                             Password = "123123",
-                            ResetCodeExpire = new DateTime(2021, 5, 25, 2, 56, 34, 391, DateTimeKind.Local).AddTicks(7600),
+                            ResetCodeExpire = new DateTime(2021, 6, 16, 13, 50, 18, 453, DateTimeKind.Local).AddTicks(2932),
                             UserRole = 0
                         });
                 });

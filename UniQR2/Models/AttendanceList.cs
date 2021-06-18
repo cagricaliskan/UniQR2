@@ -15,6 +15,8 @@ namespace UniQR2.Models
 
         public DateTime EndDate { get; set; }
 
+        public string QrString { get; set; }
+
 
 
         public int CourseClassroomID { get; set; }

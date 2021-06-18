@@ -9,8 +9,8 @@ using UniQR2.Models;
 namespace UniQR2.Migrations
 {
     [DbContext(typeof(ModelContext))]
-    [Migration("20210428032428_MigrationHistoryCleared")]
-    partial class MigrationHistoryCleared
+    [Migration("20210616095018_AttendanceUpdate")]
+    partial class AttendanceUpdate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -56,8 +56,8 @@ namespace UniQR2.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("text");
 
-                    b.Property<bool>("Repeat")
-                        .HasColumnType("tinyint(1)");
+                    b.Property<string>("QrString")
+                        .HasColumnType("text");
 
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime");
@@ -283,7 +283,7 @@ namespace UniQR2.Migrations
                             FullName = "System Admin",
                             IsActive = true,
                             Password = "123123",
-                            ResetCodeExpire = new DateTime(2021, 4, 28, 7, 24, 28, 100, DateTimeKind.Local).AddTicks(9300),
+                            ResetCodeExpire = new DateTime(2021, 6, 16, 13, 50, 18, 453, DateTimeKind.Local).AddTicks(2932),
                             UserRole = 0
                         });
                 });

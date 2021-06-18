@@ -90,12 +90,12 @@
                 <tr>
                     <td>@counter</td>
                     <td>@item.Name</td>
-                   <td>@item.StartDate.ToShortDateString() - @item.StartDate.ToShortTimeString()-@item.EndDate.ToShortTimeString()</td>
+                    <td>@item.StartDate.ToShortDateString() - @item.StartDate.ToShortTimeString()-@item.EndDate.ToShortTimeString()</td>
                     <td class="text-right">
                         <button class="btn btn-sm btn-warning editBtn" data-toggle="modal" data-target="#editAttendanceModal" data-id="@item.AttendanceListID">
                             Edit
                         </button>
-                        <button class=" btn btn-sm btn-danger editBtn" data-toggle="modal" data-target="" data-id="@item.AttendanceListID">
+                        <button class=" btn btn-sm btn-danger editBtn" data-toggle="modal" data-target="#qrModal" data-id="@item.AttendanceListID">
                             QR
                         </button>
                     </td>
@@ -199,10 +199,41 @@
                     </div>
 
                     @*<div class="form-group">
-            <label for="CourseClassroomId">Course </label>
-            <input type="text" id="CourseClassroomId" name="CourseClassroomId" placeholder="Course" class="form-control" required />
-        </div>*@
+                            <label for="CourseClassroomId">Course </label>
+                            <input type="text" id="CourseClassroomId" name="CourseClassroomId" placeholder="Course" class="form-control" required />
+                        </div>*@
 
+
+                    <div class="form-group">
+                        <input type="submit" class="btn btn-success" />
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <i>
+                    Açıklama yazılacak
+                </i>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--QR-->
+<div class="modal fade" tabindex="-1" role="dialog" id="qrModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Yeni Yoklama Ekle</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form asp-controller="MyClasses" asp-action="GetQr" method="get">
+                    <input type="hidden" name="AttendanceListID" value="AttendanceListID" />
+
+                   
+                    <h1>TEST @ViewBag.x</h1>
 
                     <div class="form-group">
                         <input type="submit" class="btn btn-success" />
@@ -236,13 +267,13 @@
                 var startDate = new Date(data.startDate).toISOString().slice(0, 10);
                 var startTime = new Date(data.startDate).toISOString().slice(11, 16);
                 var endHour = new Date(data.endDate).toISOString().slice(11, 16);
-                
-                
-                
+
+
+
 
 
                 //    //new Date(data.startDate).getFullYear() + "-" + new Date(data.startDate) + "-" + new Date(data.startDate).getDay()
-                
+
 
                 $("input#StartDate").val(startDate);
                 $("input#StartTime").val(startTime);
@@ -250,7 +281,7 @@
                 console.log(startDate);
                 console.log(startTime);
                 console.log(endHour);
-               
+
             });
         })
     })
