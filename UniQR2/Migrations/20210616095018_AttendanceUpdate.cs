@@ -4,7 +4,7 @@ using MySql.Data.EntityFrameworkCore.Metadata;
 
 namespace UniQR2.Migrations
 {
-    public partial class MigrationHistoryCleared : Migration
+    public partial class AttendanceUpdate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -153,7 +153,7 @@ namespace UniQR2.Migrations
                     Name = table.Column<string>(nullable: true),
                     StartDate = table.Column<DateTime>(nullable: false),
                     EndDate = table.Column<DateTime>(nullable: false),
-                    Repeat = table.Column<bool>(nullable: false),
+                    QrString = table.Column<string>(nullable: true),
                     CourseClassroomID = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
@@ -246,7 +246,7 @@ namespace UniQR2.Migrations
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "UserID", "Email", "FullName", "IsActive", "Password", "ResetCode", "ResetCodeExpire", "UserRole" },
-                values: new object[] { 1, "kamren2@ethereal.email", "System Admin", true, "123123", null, new DateTime(2021, 4, 28, 7, 24, 28, 100, DateTimeKind.Local).AddTicks(9300), 0 });
+                values: new object[] { 1, "kamren2@ethereal.email", "System Admin", true, "123123", null, new DateTime(2021, 6, 16, 13, 50, 18, 453, DateTimeKind.Local).AddTicks(2932), 0 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Announcements_CourseClassroomID",

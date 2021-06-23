@@ -24,6 +24,7 @@
 	<ItemGroup>
 		<PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
 		<PackageReference Include="jQuery.UI.Combined" Version="1.12.1" />
+		<PackageReference Include="Microsoft.AspNet.Identity.Core" Version="2.2.3" />
 		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.14" />
 		<PackageReference Include="Microsoft.AspNetCore.DataProtection" Version="3.1.10" />
 		<PackageReference Include="Microsoft.AspNetCore.Mvc.Razor" Version="2.2.0" />
@@ -34,17 +35,18 @@
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
 		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.10" />
+		<PackageReference Include="Microsoft.Extensions.Identity.Core" Version="5.0.6" />
 		<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.13" />
 		<PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.5" />
 		<PackageReference Include="MySql.Data.EntityFrameworkCore" Version="8.0.22" />
 		<PackageReference Include="NETCore.MailKit" Version="2.0.3" />
+		<PackageReference Include="QRCoder" Version="1.4.1" />
 		<PackageReference Include="System.Runtime.Extensions" Version="4.3.1" />
 		<PackageReference Include="X.PagedList.Mvc.Core" Version="8.0.7" />
 		<PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.12" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<Folder Include="Migrations\" />
 		<Folder Include="UploadedFiles\" />
 		<Folder Include="wwwroot\plugins\" />
 	</ItemGroup>
