@@ -16,7 +16,7 @@
  ![mail](https://user-images.githubusercontent.com/42703783/122990450-9e622580-d3ac-11eb-8bba-972dff7107f7.png)
 
 
-  Invited user will be redirected to this page to complete its registiration.
+  Invited user will be redirected to this page to complete their registiration.
   ![kayit](https://user-images.githubusercontent.com/42703783/122990520-b5087c80-d3ac-11eb-835b-615a89ffbca8.png)
 
 
