@@ -33,7 +33,6 @@ namespace UniQR2.Controllers
 
         public IActionResult Index(int page = 1, string search = "")
         {
-
             var myclass = db.CourseClassrooms.AsQueryable();
 
             if (search != "")
@@ -44,7 +43,7 @@ namespace UniQR2.Controllers
                 ViewBag.count = myclass.Count();
             }
 
-            myclass = myclass.OrderByDescending(n => n.InstructorID);
+            myclass = myclass.OrderByDescending(n => n.InstructorID).Where(x => x.Instructor.FullName == User.Identity.Name);
             ViewBag.page = page;
 
             ViewBag.classroom = db.Classrooms.ToList();

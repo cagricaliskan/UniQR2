@@ -38,7 +38,6 @@ namespace UniQR2.Controllers.API
 
 
         [HttpPost("login")]
-        [JWTAuthorize]
         public IActionResult Login(AuthenticateRequest userLoginModel)
         {
             AuthenticateResponse response = UserService.Authenticate(userLoginModel);

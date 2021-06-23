@@ -57,7 +57,8 @@ namespace UniQR2.Controllers
                 {
                     new Claim(ClaimTypes.Email, u.Email),
                     new Claim(ClaimTypes.Role, role),
-                    new Claim(ClaimTypes.Name, u.FullName)
+                    new Claim(ClaimTypes.Name, u.FullName),
+                    new Claim(ClaimTypes.NameIdentifier, u.UserID.ToString())
                 }, CookieAuthenticationDefaults.AuthenticationScheme);
 
                 var principal = new ClaimsPrincipal(identity);
