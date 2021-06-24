@@ -30,7 +30,7 @@ namespace UniQR2.Services
 
         public AuthenticateResponse Authenticate(AuthenticateRequest model)
         {
-            var user = db.Students.SingleOrDefault(x => x.Number == model.Username && x.Password == model.Password);
+            var user = db.Students.FirstOrDefault(x => x.Number == model.Username && x.Password == model.Password);
 
             // return null if user not found
             if (user == null) return null;

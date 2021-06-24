@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using UniQR2.Middlewares.Attributes;
 using System.Net;
 using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 
 namespace UniQR2.Controllers.API
 {
@@ -54,7 +55,7 @@ namespace UniQR2.Controllers.API
         {
             if (ModelState.IsValid)
             {
-                if(db.Students.Any(n => n.Number == studentRegisterModel.Number))
+                if (db.Students.Any(n => n.Number == studentRegisterModel.Number))
                 {
                     var user = db.Students.FirstOrDefault(n => n.Number == studentRegisterModel.Number);
                     user.Email = studentRegisterModel.Email;
@@ -68,6 +69,24 @@ namespace UniQR2.Controllers.API
             }
 
             return BadRequest(ModelState);
+        }
+
+        [HttpPost("MyCourses")]
+        [JWTAuthorize]
+        public IActionResult MyCourses()
+        {
+            Student user = (Student)HttpContext.Items["User"];
+            var derslerim = db.CourseClassrooms
+                .Where(n => n.CourseStudentRels.Any(x => x.StudentID == user.StudentID))
+                .Select(n => new MyClass {
+                CourseClassroomID = n.CourseClassroomID,
+                CourseCode = n.Course.Code,
+                CourseName = n.Course.Name,
+                InstractorName = n.Instructor.FullName
+            }).ToList();
+
+
+            return Ok(derslerim);
         }
 
 
