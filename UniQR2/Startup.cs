@@ -36,7 +36,7 @@ namespace UniQR2
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews();
+            services.AddControllersWithViews().AddNewtonsoftJson();
             services.AddSingleton<IConfiguration>(Configuration);
             services.Configure<SMTPSettings>(Configuration.GetSection("SMTPSettings"));
             services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));

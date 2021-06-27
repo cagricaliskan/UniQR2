@@ -78,12 +78,13 @@ namespace UniQR2.Controllers.API
             Student user = (Student)HttpContext.Items["User"];
             var derslerim = db.CourseClassrooms
                 .Where(n => n.CourseStudentRels.Any(x => x.StudentID == user.StudentID))
-                .Select(n => new MyClass {
-                CourseClassroomID = n.CourseClassroomID,
-                CourseCode = n.Course.Code,
-                CourseName = n.Course.Name,
-                InstractorName = n.Instructor.FullName
-            }).ToList();
+                .Select(n => new MyClass
+                {
+                    CourseClassroomID = n.CourseClassroomID,
+                    CourseCode = n.Course.Code,
+                    CourseName = n.Course.Name,
+                    InstractorName = n.Instructor.FullName
+                }).ToList();
 
             return Ok(derslerim);
         }
@@ -97,7 +98,7 @@ namespace UniQR2.Controllers.API
             var dersler = db.CourseClassrooms
                 .Where(n => n.CourseStudentRels.Any(x => x.StudentID == user.StudentID));
 
-            
+
 
             var announcements = new List<ViewModels.ApiDTO.Announcement>();
 
@@ -114,8 +115,8 @@ namespace UniQR2.Controllers.API
                         CourseName = dersAd
                     });
                 }
-                
-                
+
+
             }
             return Ok(new
             {
@@ -127,19 +128,41 @@ namespace UniQR2.Controllers.API
         }
 
 
-        [HttpPost("CourseDetails")]
+        [HttpGet("CourseDetails/{id}")]
         [JWTAuthorize]
         public IActionResult CourseDetails(int id)
         {
             Student user = (Student)HttpContext.Items["User"];
 
-            var dersim = db.CourseClassrooms
-                .Select(n => new { n.CourseClassroomID, n.Classroom.Floor.FloorNum })
-                .FirstOrDefault(x => x.CourseClassroomID == id);
+            var count = db.Participations
+                .Where(n =>
+                    n.AttendanceList.CourseClassroomID == id &&
+                    n.StudentID == user.StudentID)
+                .Count();
 
+            var duyurular = db.Announcements.Where(n => n.CourseClassroomID == id).ToList();
+
+
+            var dersim = db.CourseClassrooms
+                .Select(n => new
+                {
+                    n.CourseClassroomID,
+                    FloorNum = n.Classroom.Floor.FloorNum,
+                    ClassRoomName = n.Classroom.Name,
+                    InstractorName = n.Instructor.FullName,
+                    CourseCode = n.Course.Code,
+                    CourseName = n.Course.Name,
+                    ParticipatedCount = count,
+                    Files = n.Files,
+                    Announcements = duyurular
+                })
+                .FirstOrDefault(x => x.CourseClassroomID == id);
+            var participationThisClass = db.AttendanceLists.Where(n => n.CourseClassroomID == dersim.CourseClassroomID);
 
             return Ok(dersim);
         }
+
+
 
 
         [HttpGet("LoginDeneme")]
