@@ -227,9 +227,9 @@ namespace UniQR2.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetQr(AttendanceList a)
+        public IActionResult GetQr(int id)
         {
-            AttendanceList ann = db.AttendanceLists.FirstOrDefault(x => x.AttendanceListID == a.AttendanceListID);
+            AttendanceList ann = db.AttendanceLists.FirstOrDefault(x => x.AttendanceListID == id);
 
             if(ann != null)
             {
@@ -239,8 +239,8 @@ namespace UniQR2.Controllers
 
                 Bitmap qrCodeImage = qrCode.GetGraphic(15);
 
-                
-                return View(BitmapToBytes(qrCodeImage));
+
+                return File(BitmapToBytes(qrCodeImage), "image/png");
             }
 
             ViewBag.x = ann.AttendanceListID;

@@ -15,6 +15,7 @@ using UniQR2.Middlewares.Attributes;
 using System.Net;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using System.Text;
 
 namespace UniQR2.Controllers.API
 {
@@ -157,12 +158,41 @@ namespace UniQR2.Controllers.API
                     Announcements = duyurular
                 })
                 .FirstOrDefault(x => x.CourseClassroomID == id);
-            var participationThisClass = db.AttendanceLists.Where(n => n.CourseClassroomID == dersim.CourseClassroomID);
 
             return Ok(dersim);
         }
 
 
+        [HttpPost("Participate")]
+        [JWTAuthorize]
+        public IActionResult Participate(Participate participate)
+        {
+            Student user = (Student)HttpContext.Items["User"];
+
+            var bytes = Convert.FromBase64String(participate.Code);
+            var decoded = Encoding.UTF8.GetString(bytes);
+
+            int attId = int.Parse(decoded.Split('-')[0]);
+
+            if (!db.Participations.Any(n => n.AttendanceListID == attId && n.StudentID == user.StudentID))
+            {
+                db.Participations.Add(new Participation()
+                {
+                    AttendanceListID = attId,
+                    StudentID = user.StudentID,
+                    AttendTime = DateTime.Now
+                });
+
+                db.SaveChanges();
+            } 
+            else
+            {
+                return Ok(new { status = "patricipated"});
+            }
+
+
+            return Ok(new { status = "ok" });
+        }
 
 
         [HttpGet("LoginDeneme")]
