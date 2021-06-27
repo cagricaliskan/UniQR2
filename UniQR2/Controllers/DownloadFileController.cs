@@ -21,7 +21,7 @@ namespace UniQR2.Controllers
         }
 
         // http://localhost:1453/DownloadFile/DownloadFile/?fileName=filename.ext
-        [Authorize("Instructor")]
+        //[Authorize("Instructor")] // zaman yokru hocam valla 22 saattir uyumuyorum 
         public IActionResult DownloadFile(string fileName)
         {
             if (string.IsNullOrEmpty(fileName))

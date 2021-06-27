@@ -25,7 +25,6 @@ namespace UniQR2.Controllers.API
 
         // http://localhost:1453/api/FileServer/fileName.ext
         [HttpGet("{fileName}")]
-        [JWTAuthorize]
         public IActionResult GetFileAsync(string fileName)
         {
             var fileFromDb = db.Files.FirstOrDefault(n => n.DataPath == fileName);

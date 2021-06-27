@@ -141,7 +141,14 @@ namespace UniQR2.Controllers.API
                     n.StudentID == user.StudentID)
                 .Count();
 
-            var duyurular = db.Announcements.Where(n => n.CourseClassroomID == id).ToList();
+            var duyurular = db.Announcements
+                .Where(n => n.CourseClassroomID == id)
+                .Select(n => new ViewModels.ApiDTO.Announcement()
+                {
+                    Header = n.Header,
+                    Message = n.Message,
+                    CourseName = n.CourseClassroom.Course.Name
+                }).ToList();
 
 
             var dersim = db.CourseClassrooms
@@ -184,10 +191,10 @@ namespace UniQR2.Controllers.API
                 });
 
                 db.SaveChanges();
-            } 
+            }
             else
             {
-                return Ok(new { status = "patricipated"});
+                return Ok(new { status = "patricipated" });
             }
 
 
