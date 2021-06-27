@@ -296,7 +296,7 @@ namespace UniQR2.Controllers
                 db.Announcements.Add(ann);
                 db.SaveChanges();
             }
-            return View("Index", "MyClasses");
+            return RedirectToAction("Announcement", "MyClasses", new { courseId = ann.CourseClassroomID});
         }
 
         [HttpPost]

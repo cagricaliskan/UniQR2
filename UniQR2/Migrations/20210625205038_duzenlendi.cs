@@ -4,7 +4,7 @@ using MySql.Data.EntityFrameworkCore.Metadata;
 
 namespace UniQR2.Migrations
 {
-    public partial class AttendanceUpdate : Migration
+    public partial class duzenlendi : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -174,8 +174,7 @@ namespace UniQR2.Migrations
                     CourseStudentRelID = table.Column<int>(nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
                     StudentID = table.Column<int>(nullable: false),
-                    ClassroomID = table.Column<int>(nullable: false),
-                    CourseClassroomID = table.Column<int>(nullable: true)
+                    CourseClassroomID = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -185,7 +184,7 @@ namespace UniQR2.Migrations
                         column: x => x.CourseClassroomID,
                         principalTable: "CourseClassrooms",
                         principalColumn: "CourseClassroomID",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_CourseStudentRels_Students_StudentID",
                         column: x => x.StudentID,
@@ -246,7 +245,7 @@ namespace UniQR2.Migrations
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "UserID", "Email", "FullName", "IsActive", "Password", "ResetCode", "ResetCodeExpire", "UserRole" },
-                values: new object[] { 1, "kamren2@ethereal.email", "System Admin", true, "123123", null, new DateTime(2021, 6, 16, 13, 50, 18, 453, DateTimeKind.Local).AddTicks(2932), 0 });
+                values: new object[] { 1, "kamren2@ethereal.email", "System Admin", true, "123123", null, new DateTime(2021, 6, 26, 0, 50, 37, 787, DateTimeKind.Local).AddTicks(9802), 0 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Announcements_CourseClassroomID",

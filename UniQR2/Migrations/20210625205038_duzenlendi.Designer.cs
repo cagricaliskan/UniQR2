@@ -9,8 +9,8 @@ using UniQR2.Models;
 namespace UniQR2.Migrations
 {
     [DbContext(typeof(ModelContext))]
-    [Migration("20210616095018_AttendanceUpdate")]
-    partial class AttendanceUpdate
+    [Migration("20210625205038_duzenlendi")]
+    partial class duzenlendi
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -139,10 +139,7 @@ namespace UniQR2.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int>("ClassroomID")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("CourseClassroomID")
+                    b.Property<int>("CourseClassroomID")
                         .HasColumnType("int");
 
                     b.Property<int>("StudentID")
@@ -283,7 +280,7 @@ namespace UniQR2.Migrations
                             FullName = "System Admin",
                             IsActive = true,
                             Password = "123123",
-                            ResetCodeExpire = new DateTime(2021, 6, 16, 13, 50, 18, 453, DateTimeKind.Local).AddTicks(2932),
+                            ResetCodeExpire = new DateTime(2021, 6, 26, 0, 50, 37, 787, DateTimeKind.Local).AddTicks(9802),
                             UserRole = 0
                         });
                 });
@@ -340,7 +337,9 @@ namespace UniQR2.Migrations
                 {
                     b.HasOne("UniQR2.Models.CourseClassroom", "CourseClassroom")
                         .WithMany("CourseStudentRels")
-                        .HasForeignKey("CourseClassroomID");
+                        .HasForeignKey("CourseClassroomID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("UniQR2.Models.Student", "Student")
                         .WithMany("CourseStudentRels")

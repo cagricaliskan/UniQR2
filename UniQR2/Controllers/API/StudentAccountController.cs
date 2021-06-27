@@ -85,10 +85,61 @@ namespace UniQR2.Controllers.API
                 InstractorName = n.Instructor.FullName
             }).ToList();
 
-
             return Ok(derslerim);
         }
 
+
+        [HttpPost("MyProfile")]
+        [JWTAuthorize]
+        public IActionResult MyProfile()
+        {
+            Student user = (Student)HttpContext.Items["User"];
+            var dersler = db.CourseClassrooms
+                .Where(n => n.CourseStudentRels.Any(x => x.StudentID == user.StudentID));
+
+            
+
+            var announcements = new List<ViewModels.ApiDTO.Announcement>();
+
+            foreach (var item in dersler.Where(n => n.Announcements.Count() > 0).ToList())
+            {
+                var duyurular = db.Announcements.Where(n => n.CourseClassroomID == item.CourseClassroomID).ToList();
+                var dersAd = db.Courses.FirstOrDefault(n => n.CourseID == item.CourseID).Name;
+                foreach (var duyuru in duyurular)
+                {
+                    announcements.Add(new ViewModels.ApiDTO.Announcement()
+                    {
+                        Header = duyuru.Header,
+                        Message = duyuru.Message,
+                        CourseName = dersAd
+                    });
+                }
+                
+                
+            }
+            return Ok(new
+            {
+                CourseCount = dersler.Count(),
+                UserName = user.Fullname,
+                StudentNumber = user.Number,
+                Duyurular = announcements
+            });
+        }
+
+
+        [HttpPost("CourseDetails")]
+        [JWTAuthorize]
+        public IActionResult CourseDetails(int id)
+        {
+            Student user = (Student)HttpContext.Items["User"];
+
+            var dersim = db.CourseClassrooms
+                .Select(n => new { n.CourseClassroomID, n.Classroom.Floor.FloorNum })
+                .FirstOrDefault(x => x.CourseClassroomID == id);
+
+
+            return Ok(dersim);
+        }
 
 
         [HttpGet("LoginDeneme")]

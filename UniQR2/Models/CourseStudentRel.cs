@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -15,7 +16,8 @@ namespace UniQR2.Models
         public virtual Student Student { get; set; }
 
 
-        public int ClassroomID { get; set; }
+        [ForeignKey("CourseClassroom")]
+        public int CourseClassroomID { get; set; }
         public virtual CourseClassroom CourseClassroom { get; set; }
 
     }
