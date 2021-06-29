@@ -66,12 +66,12 @@
                 <tr>
                     <td>@counter</td>
                     <td>
-                    <a href="~/DownloadFile/DownloadFile/?fileName=@item.DataPath">
-                        @item.FileName
-                    </a>
+                        <a href="~/DownloadFile/DownloadFile/?fileName=@item.DataPath">
+                            @item.FileName
+                        </a>
                     </td>
                     <td class="text-right">
-                        <button class="btn btn-danger btn-sm removeBtn" data-toggle="modal" data-target="#removeFileBtn" data-id="@item.FileID">Remove File</button>
+                        <button class="btn btn-danger btn-sm removeBtn" data-toggle="modal" data-target="#deleteFileModal" data-id="@item.FileID">Remove File</button>
                     </td>
                 </tr>
             }
@@ -113,3 +113,54 @@
         </div>
     </div>
 </div>
+
+
+<div class="modal fade" tabindex="-1" role="dialog" id="deleteFileModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Remove File</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form asp-controller="MyClasses" asp-action="Files" method="post" enctype="multipart/form-data">
+                    <input type="hidden" id="FileID" name="FileID" />
+                    <div class="form-group">
+                        <input type="hidden" name="CourseClassroomId" value="@ViewBag.courseId" class="form-control-file" />
+                        <label for="file">File: </label>
+                        <input type="file" name="file" class="button" id=""/>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="submit" value="Delete" class="btn btn-danger" />
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <i>
+                    Açıklama yazılacak
+                </i>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script type="text/javascript">
+        $(function () {
+            $(".editBtn").on("click", function () {
+                var fileID = $(this).data("id");
+                var getUrl = "@Url.Action("GetFiles", "MyClasses", null, "http")";
+                var fullUrl = getUrl + "/" + fileID;
+
+                $.get(fullUrl, function (data, status) {
+                    $("select#FileName").val(data.fileName);
+                    $("select#FileID").val(data.fileID);
+                });
+
+            })
+        })
+    </script>
+}

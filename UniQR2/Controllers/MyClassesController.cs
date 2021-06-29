@@ -16,6 +16,7 @@ using System.Threading.Tasks;
 using UniQR2.Models;
 using UniQR2.ViewModels;
 using X.PagedList;
+using File = UniQR2.Models.File;
 
 namespace UniQR2.Controllers
 {
@@ -110,6 +111,25 @@ namespace UniQR2.Controllers
 
             }
             return RedirectToAction("Files", new { courseId = f.CourseClassroomID });
+        }
+
+        public JsonResult GetFiles(int id)
+        {
+            var file = db.Files.Select(x => new File { FileID = x.FileID, FileName = x.FileName, FileType = x.FileType, DataPath = x.DataPath, CourseClassroomID = x.CourseClassroomID }).FirstOrDefault(n => n.FileID == id);
+            return Json(file);
+        }
+
+        [HttpPost]
+        public IActionResult DeleteFile(int id)
+        {
+            var f = db.Files.FirstOrDefault(x => x.FileID == id);
+
+            if(f != null)
+            {
+                db.Remove(f);
+                db.SaveChanges();
+            }
+            return RedirectToAction("Index");
         }
 
         public IActionResult Attendance(int? courseId, int page = 1, string search = "")
