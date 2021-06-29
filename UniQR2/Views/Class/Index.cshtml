@@ -283,7 +283,7 @@
         $(function () {
             $(".editBtn").on("click", function () {
                 var courseClassroomID = $(this).data("id");
-                var getUserUrl = "@Url.Action("GetClass", "Class", null, "http")";
+                var getUserUrl = "@Url.Action("GetClass", "Class", null, "https")";
                 var fullUrl = getUserUrl + "/" + courseClassroomID;
 
                 $.get(fullUrl, function (data, status) {

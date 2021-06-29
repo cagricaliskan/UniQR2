@@ -36,7 +36,8 @@ namespace UniQR2.Controllers
 
         public IActionResult Index(int page = 1, string search = "")
         {
-            //ViewBag.x = User.Claims.Where(p => p.Type == System.Security.Claims.ClaimTypes.Name);
+            var id = User.Claims.Where(p => p.Type == System.Security.Claims.ClaimTypes.NameIdentifier).FirstOrDefault().Value;
+            int userId = int.Parse(id);
 
             var myclass = db.CourseClassrooms.AsQueryable();
 
@@ -48,11 +49,12 @@ namespace UniQR2.Controllers
                 ViewBag.count = myclass.Count();
             }
 
-            myclass = myclass.OrderByDescending(n => n.InstructorID).Where(x => x.Instructor.FullName == User.Identity.Name);
+            myclass = myclass.OrderByDescending(n => n.InstructorID).Where(x => x.InstructorID == userId);
             ViewBag.page = page;
 
             ViewBag.classroom = db.Classrooms.ToList();
             ViewBag.course = db.Courses.ToList();
+            var a = myclass.ToList();
 
             return View(myclass.ToPagedList(page, 10));
         }
