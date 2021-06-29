@@ -236,7 +236,7 @@
         $(function () {
             $(".editBtn").on("click", function () {
                 var annId = $(this).data("id");
-                var getUrl = "@Url.Action("GetAnnouncement", "MyClasses", null, "http")";
+                var getUrl = "@Url.Action("GetAnnouncement", "MyClasses", null, "https")";
                 var fullUrl = getUrl + "/" + annId;
 
                 $.get(fullUrl, function (data, status) {

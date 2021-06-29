@@ -264,7 +264,7 @@
     $(function () {
         $(".editBtn").on("click", function () {
             var attendancecId = $(this).data("id");
-            var getAttendanceUrl = "@Url.Action("GetAttendance", "MyClasses", null, "http")";
+            var getAttendanceUrl = "@Url.Action("GetAttendance", "MyClasses", null, "https")";
             var fullUrl = getAttendanceUrl + "/" + attendancecId;
             $(".hasDatepicker").datepicker();
 
