@@ -6,7 +6,7 @@
 
 * **Roles** : There are 2 types of roles in this sytem. Admin and Instructor. Admin users will be added on system setup. Instuctors will be invited by Admins.
 
-  Adding a new Instructer
+  Adding a new Instructor
 
  ![aaa](https://user-images.githubusercontent.com/42703783/122990309-7a064900-d3ac-11eb-8fb9-35185400d961.png)
 
